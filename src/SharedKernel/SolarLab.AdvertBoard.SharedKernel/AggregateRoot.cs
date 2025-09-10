@@ -1,7 +1,6 @@
 ﻿namespace SolarLab.AdvertBoard.SharedKernel
 {
-    public class Class1
+    public abstract class AggregateRoot : Entity
     {
-
     }
 }
