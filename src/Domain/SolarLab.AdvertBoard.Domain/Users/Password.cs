@@ -16,15 +16,15 @@ namespace SolarLab.AdvertBoard.Domain.Users
         private Password(string value) => Value = value;
 
         public static Result<Password> Create(string value) =>
-            Result.Create(value, PasswordErrors.Empty)
-            .Ensure(Validation.IsNotNullOrEmpty, PasswordErrors.Empty)
-            .Ensure(Validation.SmallerThan(MaxLength), PasswordErrors.TooLong)
-            .Ensure(Validation.BiggerThan(MinLength), PasswordErrors.TooShort)
-            .Ensure(Validation.HasLowercaseLetters, PasswordErrors.MissingLowercaseLetters)
-            .Ensure(Validation.HasUppercaseLetters, PasswordErrors.MissingUppercaseLetters)
-            .Ensure(Validation.HasDigits, PasswordErrors.MissingDigits)
-            .Ensure(Validation.HasSpecialCharacters, PasswordErrors.MissingSpecialCharacters)
-            .Ensure(Validation.IsMatchRegex(_regex), PasswordErrors.NotValid)
+            Result.Create(value, UserErrors.Password.Empty)
+            .Ensure(Validation.IsNotNullOrEmpty, UserErrors.Password.Empty)
+            .Ensure(Validation.SmallerThan(MaxLength), UserErrors.Password.TooLong)
+            .Ensure(Validation.BiggerThan(MinLength), UserErrors.Password.TooShort)
+            .Ensure(Validation.HasLowercaseLetters, UserErrors.Password.MissingLowercaseLetters)
+            .Ensure(Validation.HasUppercaseLetters, UserErrors.Password.MissingUppercaseLetters)
+            .Ensure(Validation.HasDigits, UserErrors.Password.MissingDigits)
+            .Ensure(Validation.HasSpecialCharacters, UserErrors.Password.MissingSpecialCharacters)
+            .Ensure(Validation.IsMatchRegex(_regex), UserErrors.Password.NotValid)
             .Map(p => new Password(value));
 
         [GeneratedRegex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,128}$")]

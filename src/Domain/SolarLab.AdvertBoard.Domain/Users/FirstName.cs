@@ -16,10 +16,10 @@ namespace SolarLab.AdvertBoard.Domain.Users
             Value = value;
 
         public static Result<FirstName> Create(string value) =>
-            Result.Create(value, FirstNameErrors.Empty)
-                .Ensure(Validation.IsNotNullOrEmpty, FirstNameErrors.Empty)
-                .Ensure(Validation.SmallerThan(MaxLength), FirstNameErrors.TooLong)
-                .Ensure(Validation.IsMatchRegex(_regex), FirstNameErrors.NotValid)
+            Result.Create(value, UserErrors.FirstName.Empty)
+                .Ensure(Validation.IsNotNullOrEmpty, UserErrors.FirstName.Empty)
+                .Ensure(Validation.SmallerThan(MaxLength), UserErrors.FirstName.TooLong)
+                .Ensure(Validation.IsMatchRegex(_regex), UserErrors.FirstName.NotValid)
                 .Map(fn => new FirstName(fn));
 
         public static explicit operator string(FirstName firstName) => firstName.Value;

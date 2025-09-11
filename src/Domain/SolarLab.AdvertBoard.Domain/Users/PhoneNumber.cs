@@ -16,10 +16,10 @@ namespace SolarLab.AdvertBoard.Domain.Users
         private PhoneNumber(string value) => Value = value;
 
         public static Result<PhoneNumber> Create(string value) =>
-            Result.Create(value, PhoneNumberErrors.Empty)
-                .Ensure(Validation.IsNotNullOrEmpty, PhoneNumberErrors.Empty)
-                .Ensure(Validation.SmallerThan(MaxLength), PhoneNumberErrors.TooLong)
-                .Ensure(Validation.IsMatchRegex(_regex), PhoneNumberErrors.NotValid)
+            Result.Create(value, UserErrors.PhoneNumber.Empty)
+                .Ensure(Validation.IsNotNullOrEmpty, UserErrors.PhoneNumber.Empty)
+                .Ensure(Validation.SmallerThan(MaxLength), UserErrors.PhoneNumber.TooLong)
+                .Ensure(Validation.IsMatchRegex(_regex), UserErrors.PhoneNumber.NotValid)
                 .Map(pn => new PhoneNumber(pn));
 
         public static explicit operator string(PhoneNumber phoneNumber) => phoneNumber.Value;

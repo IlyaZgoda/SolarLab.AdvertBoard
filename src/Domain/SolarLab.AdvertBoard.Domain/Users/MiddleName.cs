@@ -18,9 +18,9 @@ namespace SolarLab.AdvertBoard.Domain.Users
         public static Result<MiddleName?> Create(string? value) =>
             string.IsNullOrEmpty(value) 
             ? Result.Success<MiddleName?>(null) 
-            : Result.Create(value, MiddleNameErrors.Empty)
-                .Ensure(Validation.SmallerThan(MaxLength), MiddleNameErrors.TooLong)
-                .Ensure(Validation.IsMatchRegex(_regex), MiddleNameErrors.NotValid)
+            : Result.Create(value, UserErrors.MiddleName.Empty)
+                .Ensure(Validation.SmallerThan(MaxLength), UserErrors.MiddleName.TooLong)
+                .Ensure(Validation.IsMatchRegex(_regex), UserErrors.MiddleName.NotValid)
                 .MapNullable(mn => new MiddleName(mn));
 
         public static explicit operator string(MiddleName middleName) => middleName?.Value ?? string.Empty;

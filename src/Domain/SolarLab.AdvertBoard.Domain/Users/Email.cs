@@ -16,10 +16,10 @@ namespace SolarLab.AdvertBoard.Domain.Users
         private Email(string value) => Value = value;
 
         public static Result<Email> Create(string value) =>
-            Result.Create(value, EmailErrors.Empty)
-                .Ensure(Validation.IsNotNullOrEmpty, EmailErrors.Empty)
-                .Ensure(Validation.SmallerThan(MaxLength), EmailErrors.TooLong)
-                .Ensure(Validation.IsMatchRegex(_regex), EmailErrors.NotValid)
+            Result.Create(value, UserErrors.Email.Empty)
+                .Ensure(Validation.IsNotNullOrEmpty, UserErrors.Email.Empty)
+                .Ensure(Validation.SmallerThan(MaxLength), UserErrors.Email.TooLong)
+                .Ensure(Validation.IsMatchRegex(_regex), UserErrors.Email.NotValid)
                 .Map(e => new Email(e));
 
         public static explicit operator string(Email email) => email.Value;

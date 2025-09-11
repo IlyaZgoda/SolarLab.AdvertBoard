@@ -12,8 +12,8 @@ namespace SolarLab.AdvertBoard.Domain.Users
         private PasswordHash(string value) => Value = value;
 
         public static Result<PasswordHash> Create(string value) =>
-            Result.Create(value, PasswordHashErrors.Empty)
-                .Ensure(Validation.IsNotNullOrEmpty, PasswordHashErrors.Empty)
+            Result.Create(value, UserErrors.PasswordHash.Empty)
+                .Ensure(Validation.IsNotNullOrEmpty, UserErrors.PasswordHash.Empty)
                 .Map(ph => new PasswordHash(ph));
 
         public static explicit operator string(PasswordHash hash) => hash.Value;
