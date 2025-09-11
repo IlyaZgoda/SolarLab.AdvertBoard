@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedKernel\SolarLab.AdvertBoard.SharedKernel\SolarLab.AdvertBoard.SharedKernel.csproj" />
+  </ItemGroup>
+
 </Project>

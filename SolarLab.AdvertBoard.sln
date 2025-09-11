@@ -24,6 +24,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarLab.AdvertBoard.Contracts", "src\Contracts\SolarLab.AdvertBoard.Contracts\SolarLab.AdvertBoard.Contracts.csproj", "{4D485C18-2106-41B5-92E2-EE89597B1ACA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarLab.AdvertBoard.Domain", "src\Domain\SolarLab.AdvertBoard.Domain\SolarLab.AdvertBoard.Domain.csproj", "{BFC7705B-7791-41C9-A866-C03E51B47ABF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{068A5A6C-B872-49E5-BAC0-D162D8994A0F} = {068A5A6C-B872-49E5-BAC0-D162D8994A0F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolarLab.AdvertBoard.Infrastructure", "src\Infrastructure\SolarLab.AdvertBoard.Infrastructure\SolarLab.AdvertBoard.Infrastructure.csproj", "{328B77A0-53BA-4430-A80D-8B6B306438D3}"
 EndProject
@@ -86,5 +89,8 @@ Global
 		{42FC83D2-54A7-4C06-BDE1-B5989CB7FAC2} = {BCC78B0A-88AA-42C1-962C-B28F6D26940D}
 		{068A5A6C-B872-49E5-BAC0-D162D8994A0F} = {A83E69CB-E9F6-49FA-A046-43B18AF53D12}
 		{F949DEBD-2E15-4309-961E-2E2E6E593584} = {0E27A8A6-440D-4EE9-A632-FB72C2CACCAA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27190DEF-5CDD-4495-BA11-BD0EBC8D1B82}
 	EndGlobalSection
 EndGlobal
