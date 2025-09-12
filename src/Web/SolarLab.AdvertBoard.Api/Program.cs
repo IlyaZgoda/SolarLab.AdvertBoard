@@ -1,3 +1,5 @@
+using SolarLab.AdvertBoard.Persistence;
+
 namespace SolarLab.AdvertBoard.Api
 {
     public class Program
@@ -8,6 +10,11 @@ namespace SolarLab.AdvertBoard.Api
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            builder.Services.AddPersistence(builder.Configuration);
+
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -23,6 +30,7 @@ namespace SolarLab.AdvertBoard.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
