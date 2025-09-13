@@ -1,3 +1,7 @@
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic.FileIO;
+using SolarLab.AdvertBoard.Api.Extensions;
+using SolarLab.AdvertBoard.Infrastructure;
 using SolarLab.AdvertBoard.Persistence;
 
 namespace SolarLab.AdvertBoard.Api
@@ -11,19 +15,25 @@ namespace SolarLab.AdvertBoard.Api
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddPersistence(builder.Configuration);
+            builder.Services
+                .AddPersistence(builder.Configuration)
+                .AddInfrastructure(builder.Configuration);
 
-            builder.Services.AddAuthentication();
+            builder.Services.AddSwaggerGenWithAuth();
+
             builder.Services.AddAuthorization();
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseSwagger();
+                app.UseSwaggerUI(swaggerUiOptions =>
+                    swaggerUiOptions.SwaggerEndpoint(
+                        "/swagger/v1/swagger.json",
+                        "SolarLab.AdvertBoard API"));
             }
 
             app.UseHttpsRedirection();
@@ -32,6 +42,8 @@ namespace SolarLab.AdvertBoard.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllers();
 
             app.MapStaticAssets();
             app.MapRazorPages()
