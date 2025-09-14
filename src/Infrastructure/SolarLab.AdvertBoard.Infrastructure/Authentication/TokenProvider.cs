@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using System.Security.Claims;
 using System.Text;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
-    public class TokenProvider(IOptions<JwtOptions> options)
+    public class TokenProvider(IOptions<JwtOptions> options) : ITokenProvider
     {
         private readonly JwtOptions _jwtOptions = options.Value;
 
-        public string Create(IdentityUser identityUser)
+        public string Create(string id, string email)
         {
             string secretKey = _jwtOptions.Secret;
 
@@ -23,8 +23,8 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             {
                 Subject = new ClaimsIdentity(
                 [
-                    new Claim(JwtRegisteredClaimNames.Sub, identityUser.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, identityUser.Email!)
+                    new Claim(JwtRegisteredClaimNames.Sub, id),
+                    new Claim(JwtRegisteredClaimNames.Email, email)
                 ]),
                 
                 Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationInMinutes),

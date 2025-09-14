@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Infrastructure.Authentication;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace SolarLab.AdvertBoard.Infrastructure
             IConfiguration configuration)
         {
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
-
+            
             var secret = configuration["Jwt:Secret"];
             var issuer = configuration["Jwt:Issuer"];
             var audience = configuration["Jwt:Audience"];
@@ -40,7 +41,8 @@ namespace SolarLab.AdvertBoard.Infrastructure
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
 
-            services.AddSingleton<TokenProvider>();
+            services.AddSingleton<ITokenProvider, TokenProvider>();
+            services.AddScoped<IIdentityService, IdentityService>();
 
             return services;
         }

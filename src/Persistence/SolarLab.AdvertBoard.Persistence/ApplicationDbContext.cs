@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Domain.Users;
-using System.Reflection.Emit;
 
 namespace SolarLab.AdvertBoard.Persistence
 {

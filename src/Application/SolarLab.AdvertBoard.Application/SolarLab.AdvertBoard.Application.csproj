@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contracts\SolarLab.AdvertBoard.Contracts\SolarLab.AdvertBoard.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\SolarLab.AdvertBoard.Domain\SolarLab.AdvertBoard.Domain.csproj" />
     <ProjectReference Include="..\..\SharedKernel\SolarLab.AdvertBoard.SharedKernel\SolarLab.AdvertBoard.SharedKernel.csproj" />
   </ItemGroup>
