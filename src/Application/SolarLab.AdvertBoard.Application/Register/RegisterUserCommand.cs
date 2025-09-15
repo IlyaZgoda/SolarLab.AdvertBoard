@@ -1,7 +1,14 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Contracts.Authentication;
+using SolarLab.AdvertBoard.Contracts.Users;
 
 namespace SolarLab.AdvertBoard.Application.Register
 {
-    public record RegisterUserCommand(string Email, string Password) : ICommand<TokenResponse>;
+    public record RegisterUserCommand(
+        string Email, 
+        string Password, 
+        string FirstName, 
+        string LastName, 
+        string? MiddleName, 
+        string PhoneNumber) 
+        : ICommand<UserResponse>;
 }

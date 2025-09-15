@@ -6,7 +6,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
     public class IdentityService(UserManager<IdentityUser> userManager) : IIdentityService
     {
-        public async Task<string> CreateUserAsync(string email, string password)
+        public async Task<string> CreateIdentityUserAsync(string email, string password)
         {
             var identityUser = new IdentityUser
             {
@@ -24,7 +24,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             return identityUser.Id;
         }
 
-        public async Task<string?> ValidateUserAsync(string email, string password)
+        public async Task<string?> ValidateIdentityUserAsync(string email, string password)
         {
             var identityUser = await userManager.FindByEmailAsync(email); 
             

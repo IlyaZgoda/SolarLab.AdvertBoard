@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.Domain.Users;
+using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Persistence
 {

@@ -10,7 +10,7 @@ namespace SolarLab.AdvertBoard.Application.Login
     {
         public async Task<Result<TokenResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var identityUserId = await identityService.ValidateUserAsync(request.Email, request.Password);
+            var identityUserId = await identityService.ValidateIdentityUserAsync(request.Email, request.Password);
 
             if (identityUserId is null)
             {

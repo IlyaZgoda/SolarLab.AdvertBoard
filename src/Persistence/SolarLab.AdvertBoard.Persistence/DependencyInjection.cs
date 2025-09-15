@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Domain.Users;
+using SolarLab.AdvertBoard.Persistence.Repositories;
 
 namespace SolarLab.AdvertBoard.Persistence
 {
@@ -11,6 +14,8 @@ namespace SolarLab.AdvertBoard.Persistence
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationDbContext))));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -24,6 +29,8 @@ namespace SolarLab.AdvertBoard.Persistence
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IUserRepository, UserRepostory>();
+            
             return services;
         }
     }

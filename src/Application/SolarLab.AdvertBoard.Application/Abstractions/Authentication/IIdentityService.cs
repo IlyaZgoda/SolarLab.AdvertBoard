@@ -2,9 +2,9 @@
 {
     public interface IIdentityService
     {
-        Task<string> CreateUserAsync(string email, string password);
+        Task<string> CreateIdentityUserAsync(string email, string password);
 
-        Task<string?> ValidateUserAsync(string email, string password);
+        Task<string?> ValidateIdentityUserAsync(string email, string password);
 
 
     }

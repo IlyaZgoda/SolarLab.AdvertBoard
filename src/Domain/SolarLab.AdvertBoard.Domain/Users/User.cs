@@ -1,9 +1,9 @@
-﻿using SolarLab.AdvertBoard.Domain.Errors;
-using SolarLab.AdvertBoard.SharedKernel.Result;
+﻿using SolarLab.AdvertBoard.Domain.Users.Events;
+using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Domain.Users
 {
-    public class User
+    public class User : AggregateRoot
     {
         public UserId Id { get; init; } = null!;
 
@@ -21,22 +21,35 @@ namespace SolarLab.AdvertBoard.Domain.Users
 
         private User() { }
 
+        private User(
+            string identityId,
+            FirstName firstName,
+            LastName lastName,
+            MiddleName? middleName,
+            PhoneNumber phoneNumber)
+        {
+            Id = new UserId(Guid.NewGuid());
+            IdentityId = identityId;
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
+            PhoneNumber = phoneNumber;
+            CreatedAt = DateTime.UtcNow;
+
+        }
+
         public static User Create(
+            string identityId,
             FirstName firstName, 
             LastName lastName, 
             MiddleName? middleName, 
             PhoneNumber phoneNumber)
         {
-            return new()
-            {
-                Id = new UserId(Guid.NewGuid()),
-                FirstName = firstName,
-                LastName = lastName,
-                MiddleName = middleName,
-                PhoneNumber = phoneNumber,
-                CreatedAt = DateTime.UtcNow,
-            };
+            var user = new User(identityId, firstName, lastName, middleName, phoneNumber);
 
+            user.Raise(new UserRegisteredDomainEvent(user.Id, user.IdentityId));
+
+            return user;
         }
         
         public void UpdateProfile(

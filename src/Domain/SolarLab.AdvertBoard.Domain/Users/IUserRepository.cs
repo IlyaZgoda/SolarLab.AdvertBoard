@@ -1,0 +1,11 @@
+﻿using SolarLab.AdvertBoard.SharedKernel.Maybe;
+
+namespace SolarLab.AdvertBoard.Domain.Users
+{
+    public interface IUserRepository
+    {
+        void Add(User user);
+        void Update(User user);
+        Task<Maybe<User>> GetByIdAsync(UserId id);
+    }
+}
