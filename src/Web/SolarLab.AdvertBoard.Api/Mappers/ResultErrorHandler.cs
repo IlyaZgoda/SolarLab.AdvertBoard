@@ -12,7 +12,11 @@ namespace SolarLab.AdvertBoard.Api.Mappers
         public IActionResult Handle(Error error)
         {
             var statusCode = errorToHttpMapper.Map(error);
-            var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContextAccessor.HttpContext!, statusCode, error);
+            var problemDetails = problemDetailsFactory.CreateProblemDetails(
+                httpContext: httpContextAccessor.HttpContext!, 
+                statusCode: statusCode, 
+                detail: error.Description,
+                title: error.Code);
 
             return new ObjectResult(problemDetails);
         }

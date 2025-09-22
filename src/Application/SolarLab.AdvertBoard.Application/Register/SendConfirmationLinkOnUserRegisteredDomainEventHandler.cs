@@ -11,24 +11,13 @@ namespace SolarLab.AdvertBoard.Application.Register
     public class SendConfirmationLinkOnUserRegisteredDomainEventHandler(
         IIdentityService identityService, 
         IEmailNotificationSender emailNotificationSender, 
-        IUriGenerator uriGenerator) 
-        : INotificationHandler<UserRegisteredDomainEvent>
+        IUriGenerator uriGenerator) : INotificationHandler<UserRegisteredDomainEvent>
     {
         public async Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
             var email = await identityService.GetEmailByIdAsync(notification.IdentityId);
 
-            if (email == null)
-            {
-                return;
-            }
-
             var token = await identityService.GenerateEmailConfirmationTokenAsync(email);
-
-            if (token == null) 
-            { 
-                return; 
-            }
 
             var uri = uriGenerator.GenerateEmailConfirmationUri(new ConfirmationUriRequest(notification.IdentityId, token));  
 

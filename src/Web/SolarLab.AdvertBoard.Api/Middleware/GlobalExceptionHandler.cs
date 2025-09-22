@@ -23,7 +23,7 @@ namespace SolarLab.AdvertBoard.Api.Middleware
             };
 
             var statusCode = mapper.Map(error);
-            var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext, statusCode, title: error.Description, detail: exception.Message);
+            var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext, statusCode, title: error.Code, detail: exception.Message);
 
             httpContext.Response.StatusCode = statusCode;
             httpContext.Response.ContentType = "application/problem+json";

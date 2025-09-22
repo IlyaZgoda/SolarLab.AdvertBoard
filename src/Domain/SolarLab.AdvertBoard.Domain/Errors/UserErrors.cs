@@ -4,6 +4,7 @@ namespace SolarLab.AdvertBoard.Domain.Errors
 {
    public static class UserErrors
     {
+        public static readonly Error NotFound = new(ErrorTypes.ValidationError, "User not found");
         public static readonly Error CannotChangePassword = new(ErrorTypes.ValidationError, "Cannot change password");
         public static class FirstName
         {

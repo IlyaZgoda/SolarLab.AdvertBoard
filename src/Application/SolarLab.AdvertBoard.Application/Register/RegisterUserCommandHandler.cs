@@ -26,9 +26,15 @@ namespace SolarLab.AdvertBoard.Application.Register
                 return Result.Failure<UserResponse>(userDataResult.Error);
             }
 
-            var identityUserId = await identityService.CreateIdentityUserAsync(request.Email, request.Password);
+            var identityUserIdResult = await identityService.CreateIdentityUserAsync(request.Email, request.Password);
 
-            var user = User.Create(identityUserId, firstNameResult.Value, lastNameResult.Value, middleNameResult.Value, phoneNumberResult.Value);
+            if (identityUserIdResult.IsFailure)
+            {
+                return Result.Failure<UserResponse>(identityUserIdResult.Error);
+            }
+
+            var user = User.Create(
+                identityUserIdResult.Value, firstNameResult.Value, lastNameResult.Value, middleNameResult.Value, phoneNumberResult.Value);
 
             userRepository.Add(user);
 

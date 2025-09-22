@@ -1,23 +1,24 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Contracts.Authentication;
+using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.ConfirmEmail
 {
-    public class ConfirmEmailCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) : ICommandHandler<ConfirmEmailCommand, JwtResponse>
+    public class ConfirmEmailCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) 
+        : ICommandHandler<ConfirmEmailCommand, JwtResponse>
     {
         public async Task<Result<JwtResponse>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
             var result = await identityService.ConfirmEmail(request.IdentityUserId, request.Token);
 
-            if (!result)
+            if (result.IsFailure)
             {
-                throw new ArgumentException();
+                return Result.Failure<JwtResponse>(result.Error);
             }
 
-            var email = await identityService.GetEmailByIdAsync(request.IdentityUserId) 
-                ?? throw new ArgumentException();
+            var email = await identityService.GetEmailByIdAsync(request.IdentityUserId);
 
             var jwt = tokenProvider.Create(request.IdentityUserId, email);
 
