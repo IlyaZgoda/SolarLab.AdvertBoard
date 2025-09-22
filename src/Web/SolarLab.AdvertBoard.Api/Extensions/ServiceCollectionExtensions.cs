@@ -13,7 +13,7 @@ namespace SolarLab.AdvertBoard.Api.Extensions
 
                 var securityScheme = new OpenApiSecurityScheme
                 {
-                    Name = "JWT Authentication",
+                    Name = "JWT Users",
                     Description = "Enter your JWT token in this field",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,

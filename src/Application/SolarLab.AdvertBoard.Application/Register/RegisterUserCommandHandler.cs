@@ -8,13 +8,12 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 namespace SolarLab.AdvertBoard.Application.Register
 {
     public class RegisterUserCommandHandler(
-        IIdentityService identityService, IUserRepository userRepository, IUnitOfWork unitOfWork) 
-        : ICommandHandler<RegisterUserCommand, UserResponse>
+        IIdentityService identityService, 
+        IUserRepository userRepository, 
+        IUnitOfWork unitOfWork) : ICommandHandler<RegisterUserCommand, UserResponse>
     {
         public async Task<Result<UserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
-        {
-            var identityUserId = await identityService.CreateIdentityUserAsync(request.Email, request.Password);
-
+        {  
             var firstNameResult = FirstName.Create(request.FirstName);
             var lastNameResult = LastName.Create(request.LastName);
             var middleNameResult = MiddleName.Create(request.MiddleName);
@@ -26,6 +25,8 @@ namespace SolarLab.AdvertBoard.Application.Register
             {
                 return Result.Failure<UserResponse>(userDataResult.Error);
             }
+
+            var identityUserId = await identityService.CreateIdentityUserAsync(request.Email, request.Password);
 
             var user = User.Create(identityUserId, firstNameResult.Value, lastNameResult.Value, middleNameResult.Value, phoneNumberResult.Value);
 

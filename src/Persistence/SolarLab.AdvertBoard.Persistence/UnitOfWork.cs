@@ -21,7 +21,7 @@ namespace SolarLab.AdvertBoard.Persistence
         {
             var aggregateRoots = context.ChangeTracker
                 .Entries<AggregateRoot>()
-                .Where(entityEntry => entityEntry.Entity.DomainEvents.Any())
+                .Where(entityEntry => entityEntry.Entity.DomainEvents.Count != 0)
                 .ToList();
 
             var domainEvents = aggregateRoots

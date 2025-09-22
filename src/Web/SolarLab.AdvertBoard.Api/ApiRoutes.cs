@@ -1,0 +1,12 @@
+﻿namespace SolarLab.AdvertBoard.Api
+{
+    public static class ApiRoutes
+    {
+        public static class Users
+        {
+            public const string Login = "api/users/login";
+            public const string Register = "api/users/register";
+            public const string ConfirmEmail = "api/users/confirm-email";
+        }
+    }
+}

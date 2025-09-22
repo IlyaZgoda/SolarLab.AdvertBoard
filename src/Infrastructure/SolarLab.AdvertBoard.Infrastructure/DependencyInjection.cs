@@ -3,7 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
+using SolarLab.AdvertBoard.Application.Abstractions.Emails;
+using SolarLab.AdvertBoard.Application.Abstractions.Links;
+using SolarLab.AdvertBoard.Application.Abstractions.Notifications;
 using SolarLab.AdvertBoard.Infrastructure.Authentication;
+using SolarLab.AdvertBoard.Infrastructure.Emails;
+using SolarLab.AdvertBoard.Infrastructure.Links;
+using SolarLab.AdvertBoard.Infrastructure.Notifications;
 using System.Text;
 
 namespace SolarLab.AdvertBoard.Infrastructure
@@ -15,6 +21,8 @@ namespace SolarLab.AdvertBoard.Infrastructure
             IConfiguration configuration)
         {
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+            services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
+            services.Configure<UriGeneratorOptions>(configuration.GetSection("UriGenerator"));
             
             var secret = configuration["Jwt:Secret"];
             var issuer = configuration["Jwt:Issuer"];
@@ -43,6 +51,9 @@ namespace SolarLab.AdvertBoard.Infrastructure
 
             services.AddSingleton<ITokenProvider, TokenProvider>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IEmailSender, SmtpEmailSender>();  
+            services.AddScoped<IEmailNotificationSender, EmailNotificationSender>();  
+            services.AddScoped<IUriGenerator, UriGenerator>();  
 
             return services;
         }

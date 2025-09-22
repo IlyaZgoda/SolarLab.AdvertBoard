@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using SolarLab.AdvertBoard.Application.Register;
-using SolarLab.AdvertBoard.Domain.Users.Events;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace SolarLab.AdvertBoard.Application
@@ -14,8 +11,6 @@ namespace SolarLab.AdvertBoard.Application
             {
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
-
-           // services.AddTransient<INotificationHandler<UserRegisteredDomainEvent>, UserRegisteredDomainEventHandler>();
 
             return services;
 

@@ -6,20 +6,27 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Login
 {
-    public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) : ICommandHandler<LoginUserCommand, TokenResponse>
+    public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) : ICommandHandler<LoginUserCommand, JwtResponse>
     {
-        public async Task<Result<TokenResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<JwtResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var identityUserId = await identityService.ValidateIdentityUserAsync(request.Email, request.Password);
 
             if (identityUserId is null)
             {
-                return Result.Failure<TokenResponse>(new Error(ErrorTypes.ValidationError, "Incorrect email or password"));
+                return Result.Failure<JwtResponse>(new Error(ErrorTypes.ValidationError, "Incorrect email or password"));
+            }
+
+            var isConfirmed = await identityService.IsEmailConfirmed(identityUserId);
+
+            if (!isConfirmed)
+            {
+                throw new Exception();
             }
 
             var token = tokenProvider.Create(identityUserId, request.Email);
 
-            return new TokenResponse(token);
+            return new JwtResponse(token);
         }
     }
 }

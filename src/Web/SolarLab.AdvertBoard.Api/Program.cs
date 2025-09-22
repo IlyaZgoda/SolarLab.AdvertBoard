@@ -16,6 +16,7 @@ namespace SolarLab.AdvertBoard.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddRazorPages();
 
             builder.Services
@@ -25,6 +26,7 @@ namespace SolarLab.AdvertBoard.Api
 
             builder.Services.AddSwaggerGenWithAuth();
             builder.Services.AddSingleton<ErrorToHttpMapper>();
+            builder.Services.AddSingleton<ResultErrorHandler>();
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
@@ -35,7 +37,7 @@ namespace SolarLab.AdvertBoard.Api
             var app = builder.Build();
 
             app.UseExceptionHandler();
-
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
