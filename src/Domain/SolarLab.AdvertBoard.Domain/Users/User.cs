@@ -15,7 +15,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
 
         public MiddleName? MiddleName { get; private set; }
 
-        public PhoneNumber PhoneNumber { get; private set; } = null!;
+        public PhoneNumber? PhoneNumber { get; private set; }
 
         public DateTime CreatedAt { get; init; }
 
@@ -26,7 +26,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
             FirstName firstName,
             LastName lastName,
             MiddleName? middleName,
-            PhoneNumber phoneNumber)
+            PhoneNumber? phoneNumber)
         {
             Id = new UserId(Guid.NewGuid());
             IdentityId = identityId;
@@ -43,7 +43,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
             FirstName firstName, 
             LastName lastName, 
             MiddleName? middleName, 
-            PhoneNumber phoneNumber)
+            PhoneNumber? phoneNumber)
         {
             var user = new User(identityId, firstName, lastName, middleName, phoneNumber);
 
@@ -56,7 +56,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
             FirstName firstName, 
             LastName lastName, 
             MiddleName? middleName, 
-            PhoneNumber phoneNumber)
+            PhoneNumber? phoneNumber)
         {
             FirstName = firstName;
             LastName = lastName;

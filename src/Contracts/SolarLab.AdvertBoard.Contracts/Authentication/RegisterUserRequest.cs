@@ -6,5 +6,5 @@
         string? MiddleName, 
         string Email, 
         string Password, 
-        string PhoneNumber);
+        string? PhoneNumber);
 }

@@ -9,20 +9,22 @@ namespace SolarLab.AdvertBoard.Domain.Users
     public partial record PhoneNumber
     {
         public const int MaxLength = 15; 
-        public string Value { get; init; }
+        public string? Value { get; init; }
 
         private static readonly Regex _regex = PhoneNumberRegex();
 
         private PhoneNumber(string value) => Value = value;
 
-        public static Result<PhoneNumber> Create(string value) =>
-            Result.Create(value, UserErrors.PhoneNumber.Empty)
+        public static Result<PhoneNumber?> Create(string? value) =>
+            string.IsNullOrEmpty(value)
+            ? Result.Success<PhoneNumber?>(null)
+            : Result.Create(value, UserErrors.PhoneNumber.Empty)
                 .Ensure(Validation.IsNotNullOrEmpty, UserErrors.PhoneNumber.Empty)
                 .Ensure(Validation.SmallerThan(MaxLength), UserErrors.PhoneNumber.TooLong)
                 .Ensure(Validation.IsMatchRegex(_regex), UserErrors.PhoneNumber.NotValid)
-                .Map(pn => new PhoneNumber(pn));
+                .MapNullable(pn => new PhoneNumber(pn));
 
-        public static explicit operator string(PhoneNumber phoneNumber) => phoneNumber.Value;
+        public static explicit operator string(PhoneNumber phoneNumber) => phoneNumber?.Value ?? string.Empty;
 
         [GeneratedRegex(@"^\+\d{11,14}$")]
         private static partial Regex PhoneNumberRegex();

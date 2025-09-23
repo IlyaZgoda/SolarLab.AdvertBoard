@@ -9,6 +9,6 @@ namespace SolarLab.AdvertBoard.Application.Register
         string FirstName, 
         string LastName, 
         string? MiddleName, 
-        string PhoneNumber) 
+        string? PhoneNumber) 
         : ICommand<UserResponse>;
 }

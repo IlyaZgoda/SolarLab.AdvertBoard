@@ -49,9 +49,9 @@ namespace SolarLab.AdvertBoard.Persistence.Configurations
 
             builder.Property(u => u.PhoneNumber)
                 .HasConversion(
-                p => p.Value,
+                p => p!.Value,
                 value => PhoneNumber.Create(value).Value)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(PhoneNumber.MaxLength)
                 .HasColumnName(nameof(PhoneNumber));
 
