@@ -22,7 +22,7 @@ namespace SolarLab.AdvertBoard.Application.Login
 
             if (!isConfirmed)
             {
-                return Result.Failure<JwtResponse>(new Error(ErrorTypes.ValidationError, "Email is not confirmed"));
+                return Result.Failure<JwtResponse>(new Error(ErrorTypes.ValidationError, "ContactEmail is not confirmed"));
             }
 
             var token = tokenProvider.Create(identityUserId.Value, request.Email);

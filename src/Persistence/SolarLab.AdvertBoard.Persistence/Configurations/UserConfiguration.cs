@@ -47,6 +47,14 @@ namespace SolarLab.AdvertBoard.Persistence.Configurations
                 .HasMaxLength(MiddleName.MaxLength)
                 .HasColumnName(nameof(MiddleName));
 
+            builder.Property(u => u.ContactEmail)
+                .HasConversion(
+                ce => ce.Value,
+                value => ContactEmail.Create(value).Value)
+                .IsRequired()
+                .HasMaxLength(ContactEmail.MaxLength)
+                .HasColumnName(nameof(ContactEmail));
+
             builder.Property(u => u.PhoneNumber)
                 .HasConversion(
                 p => p!.Value,
@@ -58,11 +66,6 @@ namespace SolarLab.AdvertBoard.Persistence.Configurations
             builder.Property(u => u.CreatedAt)
                 .IsRequired()
                 .HasColumnName(nameof(User.CreatedAt));
-
-            builder.HasOne<IdentityUser>()
-                .WithOne()
-                .HasForeignKey<User>(u => u.IdentityId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(u => u.IdentityId);
         }

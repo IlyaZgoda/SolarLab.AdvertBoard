@@ -88,7 +88,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("ContactEmail")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 

@@ -12,8 +12,8 @@ using SolarLab.AdvertBoard.Persistence;
 namespace SolarLab.AdvertBoard.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250912191434_Add_FK_Users_AspNetUsers")]
-    partial class Add_FK_Users_AspNetUsers
+    [Migration("20250923202647_Add_Contact_Email_And_Remove_FK_Identity_Id")]
+    partial class Add_Contact_Email_And_Remove_FK_Identity_Id
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("ContactEmail")
+                    b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -226,6 +226,12 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)")
+                        .HasColumnName("ContactEmail");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreatedAt");
@@ -254,15 +260,13 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .HasColumnName("MiddleName");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)")
                         .HasColumnName("PhoneNumber");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityId")
-                        .IsUnique();
+                    b.HasIndex("IdentityId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -314,15 +318,6 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Users.User", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("SolarLab.AdvertBoard.Domain.Users.User", "IdentityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

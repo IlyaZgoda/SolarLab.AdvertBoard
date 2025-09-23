@@ -46,7 +46,8 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                     registerRequest.Password, 
                     registerRequest.FirstName, 
                     registerRequest.LastName, 
-                    registerRequest.MiddleName, 
+                    registerRequest.MiddleName,
+                    registerRequest.ContactEmail,
                     registerRequest.PhoneNumber))
                 .Bind(command => mediator.Send(command))
                 .Match(user => Ok(user.UserId), error => resultErrorHandler.Handle(error));

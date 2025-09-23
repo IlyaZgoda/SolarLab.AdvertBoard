@@ -5,6 +5,7 @@
         string LastName, 
         string? MiddleName, 
         string Email, 
+        string? ContactEmail,
         string Password, 
         string? PhoneNumber);
 }

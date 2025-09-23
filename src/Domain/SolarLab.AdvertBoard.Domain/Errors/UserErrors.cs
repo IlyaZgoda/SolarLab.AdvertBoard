@@ -29,9 +29,9 @@ namespace SolarLab.AdvertBoard.Domain.Errors
 
         public static class Email
         {
-            public static readonly Error Empty = new(ErrorTypes.ValidationError, "Email is empty");
-            public static readonly Error NotValid = new(ErrorTypes.ValidationError, "Email is not valid");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, "Email too long");
+            public static readonly Error Empty = new(ErrorTypes.ValidationError, "ContactEmail is empty");
+            public static readonly Error NotValid = new(ErrorTypes.ValidationError, "ContactEmail is not valid");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, "ContactEmail too long");
         }
 
         public static class PhoneNumber
