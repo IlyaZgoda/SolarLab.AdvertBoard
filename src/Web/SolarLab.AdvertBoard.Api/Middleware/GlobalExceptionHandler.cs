@@ -18,7 +18,6 @@ namespace SolarLab.AdvertBoard.Api.Middleware
 
             Error error = exception switch
             {
-                IdentityException => new Error(ErrorTypes.ValidationError, "Validation error"),
                 _ => new Error(ErrorTypes.ValidationError, "Validation error"),
             };
 

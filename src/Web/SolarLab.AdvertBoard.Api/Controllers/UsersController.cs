@@ -51,7 +51,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(user => Ok(user.UserId), error => resultErrorHandler.Handle(error));
  
-        [HttpPost(ApiRoutes.Users.ConfirmEmail)]
+        [HttpGet(ApiRoutes.Users.ConfirmEmail)]
         [ProducesResponseType(typeof(JwtResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]

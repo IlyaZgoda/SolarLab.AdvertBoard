@@ -16,7 +16,7 @@ namespace SolarLab.AdvertBoard.Api.Mappers
              ErrorTypes.UnprocessableEntity => StatusCodes.Status422UnprocessableEntity,
              ErrorTypes.InternalServerError => StatusCodes.Status500InternalServerError,
              ErrorTypes.AlreadyExists => StatusCodes.Status409Conflict,
-             _ => StatusCodes.Status500InternalServerError
+             _ => StatusCodes.Status400BadRequest
          };
     }
 }
