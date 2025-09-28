@@ -11,7 +11,7 @@ namespace SolarLab.AdvertBoard.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +38,6 @@ namespace SolarLab.AdvertBoard.Api
 
             app.UseExceptionHandler();
             
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -46,6 +45,9 @@ namespace SolarLab.AdvertBoard.Api
                     swaggerUiOptions.SwaggerEndpoint(
                         "/swagger/v1/swagger.json",
                         "SolarLab.AdvertBoard API"));
+
+                await app.ApplyMigrationsAsync();
+                await app.SeedDataAsync();
             }
 
             app.UseHttpsRedirection();
@@ -61,7 +63,7 @@ namespace SolarLab.AdvertBoard.Api
             app.MapRazorPages()
                .WithStaticAssets();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

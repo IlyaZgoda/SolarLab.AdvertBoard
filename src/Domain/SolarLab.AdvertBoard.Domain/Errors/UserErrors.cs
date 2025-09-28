@@ -4,7 +4,7 @@ namespace SolarLab.AdvertBoard.Domain.Errors
 {
    public static class UserErrors
     {
-        public static readonly Error NotFound = new(ErrorTypes.ValidationError, "User not found");
+        public static readonly Error NotFound = new(ErrorTypes.NotFound, "User not found");
         public static readonly Error CannotChangePassword = new(ErrorTypes.ValidationError, "Cannot change password");
         public static class FirstName
         {
@@ -56,6 +56,17 @@ namespace SolarLab.AdvertBoard.Domain.Errors
             public static readonly Error MissingLowercaseLetters = new(ErrorTypes.ValidationError, "Password has no lowercase letters");
             public static readonly Error MissingUppercaseLetters = new(ErrorTypes.ValidationError, "Password has no uppercase letters");
             public static readonly Error MissingSpecialCharacters = new(ErrorTypes.ValidationError, "Password has no special characters");
+        }
+    }
+
+    public static class CategoryErrors
+    {
+        public static readonly Error NotFound = new(ErrorTypes.NotFound, "Category not found");
+
+        public static class Title
+        {
+            public static readonly Error Empty = new(ErrorTypes.ValidationError, "Category title is empty");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, "Category title too long");
         }
     }
 }

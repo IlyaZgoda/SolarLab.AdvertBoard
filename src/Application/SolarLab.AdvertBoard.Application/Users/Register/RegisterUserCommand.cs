@@ -1,7 +1,7 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Contracts.Users;
 
-namespace SolarLab.AdvertBoard.Application.Register
+namespace SolarLab.AdvertBoard.Application.Users.Register
 {
     public record RegisterUserCommand(
         string Email, 

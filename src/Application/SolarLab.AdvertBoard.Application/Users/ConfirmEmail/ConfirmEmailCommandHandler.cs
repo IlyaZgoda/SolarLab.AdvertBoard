@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Contracts.Authentication;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.ConfirmEmail
+namespace SolarLab.AdvertBoard.Application.Users.ConfirmEmail
 {
     public class ConfirmEmailCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) 
         : ICommandHandler<ConfirmEmailCommand, JwtResponse>

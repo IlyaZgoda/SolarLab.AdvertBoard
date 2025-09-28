@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.Contracts.Links;
 using SolarLab.AdvertBoard.Contracts.Mails;
 using SolarLab.AdvertBoard.Domain.Users.Events;
 
-namespace SolarLab.AdvertBoard.Application.Register
+namespace SolarLab.AdvertBoard.Application.Users.Register
 {
     public class SendConfirmationLinkOnUserRegisteredDomainEventHandler(
         IIdentityService identityService, 

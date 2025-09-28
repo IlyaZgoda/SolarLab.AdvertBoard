@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
-using SolarLab.AdvertBoard.Application.ConfirmEmail;
 using SolarLab.AdvertBoard.Infrastructure.Exceptions;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;

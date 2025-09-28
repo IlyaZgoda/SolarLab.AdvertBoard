@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Contracts.Authentication;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Login
+namespace SolarLab.AdvertBoard.Application.Users.Login
 {
     public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) 
         : ICommandHandler<LoginUserCommand, JwtResponse>

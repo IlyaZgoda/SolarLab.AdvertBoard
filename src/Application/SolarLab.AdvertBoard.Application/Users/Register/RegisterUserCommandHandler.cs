@@ -5,7 +5,7 @@ using SolarLab.AdvertBoard.Contracts.Users;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Register
+namespace SolarLab.AdvertBoard.Application.Users.Register
 {
     public class RegisterUserCommandHandler(
         IIdentityService identityService, 

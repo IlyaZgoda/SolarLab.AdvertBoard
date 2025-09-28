@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.WebUtilities;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Application.Abstractions.Links;
 using SolarLab.AdvertBoard.Application.Abstractions.Notifications;
-using SolarLab.AdvertBoard.Application.ConfirmEmail;
-using SolarLab.AdvertBoard.Application.Login;
-using SolarLab.AdvertBoard.Application.Register;
+using SolarLab.AdvertBoard.Application.Users.ConfirmEmail;
+using SolarLab.AdvertBoard.Application.Users.Login;
+using SolarLab.AdvertBoard.Application.Users.Register;
 using SolarLab.AdvertBoard.Contracts.Authentication;
 using SolarLab.AdvertBoard.Contracts.Links;
 using SolarLab.AdvertBoard.Contracts.Mails;
@@ -73,6 +73,13 @@ namespace SolarLab.AdvertBoard.Api.Controllers
             await emailNotificationSender.SendConfirmationEmail(new ConfirmationEmail("zgoda-games@mail.ru", uri));
 
             return Ok();
+        }
+
+        [HttpPatch("api/users/update")]
+        public async Task<IActionResult> Update()
+        {
+            return Ok();
+
         }
     }
 }

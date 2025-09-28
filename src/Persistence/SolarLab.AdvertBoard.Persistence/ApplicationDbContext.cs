@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel;
 
@@ -11,6 +12,7 @@ namespace SolarLab.AdvertBoard.Persistence
         : IdentityDbContext(options)
     {
         public DbSet<User> AppUsers { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

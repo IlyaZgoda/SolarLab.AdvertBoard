@@ -8,5 +8,11 @@
             public const string Register = "api/users/register";
             public const string ConfirmEmail = "api/users/confirm-email";
         }
+
+        public static class Categories
+        {
+            public const string GetById = "api/categories/{id}";
+            public const string GetTree = "api/categories/tree";
+        }
     }
 }
