@@ -26,7 +26,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         name: "FK_Categories_Categories_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
+                        principalColumn: "IdentityUserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

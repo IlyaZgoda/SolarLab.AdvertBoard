@@ -23,8 +23,8 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             {
                 Subject = new ClaimsIdentity(
                 [
-                    new Claim(JwtRegisteredClaimNames.Sub, id),
-                    new Claim(JwtRegisteredClaimNames.Email, email)
+                    new Claim(ClaimTypes.NameIdentifier, id),
+                    new Claim(ClaimTypes.Email, email)
                 ]),
                 
                 Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationInMinutes),

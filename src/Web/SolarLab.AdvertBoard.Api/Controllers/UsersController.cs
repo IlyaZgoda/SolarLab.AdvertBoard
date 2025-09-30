@@ -36,7 +36,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
 
         [HttpPost(ApiRoutes.Users.Register)]
-        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(UserIdResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> Register(RegisterUserRequest registerRequest) =>

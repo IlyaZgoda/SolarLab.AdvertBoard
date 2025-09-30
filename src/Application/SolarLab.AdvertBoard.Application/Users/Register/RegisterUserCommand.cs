@@ -11,5 +11,5 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
         string? MiddleName, 
         string? ContactEmail,
         string? PhoneNumber) 
-        : ICommand<UserResponse>;
+        : ICommand<UserIdResponse>;
 }

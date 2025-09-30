@@ -1,10 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Users;
-using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Persistence
 {
@@ -13,6 +11,7 @@ namespace SolarLab.AdvertBoard.Persistence
     {
         public DbSet<User> AppUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Advert> Adverts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

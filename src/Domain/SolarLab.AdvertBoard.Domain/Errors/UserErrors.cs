@@ -58,15 +58,4 @@ namespace SolarLab.AdvertBoard.Domain.Errors
             public static readonly Error MissingSpecialCharacters = new(ErrorTypes.ValidationError, "Password has no special characters");
         }
     }
-
-    public static class CategoryErrors
-    {
-        public static readonly Error NotFound = new(ErrorTypes.NotFound, "Category not found");
-
-        public static class Title
-        {
-            public static readonly Error Empty = new(ErrorTypes.ValidationError, "Category title is empty");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, "Category title too long");
-        }
-    }
 }

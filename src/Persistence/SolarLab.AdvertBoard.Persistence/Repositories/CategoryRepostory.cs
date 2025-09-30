@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
+using System.Threading.Tasks;
 
 namespace SolarLab.AdvertBoard.Persistence.Repositories
 {

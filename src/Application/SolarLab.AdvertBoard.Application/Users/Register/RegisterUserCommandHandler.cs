@@ -10,9 +10,9 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
     public class RegisterUserCommandHandler(
         IIdentityService identityService, 
         IUserRepository userRepository, 
-        IUnitOfWork unitOfWork) : ICommandHandler<RegisterUserCommand, UserResponse>
+        IUnitOfWork unitOfWork) : ICommandHandler<RegisterUserCommand, UserIdResponse>
     {
-        public async Task<Result<UserResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UserIdResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {  
             var firstNameResult = FirstName.Create(request.FirstName);
             var lastNameResult = LastName.Create(request.LastName);
@@ -24,14 +24,14 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
 
             if (userDataResult.IsFailure)
             {
-                return Result.Failure<UserResponse>(userDataResult.Error);
+                return Result.Failure<UserIdResponse>(userDataResult.Error);
             }
 
             var identityUserIdResult = await identityService.CreateIdentityUserAsync(request.Email, request.Password);
 
             if (identityUserIdResult.IsFailure)
             {
-                return Result.Failure<UserResponse>(identityUserIdResult.Error);
+                return Result.Failure<UserIdResponse>(identityUserIdResult.Error);
             }
 
             var user = User.Create(
@@ -46,7 +46,7 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new UserResponse(user.Id);
+            return new UserIdResponse(user.Id);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Notifications
                       style=""display:inline-block;padding:10px 20px;
                              background-color:#007bff;color:#fff;
                              text-decoration:none;border-radius:5px;"">
-                      Подтвердить ContactEmail
+                      Подтвердить Email
                 </a></p>";
 
             var mailRequest = new MailRequest(confirmationEmail.To, "Welcome to AdvertBoard", htmlBody);

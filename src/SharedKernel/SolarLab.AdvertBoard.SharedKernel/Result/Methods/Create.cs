@@ -5,5 +5,7 @@
         public static Result<TValue> Create<TValue>(TValue? value, Error error)
             where TValue : class =>
             value is null ? Failure<TValue>(error) : Success(value);
+        public static Result<TValue> CreateStruct<TValue>(TValue value, Error error)
+            where TValue : struct => Success(value);
     }
 }

@@ -1,4 +1,4 @@
 ﻿namespace SolarLab.AdvertBoard.Contracts.Users
 {
-    public record UserResponse(Guid UserId);  
+    public record UserIdResponse(Guid UserId);  
 }

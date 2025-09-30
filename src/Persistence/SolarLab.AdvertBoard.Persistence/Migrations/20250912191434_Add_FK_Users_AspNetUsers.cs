@@ -25,7 +25,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                 table: "Users",
                 column: "IdentityId",
                 principalTable: "AspNetUsers",
-                principalColumn: "Id",
+                principalColumn: "IdentityUserId",
                 onDelete: ReferentialAction.Cascade);
         }
 

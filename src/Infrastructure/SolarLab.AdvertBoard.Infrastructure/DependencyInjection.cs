@@ -42,18 +42,23 @@ namespace SolarLab.AdvertBoard.Infrastructure
 
             services.AddSingleton(tokenValidationParameters);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = true;
-                    options.TokenValidationParameters = tokenValidationParameters;
-                });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+              .AddJwtBearer(options =>
+              {
+                  options.RequireHttpsMetadata = false;
+                  options.TokenValidationParameters = tokenValidationParameters;
+              });
 
             services.AddSingleton<ITokenProvider, TokenProvider>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IEmailSender, SmtpEmailSender>();  
             services.AddScoped<IEmailNotificationSender, EmailNotificationSender>();  
             services.AddScoped<IUriGenerator, UriGenerator>();  
+            services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 
             return services;
         }

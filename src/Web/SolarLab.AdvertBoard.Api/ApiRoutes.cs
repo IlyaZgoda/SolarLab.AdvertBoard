@@ -14,5 +14,11 @@
             public const string GetById = "api/categories/{id}";
             public const string GetTree = "api/categories/tree";
         }
+
+        public static class Adverts
+        {
+            public const string GetById = "api/adverts/{id}";
+            public const string CreateDraft = "api/adverts/draft";
+        }
     }
 }

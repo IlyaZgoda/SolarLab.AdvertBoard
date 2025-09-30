@@ -12,8 +12,8 @@ using SolarLab.AdvertBoard.Persistence;
 namespace SolarLab.AdvertBoard.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250912181853_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250929190006_Fix_Column_Names")]
+    partial class Fix_Column_Names
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<string>("IdentityUserId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -42,7 +42,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.HasKey("IdentityUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -53,11 +53,11 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("IdentityUserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdentityUserId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -69,7 +69,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("IdentityUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
@@ -78,7 +78,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
-                    b.Property<string>("IdentityUserId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
@@ -88,7 +88,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("ContactEmail")
+                    b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -128,7 +128,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.HasKey("IdentityUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -142,11 +142,11 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("IdentityUserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdentityUserId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -158,7 +158,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("IdentityUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -221,10 +221,88 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Adverts.Advert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("Description");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(11,2)");
+
+                    b.Property<DateTime?>("PublishedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("Title");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Adverts", (string)null);
+                });
+
+            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
             modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Users.User", b =>
                 {
-                    b.Property<Guid>("IdentityUserId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)")
+                        .HasColumnName("ContactEmail");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -254,12 +332,11 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .HasColumnName("MiddleName");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)")
                         .HasColumnName("PhoneNumber");
 
-                    b.HasKey("IdentityUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdentityId");
 
@@ -315,6 +392,34 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Adverts.Advert", b =>
+                {
+                    b.HasOne("SolarLab.AdvertBoard.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SolarLab.AdvertBoard.Domain.Categories.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Categories.Category", b =>
+                {
+                    b.HasOne("SolarLab.AdvertBoard.Domain.Categories.Category", null)
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SolarLab.AdvertBoard.Domain.Categories.Category", b =>
+                {
+                    b.Navigation("Childrens");
                 });
 #pragma warning restore 612, 618
         }

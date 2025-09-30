@@ -18,6 +18,7 @@ namespace SolarLab.AdvertBoard.Api.Middleware
 
             Error error = exception switch
             {
+                UnauthorizedAccessException => new Error(ErrorTypes.InvalidCredentials, "User is not authenticated"),
                 _ => new Error(ErrorTypes.ValidationError, "Validation error"),
             };
 

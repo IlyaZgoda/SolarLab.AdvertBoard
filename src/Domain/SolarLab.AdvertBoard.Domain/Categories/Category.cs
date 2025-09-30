@@ -14,7 +14,7 @@ namespace SolarLab.AdvertBoard.Domain.Categories
 
         public IReadOnlyCollection<Category> Childrens => _childrens.AsReadOnly();
 
-        public bool HasChildren => _childrens.Count != 0;
+        public bool CanHostAdverts => _childrens.Count == 0;
 
         private Category() { }
 

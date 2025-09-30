@@ -12,6 +12,8 @@ namespace SolarLab.AdvertBoard.Persistence.Repositories
         public void Add(User user) => context.Add(user);
 
         public void Update(User user) => context.Update(user);
-        
+
+        public async Task<Maybe<User>> GetByUserIdentityIdAsync(string identityId) =>
+            await context.AppUsers.FirstOrDefaultAsync(u => u.IdentityId == identityId);
     }
 }
