@@ -2,5 +2,5 @@
 
 namespace SolarLab.AdvertBoard.Domain.Categories
 {
-    public record CategoryId(Guid Id) : StronglyTypedId(Id);
+    public record CategoryId(Guid Id) : StronglyTypedId(Id), IValueObject;
 }

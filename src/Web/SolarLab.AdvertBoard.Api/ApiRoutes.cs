@@ -18,7 +18,9 @@
         public static class Adverts
         {
             public const string GetById = "api/adverts/{id}";
-            public const string CreateDraft = "api/adverts/draft";
+            public const string UpdateDraft = "api/adverts/drafts/{id}";
+            public const string CreateDraft = "api/adverts/drafts/new";
+            public const string GetAdvertDraftById = "api/adverts/drafts/{id}";
         }
     }
 }

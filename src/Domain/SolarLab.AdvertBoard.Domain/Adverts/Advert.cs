@@ -1,4 +1,6 @@
 ﻿using SolarLab.AdvertBoard.Domain.Categories;
+using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.Domain.Exceptions;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel;
 
@@ -38,5 +40,55 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
                 Status = AdvertStatus.Draft,
                 CreatedAt = DateTime.UtcNow
             };
+
+        public void UpdateDraft(
+            CategoryId? categoryId, 
+            AdvertTitle? title, 
+            AdvertDescription? description, 
+            Price? price)
+        {
+            if (Status != AdvertStatus.Draft)
+            {
+                throw new DomainException(AdvertErrors.CantUpdateNonDraftAdvert);
+            }
+
+            if (AllNull(categoryId, title, description, price) 
+                || !AnyChanged(
+                (CategoryId, categoryId), 
+                (Title, title), 
+                (Description, description), 
+                (Price, price)))
+            {
+                throw new DomainException(AdvertErrors.NoChanges.Description);
+            }
+
+            if (categoryId != null)
+            {
+                CategoryId = categoryId;
+            }
+
+            if (title != null)
+            {
+                Title = title;
+            }
+
+            if (description != null)
+            {
+                Description = description;
+            }
+
+            if (price != null)
+            {
+                Price = price;
+            }
+
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        private bool AllNull(params IValueObject?[] objects) =>
+            objects.All(o => o is null);
+
+        private bool AnyChanged(params (IValueObject, IValueObject?)[] pairs) =>
+            pairs.Any(p => !p.Item1.Equals(p.Item2));
     }
 }

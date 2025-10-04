@@ -1,9 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Application.Adverts.CreateDraft;
+using SolarLab.AdvertBoard.Application.Adverts.Get;
+using SolarLab.AdvertBoard.Application.Adverts.Update;
+using SolarLab.AdvertBoard.Application.Categories.GetById;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
@@ -12,39 +16,49 @@ using System.Security.Claims;
 
 namespace SolarLab.AdvertBoard.Api.Controllers
 {
+    [Authorize]
     public class AdvertsController(
         IMediator mediator,
         ResultErrorHandler resultErrorHandler) : ControllerBase
     {
-        [Authorize]
         [HttpPost(ApiRoutes.Adverts.CreateDraft)]
         [ProducesResponseType(typeof(AdvertIdResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 422)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> CreateDraft(CreateDraftRequest createDraftRequest) =>
+        public async Task<IActionResult> CreateDraft(CreateAdvertDraftRequest createDraftRequest) =>
             await Result.Create(createDraftRequest, Error.None)
                 .Map(request => new CreateAdvertDraftCommand(
                     request.CategoryId, request.Title, request.Description, request.Price))
                 .Bind(command => mediator.Send(command))
-                .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
+                .Match(id => Ok(id), error => resultErrorHandler.Handle(error));
 
-        [Authorize]
-        [HttpPost("test-auth")]
-        public IActionResult TestAuth()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+        [HttpPatch(ApiRoutes.Adverts.UpdateDraft)]
+        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 422)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> UpdateDraft(Guid id, UpdateAdvertDraftRequest updateDraftRequest) =>
+            await Result.Create(updateDraftRequest, Error.None)
+                .Map(request => new UpdateAdvertDraftCommand(
+                    id, request.CategoryId, request.Title, request.Description, request.Price))
+                .Bind(command => mediator.Send(command))
+                .Match(NoContent, error => resultErrorHandler.Handle(error));
 
-            return Ok(new
-            {
-                IsAuthenticated = User.Identity.IsAuthenticated,
-                UserId = userId,
-                Email = userEmail,
-                Claims = User.Claims.Select(c => new { c.Type, c.Value })
-            });
-        }
+        [HttpGet(ApiRoutes.Adverts.GetAdvertDraftById)]
+        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> GetById(Guid id) =>
+            await Result.Create(new GetAdvertDraftByIdQuery(id), Error.None)
+                .Map(request => new GetAdvertDraftByIdQuery(request.Id))
+                .Bind(command => mediator.Send(command))
+                .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
     }
 }
 

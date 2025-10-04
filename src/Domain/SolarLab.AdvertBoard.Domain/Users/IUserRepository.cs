@@ -8,5 +8,6 @@ namespace SolarLab.AdvertBoard.Domain.Users
         void Update(User user);
         Task<Maybe<User>> GetByIdAsync(UserId id);
         Task<Maybe<User>> GetByUserIdentityIdAsync(string identityId);
+        Task<Maybe<string>> GetIdentityIdByUserIdAsync(UserId id);
     }
 }

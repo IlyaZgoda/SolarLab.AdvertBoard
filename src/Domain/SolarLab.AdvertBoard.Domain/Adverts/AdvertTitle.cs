@@ -5,7 +5,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
 namespace SolarLab.AdvertBoard.Domain.Adverts
 {
-    public record AdvertTitle
+    public record AdvertTitle : IValueObject
     {
         public const int MaxLength = 50;
         public const int MinLength = 3;

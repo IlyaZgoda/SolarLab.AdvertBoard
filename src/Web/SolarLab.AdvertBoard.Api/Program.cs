@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.Api.Middleware;
 using SolarLab.AdvertBoard.Application;
 using SolarLab.AdvertBoard.Infrastructure;
 using SolarLab.AdvertBoard.Persistence;
-
+using Microsoft.Extensions.DependencyInjection;
 namespace SolarLab.AdvertBoard.Api
 {
     public class Program

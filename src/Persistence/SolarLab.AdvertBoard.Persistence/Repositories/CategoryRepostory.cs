@@ -10,9 +10,12 @@ namespace SolarLab.AdvertBoard.Persistence.Repositories
         public void Add(Category category) => context.Add(category);
 
         public async Task<Maybe<Category>> GetByIdAsync(CategoryId id) =>
-            await context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            await context.Categories
+                .AsNoTracking()
+                .Include(c => c.Childrens) 
+                .FirstOrDefaultAsync(c => c.Id == id);
 
         public async Task<IReadOnlyList<Category>> GetAllAsync() =>
-            await context.Categories.ToListAsync();  
+            await context.Categories.AsNoTracking().ToListAsync();  
     }
 }

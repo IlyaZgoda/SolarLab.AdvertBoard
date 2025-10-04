@@ -23,7 +23,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
             await Result.Create(new GetCategoryByIdQuery(id), Error.None)
                 .Map(request => new GetCategoryByIdQuery(id))
                 .Bind(command => mediator.Send(command))
-                .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
+                .Match(id => Ok(id), error => resultErrorHandler.Handle(error));
 
         [HttpGet(ApiRoutes.Categories.GetTree)]
         [ProducesResponseType(typeof(CategoryTreeResponse), 200)]
@@ -33,7 +33,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
             await Result.Create(new GetCategoryTreeQuery(), Error.None)
                 .Map(request => new GetCategoryTreeQuery())
                 .Bind(command => mediator.Send(command))
-                .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
+                .Match(tree => Ok(tree), error => resultErrorHandler.Handle(error));
     }
 }
 

@@ -1,10 +1,11 @@
 ﻿using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
 namespace SolarLab.AdvertBoard.Domain.Adverts
 {
-    public record Price
+    public record Price : IValueObject
     {
         public decimal Value { get; init; }
         public const decimal MaxValue = 100_000_000m;

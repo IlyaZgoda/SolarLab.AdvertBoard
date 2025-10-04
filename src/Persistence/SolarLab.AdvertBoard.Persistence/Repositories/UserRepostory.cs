@@ -15,5 +15,11 @@ namespace SolarLab.AdvertBoard.Persistence.Repositories
 
         public async Task<Maybe<User>> GetByUserIdentityIdAsync(string identityId) =>
             await context.AppUsers.FirstOrDefaultAsync(u => u.IdentityId == identityId);
+
+        public async Task<Maybe<string>> GetIdentityIdByUserIdAsync(UserId id) =>
+            await context.AppUsers
+                .Where(u => u.Id == id)
+                .Select(u => u.IdentityId)
+                .FirstOrDefaultAsync();
     }
 }

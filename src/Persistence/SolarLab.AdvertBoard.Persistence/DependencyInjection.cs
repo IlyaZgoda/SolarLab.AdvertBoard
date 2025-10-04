@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Users;
+using SolarLab.AdvertBoard.Persistence.ReadServices;
 using SolarLab.AdvertBoard.Persistence.Repositories;
 using SolarLab.AdvertBoard.Persistence.Seeders;
 
@@ -37,6 +39,8 @@ namespace SolarLab.AdvertBoard.Persistence
             services.AddScoped<IUserRepository, UserRepostory>();
             services.AddScoped<ICategoryRepository, CategoryRepostory>();
             services.AddScoped<IAdvertRepository, AdvertRepository>();
+
+            services.AddScoped<IAdvertReadService, AdvertReadService>();
             
             return services;
         }

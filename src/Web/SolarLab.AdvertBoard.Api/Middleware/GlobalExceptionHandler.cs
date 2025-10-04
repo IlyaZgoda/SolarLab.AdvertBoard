@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using SolarLab.AdvertBoard.Api.Mappers;
+using SolarLab.AdvertBoard.Domain.Exceptions;
 using SolarLab.AdvertBoard.Infrastructure.Exceptions;
 using SolarLab.AdvertBoard.SharedKernel;
 
@@ -18,12 +19,13 @@ namespace SolarLab.AdvertBoard.Api.Middleware
 
             Error error = exception switch
             {
+                DomainException => new Error(ErrorTypes.ValidationError, exception.Message),
                 UnauthorizedAccessException => new Error(ErrorTypes.InvalidCredentials, "User is not authenticated"),
                 _ => new Error(ErrorTypes.ValidationError, "Validation error"),
             };
 
             var statusCode = mapper.Map(error);
-            var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext, statusCode, title: error.Code, detail: exception.Message);
+            var problemDetails = problemDetailsFactory.CreateProblemDetails(httpContext, statusCode, title: error.Code, detail: error.Description);
 
             httpContext.Response.StatusCode = statusCode;
             httpContext.Response.ContentType = "application/problem+json";
