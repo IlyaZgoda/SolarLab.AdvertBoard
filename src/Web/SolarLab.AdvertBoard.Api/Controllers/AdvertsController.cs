@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
+using SolarLab.AdvertBoard.Application.Adverts.Archive;
 using SolarLab.AdvertBoard.Application.Adverts.CreateDraft;
 using SolarLab.AdvertBoard.Application.Adverts.Delete;
 using SolarLab.AdvertBoard.Application.Adverts.Get;
@@ -81,6 +82,17 @@ namespace SolarLab.AdvertBoard.Api.Controllers
         public async Task<IActionResult> PublishDraft(Guid id) =>
             await Result.Create(new PublishAdvertDraftCommand(id), Error.None)
                 .Map(request => new PublishAdvertDraftCommand(request.Id))
+                .Bind(command => mediator.Send(command))
+                .Match(NoContent, error => resultErrorHandler.Handle(error));
+
+        [HttpPatch(ApiRoutes.Adverts.Archive)]
+        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> Archive(Guid id) =>
+            await Result.Create(new ArchiveAdvertCommand(id), Error.None)
+                .Map(request => new ArchiveAdvertCommand(request.Id))
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
     }

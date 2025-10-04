@@ -8,7 +8,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Categories.GetById
 {
-    public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) 
+    public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository) 
         : IQueryHandler<GetCategoryByIdQuery, CategoryResponse>
     {
         public async Task<Result<CategoryResponse>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)

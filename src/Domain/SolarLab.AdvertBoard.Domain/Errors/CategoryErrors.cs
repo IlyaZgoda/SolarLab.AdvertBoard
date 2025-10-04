@@ -22,6 +22,7 @@ namespace SolarLab.AdvertBoard.Domain.Errors
         public static readonly Error NoChanges = new(ErrorTypes.ValidationError, "Yot haven't made any changes");
         public static readonly Error CantDeleteNonDraftAdvert = new(ErrorTypes.ValidationError, "Yot can't delete non draft advert");
         public static readonly Error CantPublishNonDraftAdvert = new(ErrorTypes.ValidationError, "Yot can't publish non draft advert");
+        public static readonly Error CantArchiveNonPublishedAdvert = new(ErrorTypes.ValidationError, "Yot can't archive non published advert");
 
         public static class Title
         {

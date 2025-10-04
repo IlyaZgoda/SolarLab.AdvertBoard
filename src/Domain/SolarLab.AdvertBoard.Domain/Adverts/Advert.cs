@@ -34,6 +34,16 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             PublishedAt = DateTime.UtcNow;
         }
 
+        public void Archive()
+        {
+            if (Status != AdvertStatus.Published)
+            {
+                throw new DomainException(AdvertErrors.CantArchiveNonPublishedAdvert);
+            }
+
+            Status = AdvertStatus.Archived;
+        }
+
         public static Advert CreateDraft(
             UserId authorId, 
             CategoryId categoryId, 

@@ -1,11 +1,9 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
-using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
@@ -13,7 +11,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
 {
     public class UpdateAdvertDraftCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 
-        IUserRepository userRepository, 
+        AccessVerifier accessVerifier, 
         IAdvertRepository advertRepository,
         ICategoryRepository categoryRepository,
         IUnitOfWork unitOfWork) 
@@ -21,16 +19,14 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
     {
         public async Task<Result> Handle(UpdateAdvertDraftCommand request, CancellationToken cancellationToken)
         {
-            var identityId = userIdentifierProvider.IdentityUserId;
-            var user = await userRepository.GetByUserIdentityIdAsync(identityId);
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.DraftId));
 
-            if (user.HasNoValue)
+            if (advert.HasNoValue)
             {
-                return Result.Failure<AdvertIdResponse>(UserErrors.NotFound);
+                return Result.Failure(AdvertErrors.NotFound);
             }
 
-            if (advert.HasNoValue || advert.Value.AuthorId != user.Value.Id)
+            if (!await accessVerifier.HasAccess(advert.Value.AuthorId, userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure(AdvertErrors.NotFound);
             }
@@ -43,8 +39,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
                 {
                     return Result.Failure(CategoryErrors.NotFound);
                 }
-                Console.WriteLine(category.Value.Childrens.Count);
-                Console.WriteLine(category.Value.CanHostAdverts);
+
                 if (!category.Value.CanHostAdverts)
                 {
                     return Result.Failure(CategoryErrors.CantHostAdverts);
