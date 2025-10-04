@@ -23,6 +23,17 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
 
         private Advert() { }
 
+        public void Publish()
+        {
+            if (Status != AdvertStatus.Draft)
+            {
+                throw new DomainException(AdvertErrors.CantPublishNonDraftAdvert);
+            }
+
+            Status = AdvertStatus.Published;
+            PublishedAt = DateTime.UtcNow;
+        }
+
         public static Advert CreateDraft(
             UserId authorId, 
             CategoryId categoryId, 
