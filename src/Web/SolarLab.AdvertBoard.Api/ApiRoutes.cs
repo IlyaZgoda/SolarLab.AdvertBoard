@@ -21,6 +21,7 @@
             public const string UpdateDraft = "api/adverts/drafts/{id}";
             public const string CreateDraft = "api/adverts/drafts/new";
             public const string GetAdvertDraftById = "api/adverts/drafts/{id}";
+            public const string DeleteAdvertDraftById = "api/adverts/drafts/{id}";
         }
     }
 }

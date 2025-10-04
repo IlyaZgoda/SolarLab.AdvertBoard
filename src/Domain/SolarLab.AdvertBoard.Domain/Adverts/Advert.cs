@@ -85,10 +85,10 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             UpdatedAt = DateTime.UtcNow;
         }
 
-        private bool AllNull(params IValueObject?[] objects) =>
+        private static bool AllNull(params IValueObject?[] objects) =>
             objects.All(o => o is null);
 
-        private bool AnyChanged(params (IValueObject, IValueObject?)[] pairs) =>
+        private static bool AnyChanged(params (IValueObject, IValueObject?)[] pairs) =>
             pairs.Any(p => !p.Item1.Equals(p.Item2));
     }
 }

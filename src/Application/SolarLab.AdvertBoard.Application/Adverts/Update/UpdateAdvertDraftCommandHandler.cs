@@ -23,7 +23,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
         {
             var identityId = userIdentifierProvider.IdentityUserId;
             var user = await userRepository.GetByUserIdentityIdAsync(identityId);
-            var advert = await advertRepository.GetById(new AdvertId(request.DraftId));
+            var advert = await advertRepository.GetByIdAsync(new AdvertId(request.DraftId));
 
             if (user.HasNoValue)
             {

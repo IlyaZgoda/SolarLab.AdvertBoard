@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Application.Adverts.CreateDraft;
+using SolarLab.AdvertBoard.Application.Adverts.Delete;
 using SolarLab.AdvertBoard.Application.Adverts.Get;
 using SolarLab.AdvertBoard.Application.Adverts.Update;
 using SolarLab.AdvertBoard.Application.Categories.GetById;
@@ -59,6 +60,17 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new GetAdvertDraftByIdQuery(request.Id))
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
+
+        [HttpPost(ApiRoutes.Adverts.DeleteAdvertDraftById)]
+        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> DeleteById(Guid id) =>
+            await Result.Create(new DeleteAdvertDraftCommand(id), Error.None)
+                .Map(request => new DeleteAdvertDraftCommand(request.Id))
+                .Bind(command => mediator.Send(command))
+                .Match(NoContent, error => resultErrorHandler.Handle(error));
     }
 }
 

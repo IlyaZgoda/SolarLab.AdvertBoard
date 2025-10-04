@@ -20,8 +20,8 @@ namespace SolarLab.AdvertBoard.Api.Middleware
             Error error = exception switch
             {
                 DomainException => new Error(ErrorTypes.ValidationError, exception.Message),
-                UnauthorizedAccessException => new Error(ErrorTypes.InvalidCredentials, "User is not authenticated"),
-                _ => new Error(ErrorTypes.ValidationError, "Validation error"),
+                UnauthorizedAccessException => new Error(ErrorTypes.InvalidCredentials, exception.Message),
+                _ => new Error(ErrorTypes.ValidationError, exception.Message),
             };
 
             var statusCode = mapper.Map(error);
