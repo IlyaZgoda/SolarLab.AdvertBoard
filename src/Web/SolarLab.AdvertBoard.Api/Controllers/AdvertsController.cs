@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Application.Adverts.Archive;
@@ -10,12 +8,10 @@ using SolarLab.AdvertBoard.Application.Adverts.Delete;
 using SolarLab.AdvertBoard.Application.Adverts.Get;
 using SolarLab.AdvertBoard.Application.Adverts.PublishDraft;
 using SolarLab.AdvertBoard.Application.Adverts.Update;
-using SolarLab.AdvertBoard.Application.Categories.GetById;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
-using System.Security.Claims;
 
 namespace SolarLab.AdvertBoard.Api.Controllers
 {
@@ -52,12 +48,12 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
-        [HttpGet(ApiRoutes.Adverts.GetAdvertDraft)]
+        [HttpGet(ApiRoutes.Adverts.GetAdvertDraftById)]
         [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> GetById(Guid id) =>
+        public async Task<IActionResult> GetDraftAdvertById(Guid id) =>
             await Result.Create(new GetAdvertDraftByIdQuery(id), Error.None)
                 .Map(request => new GetAdvertDraftByIdQuery(request.Id))
                 .Bind(command => mediator.Send(command))
@@ -95,6 +91,18 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new ArchiveAdvertCommand(request.Id))
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
+
+        [AllowAnonymous] //ДЛЯ ТЕСТА
+        [HttpGet(ApiRoutes.Adverts.GetPublishedAdvertById)]
+        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> GetPublishedAdvertById(Guid id) =>
+            await Result.Create(new GetPublishedAdvertDetailsByIdQuery(id), Error.None)
+                .Map(request => new GetPublishedAdvertDetailsByIdQuery(request.Id))
+                .Bind(command => mediator.Send(command))
+                .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
     }
 }
 

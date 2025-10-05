@@ -6,6 +6,7 @@ namespace SolarLab.AdvertBoard.Application.Abstractions.ReadServices
 {
     public interface IAdvertReadService
     {
-        Task<Maybe<AdvertDraftResponse>> GetAdvertDraftDetailsByIdAsync(AdvertId id);
+        Task<Maybe<AdvertDraftDetailsResponse>> GetAdvertDraftDetailsByIdAsync(AdvertId id);
+        Task<Maybe<PublishedAdvertDetailsResponse>> GetPublishedAdvertDetailsByIdAsync(AdvertId id);
     }
 }

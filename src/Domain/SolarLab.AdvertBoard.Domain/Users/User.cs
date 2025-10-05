@@ -1,7 +1,5 @@
 ﻿using SolarLab.AdvertBoard.Domain.Users.Events;
 using SolarLab.AdvertBoard.SharedKernel;
-using SolarLab.AdvertBoard.SharedKernel.Result;
-using System.Text.RegularExpressions;
 
 namespace SolarLab.AdvertBoard.Domain.Users
 {
@@ -22,6 +20,8 @@ namespace SolarLab.AdvertBoard.Domain.Users
         public PhoneNumber? PhoneNumber { get; private set; }
 
         public DateTime CreatedAt { get; init; }
+
+        public string FullName => $"{LastName.Value} {FirstName.Value} {MiddleName?.Value}";
 
         private User() { }
 

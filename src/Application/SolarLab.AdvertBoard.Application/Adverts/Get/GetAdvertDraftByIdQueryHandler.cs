@@ -12,20 +12,20 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Get
     public class GetAdvertByIdQueryHandler(
         IAdvertReadService advertReadService, 
         IUserIdentifierProvider userIdentifierProvider, 
-        AccessVerifier accessVerifier) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftResponse>
+        AccessVerifier accessVerifier) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftDetailsResponse>
     {
-        public async Task<Result<AdvertDraftResponse>> Handle(GetAdvertDraftByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<AdvertDraftDetailsResponse>> Handle(GetAdvertDraftByIdQuery request, CancellationToken cancellationToken)
         {
             var response = await advertReadService.GetAdvertDraftDetailsByIdAsync(new AdvertId(request.Id));
 
             if (response.HasNoValue)
             {
-                return Result.Failure<AdvertDraftResponse>(AdvertErrors.NotFound);
+                return Result.Failure<AdvertDraftDetailsResponse>(AdvertErrors.NotFound);
             }
 
             if (!await accessVerifier.HasAccess(new UserId(response.Value.AuthorId), userIdentifierProvider.IdentityUserId))
             {
-                return Result.Failure<AdvertDraftResponse>(AdvertErrors.NotFound);
+                return Result.Failure<AdvertDraftDetailsResponse>(AdvertErrors.NotFound);
             }
 
             return response.Value;

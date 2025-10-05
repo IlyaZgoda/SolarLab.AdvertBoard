@@ -32,6 +32,7 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
 
             Status = AdvertStatus.Published;
             PublishedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void Archive()
@@ -42,6 +43,7 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             }
 
             Status = AdvertStatus.Archived;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public static Advert CreateDraft(
