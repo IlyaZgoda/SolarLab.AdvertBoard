@@ -11,4 +11,7 @@
         DateTime CreatedAt, 
         DateTime? UpdatedAt, 
         Guid AuthorId);
+
+    public record GetPublishedAdvertsByFilterRequest(int? Page, int? PageSize);
+    public record AdvertFilter();
 }

@@ -35,7 +35,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(id => Ok(id), error => resultErrorHandler.Handle(error));
 
         [HttpPatch(ApiRoutes.Adverts.UpdateDraft)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 422)]
@@ -49,7 +49,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
         [HttpGet(ApiRoutes.Adverts.GetAdvertDraftById)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(AdvertDraftDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
@@ -60,7 +60,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
         [HttpPost(ApiRoutes.Adverts.DeleteAdvertDraft)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
@@ -71,7 +71,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
         [HttpPatch(ApiRoutes.Adverts.PublishDraft)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
@@ -82,7 +82,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
         [HttpPatch(ApiRoutes.Adverts.Archive)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
@@ -94,13 +94,25 @@ namespace SolarLab.AdvertBoard.Api.Controllers
 
         [AllowAnonymous] //ДЛЯ ТЕСТА
         [HttpGet(ApiRoutes.Adverts.GetPublishedAdvertById)]
-        [ProducesResponseType(typeof(UpdateAdvertDraftRequest), 200)]
+        [ProducesResponseType(typeof(PublishedAdvertDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> GetPublishedAdvertById(Guid id) =>
             await Result.Create(new GetPublishedAdvertDetailsByIdQuery(id), Error.None)
                 .Map(request => new GetPublishedAdvertDetailsByIdQuery(request.Id))
+                .Bind(command => mediator.Send(command))
+                .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
+
+        [AllowAnonymous] //ДЛЯ ТЕСТА
+        [HttpGet(ApiRoutes.Adverts.GetPublishedAdvertsByFilter)]
+        [ProducesResponseType(typeof(PublishedAdvertsResponse), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> GetPublishedAdvertsByFilter(GetPublishedAdvertsByFilterRequest getPublishedAdvertsByFilterRequest) =>
+            await Result.Create(getPublishedAdvertsByFilterRequest, Error.None)
+                .Map(request => new GetPublishedAdvertsByFilterQuery(request.Page, request.PageSize))
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
     }
