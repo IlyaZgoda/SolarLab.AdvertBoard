@@ -18,6 +18,7 @@
         public static class Adverts
         {
             public const string GetPublishedAdvertById = "api/adverts/{id}";
+            public const string GetMyPublishedAdverts = "api/adverts/my";
             public const string GetPublishedAdvertsByFilter = "api/adverts/by-filter";      
             public const string Archive = "api/adverts/{id}/archive";
             public const string UpdateDraft = "api/adverts/drafts/{id}";

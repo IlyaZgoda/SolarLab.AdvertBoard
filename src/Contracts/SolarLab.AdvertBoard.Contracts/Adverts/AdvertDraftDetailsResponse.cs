@@ -14,9 +14,10 @@
 
     public record GetPublishedAdvertsByFilterRequest(int? Page, int? PageSize);
     public record GetUserAdvertDraftsRequest(int? Page, int? PageSize);
+    public record GetUserPublishedAdvertsRequest(int? Page, int? PageSize);
     public record AdvertFilter();
 
-    public record AdvertDraftsResponse(List<AdvertDraftItem> PublishedAdverts, int Page, int PageSize, int TotalCount, int TotalPages);
+    public record AdvertDraftsResponse(List<AdvertDraftItem> AdvertDrafts, int Page, int PageSize, int TotalCount, int TotalPages);
 
     public record AdvertDraftItem(
         Guid Id,

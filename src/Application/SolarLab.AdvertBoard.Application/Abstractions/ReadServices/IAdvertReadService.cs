@@ -8,6 +8,7 @@ namespace SolarLab.AdvertBoard.Application.Abstractions.ReadServices
     {
         Task<Maybe<AdvertDraftDetailsResponse>> GetAdvertDraftDetailsByIdAsync(AdvertId id);
         Task<Maybe<AdvertDraftsResponse>> GetUserAdvertDrafts(string identityId, int Page, int PageSize);
+        Task<Maybe<PublishedAdvertsResponse>> GetUserPublishedAdverts(string identityId, int page, int pageSize);
         Task<Maybe<PublishedAdvertDetailsResponse>> GetPublishedAdvertDetailsByIdAsync(AdvertId id);
         Task<Maybe<PublishedAdvertsResponse>> GetPublishedAdvertsByFilterAsync(int page, int pageSize);
     }

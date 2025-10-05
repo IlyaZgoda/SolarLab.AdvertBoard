@@ -126,6 +126,17 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new GetUserAdvertDraftsQuery(request.Page, request.PageSize))
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
+
+        [HttpGet(ApiRoutes.Adverts.GetMyPublishedAdverts)]
+        [ProducesResponseType(typeof(PublishedAdvertsResponse), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> GetMyPublishedAdverts(GetUserPublishedAdvertsRequest getUserPublishedAdvertsRequest) =>
+            await Result.Create(getUserPublishedAdvertsRequest, Error.None)
+                .Map(request => new GetUserPublishedAdvertsQuery(request.Page, request.PageSize))
+                .Bind(command => mediator.Send(command))
+                .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
     }
 }
 

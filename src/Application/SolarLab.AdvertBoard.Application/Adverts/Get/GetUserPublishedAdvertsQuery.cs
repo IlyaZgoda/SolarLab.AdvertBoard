@@ -3,5 +3,5 @@ using SolarLab.AdvertBoard.Contracts.Adverts;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
-    public record GetUserAdvertDraftsQuery(int? Page, int? PageSize) : IQuery<AdvertDraftsResponse>;
+    public record GetUserPublishedAdvertsQuery(int? Page, int? PageSize) : IQuery<PublishedAdvertsResponse>;
 }
