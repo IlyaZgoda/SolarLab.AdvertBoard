@@ -59,7 +59,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
-        [HttpPost(ApiRoutes.Adverts.DeleteAdvertDraft)]
+        [HttpDelete(ApiRoutes.Adverts.DeleteAdvertDraft)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
@@ -113,6 +113,17 @@ namespace SolarLab.AdvertBoard.Api.Controllers
         public async Task<IActionResult> GetPublishedAdvertsByFilter(GetPublishedAdvertsByFilterRequest getPublishedAdvertsByFilterRequest) =>
             await Result.Create(getPublishedAdvertsByFilterRequest, Error.None)
                 .Map(request => new GetPublishedAdvertsByFilterQuery(request.Page, request.PageSize))
+                .Bind(command => mediator.Send(command))
+                .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
+
+        [HttpGet(ApiRoutes.Adverts.GetMyAdvertDrafts)]
+        [ProducesResponseType(typeof(AdvertDraftsResponse), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
+        public async Task<IActionResult> GetMyAdvertDrafts(GetUserAdvertDraftsRequest getUserAdvertDraftsRequest) =>
+            await Result.Create(getUserAdvertDraftsRequest, Error.None)
+                .Map(request => new GetUserAdvertDraftsQuery(request.Page, request.PageSize))
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
     }

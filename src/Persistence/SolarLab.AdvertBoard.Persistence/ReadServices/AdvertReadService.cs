@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Users;
@@ -76,6 +77,37 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                 .Take(pageSize).ToListAsync();
 
             var response = new PublishedAdvertsResponse(items, page, pageSize, totalCount, (int)Math.Ceiling(totalCount / (double)pageSize));
+
+            return response;
+        }
+
+        public async Task<Maybe<AdvertDraftsResponse>> GetUserAdvertDrafts(string identityId, int page, int pageSize)
+        {
+            var baseQuery = (from advert in context.Adverts.AsNoTracking()
+                             join category in context.Categories.AsNoTracking()
+                             on advert.CategoryId equals category.Id
+                             join user in context.AppUsers.AsNoTracking()
+                             on advert.AuthorId equals user.Id
+                             where user.IdentityId == identityId && advert.Status == AdvertStatus.Draft
+                             orderby advert.PublishedAt descending
+                             select new AdvertDraftItem(
+                                 advert.Id,
+                                 advert.Title.Value,
+                                 advert.Description.Value,
+                                 advert.Price.Value,
+                                 advert.CategoryId,
+                                 category.Title.Value,
+                                 advert.CreatedAt,
+                                 advert.UpdatedAt.Value,
+                                 advert.AuthorId)).AsQueryable();
+
+            var totalCount = await baseQuery.CountAsync();
+
+            var items = await baseQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize).ToListAsync();
+
+            var response = new AdvertDraftsResponse(items, page, pageSize, totalCount, (int)Math.Ceiling(totalCount / (double)pageSize));
 
             return response;
         }
