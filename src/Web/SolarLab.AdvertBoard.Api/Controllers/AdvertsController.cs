@@ -9,6 +9,7 @@ using SolarLab.AdvertBoard.Application.Adverts.Get;
 using SolarLab.AdvertBoard.Application.Adverts.PublishDraft;
 using SolarLab.AdvertBoard.Application.Adverts.Update;
 using SolarLab.AdvertBoard.Contracts.Adverts;
+using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
@@ -106,18 +107,18 @@ namespace SolarLab.AdvertBoard.Api.Controllers
 
         [AllowAnonymous] //ДЛЯ ТЕСТА
         [HttpGet(ApiRoutes.Adverts.GetPublishedAdvertsByFilter)]
-        [ProducesResponseType(typeof(PublishedAdvertsResponse), 200)]
+        [ProducesResponseType(typeof(PaginationCollection<PublishedAdvertItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> GetPublishedAdvertsByFilter(GetPublishedAdvertsByFilterRequest getPublishedAdvertsByFilterRequest) =>
-            await Result.Create(getPublishedAdvertsByFilterRequest, Error.None)
-                .Map(request => new GetPublishedAdvertsByFilterQuery(request.Page, request.PageSize))
+        public async Task<IActionResult> GetPublishedAdvertsByFilter(AdvertFilterRequest filter) =>
+            await Result.Create(filter, Error.None)
+                .Map(request => new GetPublishedAdvertsByFilterQuery(filter))
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
         [HttpGet(ApiRoutes.Adverts.GetMyAdvertDrafts)]
-        [ProducesResponseType(typeof(AdvertDraftsResponse), 200)]
+        [ProducesResponseType(typeof(PaginationCollection<AdvertDraftItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
@@ -128,7 +129,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
         [HttpGet(ApiRoutes.Adverts.GetMyPublishedAdverts)]
-        [ProducesResponseType(typeof(PublishedAdvertsResponse), 200)]
+        [ProducesResponseType(typeof(PaginationCollection<PublishedAdvertItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]

@@ -1,7 +1,8 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Contracts.Adverts;
+using SolarLab.AdvertBoard.Contracts.Base;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
-    public record GetUserPublishedAdvertsQuery(int? Page, int? PageSize) : IQuery<PublishedAdvertsResponse>;
+    public record GetUserPublishedAdvertsQuery(int Page = 1, int PageSize = 20) : IQuery<PaginationCollection<PublishedAdvertItem>>;
 }

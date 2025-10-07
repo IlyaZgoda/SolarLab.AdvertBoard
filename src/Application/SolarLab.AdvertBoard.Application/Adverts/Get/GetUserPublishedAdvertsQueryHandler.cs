@@ -2,21 +2,16 @@
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
 using SolarLab.AdvertBoard.Contracts.Adverts;
+using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
     public class GetUserPublishedAdvertsQueryHandler(
         IAdvertReadService advertReadService, 
-        IUserIdentifierProvider userIdentifierProvider) : IQueryHandler<GetUserPublishedAdvertsQuery, PublishedAdvertsResponse>
+        IUserIdentifierProvider userIdentifierProvider) : IQueryHandler<GetUserPublishedAdvertsQuery, PaginationCollection<PublishedAdvertItem>>
     {
-        public async Task<Result<PublishedAdvertsResponse>> Handle(GetUserPublishedAdvertsQuery request, CancellationToken cancellationToken)
-        {
-            var identityUserId = userIdentifierProvider.IdentityUserId;
-
-            var response = await advertReadService.GetUserPublishedAdverts(identityUserId, request.Page ?? 1, request.PageSize ?? 20);
-
-            return response.Value;
-        }
+        public async Task<Result<PaginationCollection<PublishedAdvertItem>>> Handle(GetUserPublishedAdvertsQuery request, CancellationToken cancellationToken) =>
+            await advertReadService.GetUserPublishedAdverts(userIdentifierProvider.IdentityUserId, request.Page, request.PageSize);
     }
 }
