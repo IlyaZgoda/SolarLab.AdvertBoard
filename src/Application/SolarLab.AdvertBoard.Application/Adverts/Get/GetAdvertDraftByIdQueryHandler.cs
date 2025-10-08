@@ -10,9 +10,9 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
     public class GetAdvertByIdQueryHandler(
-        IAdvertReadService advertReadService, 
-        IUserIdentifierProvider userIdentifierProvider, 
-        AccessVerifier accessVerifier) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftDetailsResponse>
+       IAdvertReadService advertReadService,
+       IUserIdentifierProvider userIdentifierProvider,
+       IUserRepository userRepository) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftDetailsResponse>
     {
         public async Task<Result<AdvertDraftDetailsResponse>> Handle(GetAdvertDraftByIdQuery request, CancellationToken cancellationToken)
         {
@@ -23,7 +23,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Get
                 return Result.Failure<AdvertDraftDetailsResponse>(AdvertErrors.NotFound);
             }
 
-            if (!await accessVerifier.HasAccess(new UserId(response.Value.AuthorId), userIdentifierProvider.IdentityUserId))
+            if (!await userRepository.IsOwner(new UserId(response.Value.AuthorId), userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure<AdvertDraftDetailsResponse>(AdvertErrors.NotFound);
             }

@@ -12,8 +12,6 @@ namespace SolarLab.AdvertBoard.Application
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
 
-            services.AddScoped<AccessVerifier>();
-
             return services;
 
         }

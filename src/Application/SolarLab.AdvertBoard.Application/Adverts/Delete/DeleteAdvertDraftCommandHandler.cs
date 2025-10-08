@@ -3,6 +3,7 @@ using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.Delete
@@ -11,7 +12,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Delete
         IAdvertRepository advertRepository, 
         IUnitOfWork unitOfWork, 
         IUserIdentifierProvider userIdentifierProvider, 
-        AccessVerifier accessVerifier) : ICommandHandler<DeleteAdvertDraftCommand>
+        IUserRepository userRepository) : ICommandHandler<DeleteAdvertDraftCommand>
     {
         public async Task<Result> Handle(DeleteAdvertDraftCommand request, CancellationToken cancellationToken)
         {
@@ -22,7 +23,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Delete
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            if (!await accessVerifier.HasAccess(draft.Value.AuthorId, userIdentifierProvider.IdentityUserId))
+            if (!await userRepository.IsOwner(new UserId(draft.Value.AuthorId), userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure(AdvertErrors.NotFound);
             }

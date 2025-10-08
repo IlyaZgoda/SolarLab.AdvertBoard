@@ -4,6 +4,7 @@ using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
@@ -11,7 +12,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
 {
     public class UpdateAdvertDraftCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 
-        AccessVerifier accessVerifier, 
+        IUserRepository userRepository, 
         IAdvertRepository advertRepository,
         ICategoryRepository categoryRepository,
         IUnitOfWork unitOfWork) 
@@ -26,7 +27,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Update
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            if (!await accessVerifier.HasAccess(advert.Value.AuthorId, userIdentifierProvider.IdentityUserId))
+            if (!await userRepository.IsOwner(new UserId(advert.Value.AuthorId), userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure(AdvertErrors.NotFound);
             }

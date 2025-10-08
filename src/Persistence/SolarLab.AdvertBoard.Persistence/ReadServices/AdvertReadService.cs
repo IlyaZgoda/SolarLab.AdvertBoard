@@ -65,7 +65,7 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                              on advert.CategoryId equals category.Id
                              join user in context.AppUsers.AsNoTracking()
                              on advert.AuthorId equals user.Id
-                             where advert.Status == AdvertStatus.Published
+                            // where advert.Status == AdvertStatus.Published
                              select new { Advert=advert, Category=category, User=user });
 
             if (filter.CategoryId.HasValue)
@@ -110,21 +110,7 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                 q.User.FullName,
                 q.Advert.PublishedAt.Value));
 
-            var totalCount = await projection.CountAsync();
-
-            var items = await projection
-                .Skip((filter.Page - 1) * filter.PageSize)
-                .Take(filter.PageSize)
-                .ToListAsync();
-
-            var response = new PaginationCollection<PublishedAdvertItem>(
-                items, 
-                filter.Page, 
-                filter.PageSize, 
-                totalCount, 
-                (int)Math.Ceiling(totalCount / (double)filter.PageSize));
-
-            return response;
+            return await ToPagedAsync(projection, filter.Page, filter.PageSize);
         }
 
         public async Task<PaginationCollection<AdvertDraftItem>> GetUserAdvertDrafts(string identityId, int page, int pageSize)
@@ -147,20 +133,7 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                                  advert.UpdatedAt.Value,
                                  advert.AuthorId));
 
-            var totalCount = await baseQuery.CountAsync();
-
-            var items = await baseQuery
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
-
-            var response = new PaginationCollection<AdvertDraftItem>(
-                items, 
-                page, 
-                pageSize, 
-                totalCount, 
-                (int)Math.Ceiling(totalCount / (double)pageSize));
-
-            return response;
+            return await ToPagedAsync(baseQuery, page, pageSize);
         }
 
         public async Task<PaginationCollection<PublishedAdvertItem>> GetUserPublishedAdverts(string identityId, int page, int pageSize)
@@ -183,20 +156,17 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                                  user.FullName,
                                  advert.PublishedAt.Value)).AsQueryable();
 
-            var totalCount = await baseQuery.CountAsync();
+            return await ToPagedAsync(baseQuery, page, pageSize);
+        }
 
-            var items = await baseQuery
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
-
-            var response = new PaginationCollection<PublishedAdvertItem>(
-                items, 
-                page, 
-                pageSize, 
-                totalCount, 
-                (int)Math.Ceiling(totalCount / (double)pageSize));
-
-            return response;
+        private static async Task<PaginationCollection<T>> ToPagedAsync<T>( IQueryable<T> query, int page, int pageSize)
+        {
+            var totalCount = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return new PaginationCollection<T>(items, page, pageSize, totalCount, totalPages);
         }
     }
 }

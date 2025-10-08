@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SolarLab.AdvertBoard.Application.Adverts.Builder;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;

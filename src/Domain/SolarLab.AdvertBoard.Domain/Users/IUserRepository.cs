@@ -1,4 +1,5 @@
 ﻿using SolarLab.AdvertBoard.SharedKernel.Maybe;
+using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Domain.Users
 {
@@ -7,7 +8,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
         void Add(User user);
         void Update(User user);
         Task<Maybe<User>> GetByIdAsync(UserId id);
-        Task<Maybe<User>> GetByUserIdentityIdAsync(string identityId);
-        Task<Maybe<string>> GetIdentityIdByUserIdAsync(UserId id);
+        Task<Maybe<User>> GetBySpecificationAsync(Specification<User> specification);
+        Task<bool> IsOwner(UserId userId, string identityId);
     }
 }

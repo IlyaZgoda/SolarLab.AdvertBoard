@@ -1,6 +1,7 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
+using SolarLab.AdvertBoard.Application.Users.Specifications;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
@@ -20,7 +21,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.CreateDraft
         public async Task<Result<AdvertIdResponse>> Handle(CreateAdvertDraftCommand request, CancellationToken cancellationToken)
         {
             var identityId = userIdentifierProvider.IdentityUserId;
-            var user = await userRepository.GetByUserIdentityIdAsync(identityId);
+            var user = await userRepository.GetBySpecificationAsync(new UserWithIdentitySpecification(identityId));
 
             if (user.HasNoValue)
             {

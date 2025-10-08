@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SolarLab.AdvertBoard.Application.Users.Specifications;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
+using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Persistence.Repositories
 {
@@ -13,13 +15,12 @@ namespace SolarLab.AdvertBoard.Persistence.Repositories
 
         public void Update(User user) => context.Update(user);
 
-        public async Task<Maybe<User>> GetByUserIdentityIdAsync(string identityId) =>
-            await context.AppUsers.FirstOrDefaultAsync(u => u.IdentityId == identityId);
+        public async Task<Maybe<User>> GetBySpecificationAsync(Specification<User> specification) => 
+            await context.AppUsers.Where(specification).FirstOrDefaultAsync();
 
-        public async Task<Maybe<string>> GetIdentityIdByUserIdAsync(UserId id) =>
-            await context.AppUsers
-                .Where(u => u.Id == id)
-                .Select(u => u.IdentityId)
-                .FirstOrDefaultAsync();
+        public async Task<bool> IsOwner(UserId userId, string identityId) =>
+            await context.AppUsers.AnyAsync(
+                new UserWithIdentitySpecification(identityId)
+                .And(new UserWithIdSpecification(userId)));
     }
 }
