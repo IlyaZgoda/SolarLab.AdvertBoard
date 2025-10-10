@@ -1,5 +1,5 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
+using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
@@ -7,7 +7,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
-    public class GetPublishedAdvertDetailsByIdQueryHandler(IAdvertReadService advertReadService) 
+    public class GetPublishedAdvertDetailsByIdQueryHandler(IAdvertReadProvider advertReadService) 
         : IQueryHandler<GetPublishedAdvertDetailsByIdQuery, PublishedAdvertDetailsResponse>
     {
         public async Task<Result<PublishedAdvertDetailsResponse>> Handle(GetPublishedAdvertDetailsByIdQuery request, CancellationToken cancellationToken)

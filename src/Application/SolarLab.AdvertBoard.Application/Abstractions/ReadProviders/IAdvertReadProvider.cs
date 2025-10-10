@@ -3,9 +3,9 @@ using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
-namespace SolarLab.AdvertBoard.Application.Abstractions.ReadServices
+namespace SolarLab.AdvertBoard.Application.Abstractions.ReadProviders
 {
-    public interface IAdvertReadService
+    public interface IAdvertReadProvider
     {
         Task<Maybe<AdvertDraftDetailsResponse>> GetAdvertDraftDetailsByIdAsync(AdvertId id);
         Task<PaginationCollection<AdvertDraftItem>> GetUserAdvertDrafts(string identityId, int page, int pageSize);

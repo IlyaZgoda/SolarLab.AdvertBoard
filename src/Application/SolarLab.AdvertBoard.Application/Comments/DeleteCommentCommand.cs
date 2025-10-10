@@ -1,0 +1,29 @@
+﻿using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
+using SolarLab.AdvertBoard.Domain.Comments;
+using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.SharedKernel.Result;
+
+namespace SolarLab.AdvertBoard.Application.Comments
+{
+    public record DeleteCommentCommand(Guid Id) : ICommand;
+
+    public class DeleteCommentCommandHandler(ICommentRepository commentRepository, IUnitOfWork unitOfWork) : ICommandHandler<DeleteCommentCommand>
+    {
+        public async Task<Result> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
+        {
+            var comment = await commentRepository.GetByIdAsync(new CommentId(request.Id));
+
+            if (comment.HasNoValue)
+            {
+                return Result.Failure(CommentErrors.NotFound);
+            }
+
+            commentRepository.Delete(comment.Value);
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
+        }
+    }
+}

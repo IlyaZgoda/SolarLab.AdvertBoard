@@ -17,16 +17,27 @@
 
         public static class Adverts
         {
-            public const string GetPublishedAdvertById = "api/adverts/{id}";
-            public const string GetMyPublishedAdverts = "api/adverts/my";
-            public const string GetPublishedAdvertsByFilter = "api/adverts/by-filter";      
-            public const string Archive = "api/adverts/{id}/archive";
+            public const string GetPublishedById = "api/adverts/{id}";
+            public const string GetPublishedByFilter = "api/adverts";
+            public const string GetMyPublished = "api/adverts/my/published";
+
+            public const string CreateDraft = "api/adverts/drafts";
+            public const string GetDraftById = "api/adverts/drafts/{id}";
             public const string UpdateDraft = "api/adverts/drafts/{id}";
-            public const string CreateDraft = "api/adverts/drafts/new";
-            public const string GetAdvertDraftById = "api/adverts/drafts/{id}";
-            public const string DeleteAdvertDraft = "api/adverts/drafts/{id}";
+            public const string DeleteDraft = "api/adverts/drafts/{id}";
             public const string PublishDraft = "api/adverts/drafts/{id}/publish";
-            public const string GetMyAdvertDrafts = "api/adverts/drafts/my";
+            public const string GetMyDrafts = "api/adverts/my/drafts";
+
+            public const string Archive = "api/adverts/{id}/archive";
+        }
+
+        public static class Comments
+        {
+            public const string Create = "api/adverts/{advertId}/comments";
+            public const string Update = "api/comments/{commentId}";
+            public const string Delete = "api/comments/{commentId}";
+            public const string GetById = "api/comments/{commentId}";
+            public const string GetByAdvertId = "api/adverts/{advertId}/comments";
         }
     }
 }

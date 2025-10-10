@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
+using SolarLab.AdvertBoard.Domain.Comments;
 using SolarLab.AdvertBoard.Domain.Users;
 
 namespace SolarLab.AdvertBoard.Persistence
@@ -12,6 +13,7 @@ namespace SolarLab.AdvertBoard.Persistence
         public DbSet<User> AppUsers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Advert> Adverts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

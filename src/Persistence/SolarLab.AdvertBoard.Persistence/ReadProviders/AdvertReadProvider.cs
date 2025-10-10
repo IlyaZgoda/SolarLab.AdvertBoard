@@ -1,16 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
+using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.Contracts.Users;
 using SolarLab.AdvertBoard.Domain.Adverts;
-using SolarLab.AdvertBoard.Domain.Categories;
-using SolarLab.AdvertBoard.Domain.Users;
+using SolarLab.AdvertBoard.Persistence.Extensions;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
-namespace SolarLab.AdvertBoard.Persistence.ReadServices
+namespace SolarLab.AdvertBoard.Persistence.ReadProviders
 {
-    public class AdvertReadService(ApplicationDbContext context) : IAdvertReadService
+    public class AdvertReadProvider(ApplicationDbContext context) : IAdvertReadProvider
     {
         public async Task<Maybe<AdvertDraftDetailsResponse>> GetAdvertDraftDetailsByIdAsync(AdvertId id) =>
             await (from advert in context.Adverts.AsNoTracking()
@@ -51,13 +52,6 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                            user.ContactEmail.Value, 
                            user.PhoneNumber.Value))).SingleOrDefaultAsync();
 
-        public record AdvertView
-        {
-            public Advert Advert { get; set; } = null!;
-            public Category Category { get; set; } = null!;
-            public User User { get; set; } = null!;
-        }
-
         public async Task<PaginationCollection<PublishedAdvertItem>> GetPublishedAdvertsByFilterAsync(AdvertFilterRequest filter)
         {
             var baseQuery = (from advert in context.Adverts.AsNoTracking()
@@ -65,7 +59,7 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                              on advert.CategoryId equals category.Id
                              join user in context.AppUsers.AsNoTracking()
                              on advert.AuthorId equals user.Id
-                            // where advert.Status == AdvertStatus.Published
+                             where advert.Status == AdvertStatus.Published
                              select new { Advert=advert, Category=category, User=user });
 
             if (filter.CategoryId.HasValue)
@@ -99,7 +93,7 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                 _ => baseQuery.OrderByDescending(x => x.Advert.PublishedAt)
             };
 
-            var projection = sortedBaseQuery.Select(q => new PublishedAdvertItem(
+            return await sortedBaseQuery.Select(q => new PublishedAdvertItem(
                 q.Advert.Id,
                 q.Advert.Title.Value,
                 q.Advert.Description.Value,
@@ -108,14 +102,12 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                 q.Category.Title.Value,
                 q.Advert.AuthorId,
                 q.User.FullName,
-                q.Advert.PublishedAt.Value));
-
-            return await ToPagedAsync(projection, filter.Page, filter.PageSize);
+                q.Advert.PublishedAt.Value)).ToPagedAsync(filter.Page, filter.PageSize);
         }
 
         public async Task<PaginationCollection<AdvertDraftItem>> GetUserAdvertDrafts(string identityId, int page, int pageSize)
         {
-            var baseQuery = (from advert in context.Adverts.AsNoTracking()
+            return await (from advert in context.Adverts.AsNoTracking()
                              join category in context.Categories.AsNoTracking()
                              on advert.CategoryId equals category.Id
                              join user in context.AppUsers.AsNoTracking()
@@ -131,14 +123,12 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                                  category.Title.Value,
                                  advert.CreatedAt,
                                  advert.UpdatedAt.Value,
-                                 advert.AuthorId));
-
-            return await ToPagedAsync(baseQuery, page, pageSize);
+                                 advert.AuthorId)).ToPagedAsync(page, pageSize);
         }
 
         public async Task<PaginationCollection<PublishedAdvertItem>> GetUserPublishedAdverts(string identityId, int page, int pageSize)
         {
-            var baseQuery = (from advert in context.Adverts.AsNoTracking()
+            return await (from advert in context.Adverts.AsNoTracking()
                              join category in context.Categories.AsNoTracking()
                              on advert.CategoryId equals category.Id
                              join user in context.AppUsers.AsNoTracking()
@@ -154,19 +144,27 @@ namespace SolarLab.AdvertBoard.Persistence.ReadServices
                                  category.Title.Value,
                                  advert.AuthorId,
                                  user.FullName,
-                                 advert.PublishedAt.Value)).AsQueryable();
-
-            return await ToPagedAsync(baseQuery, page, pageSize);
+                                 advert.PublishedAt.Value)).ToPagedAsync(page, pageSize);
         }
+    }
 
-        private static async Task<PaginationCollection<T>> ToPagedAsync<T>( IQueryable<T> query, int page, int pageSize)
-        {
-            var totalCount = await query.CountAsync();
-            var items = await query.Skip((page - 1) * pageSize)
-                                   .Take(pageSize)
-                                   .ToListAsync();
-            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-            return new PaginationCollection<T>(items, page, pageSize, totalCount, totalPages);
-        }
+    public class CommentReadProvider(ApplicationDbContext context) : ICommentReadProvider
+    {
+        public async Task<PaginationCollection<CommentItem>> GetCommentsByIdAsync(Guid advertId, int page, int pageSize) =>
+            await (from comment in context.Comments.AsNoTracking()
+                          join advert in context.Adverts.AsNoTracking()
+                          on comment.AdvertId equals advert.Id
+                          join user in context.AppUsers.AsNoTracking()
+                          on comment.AuthorId equals user.Id
+                          where advert.Id == advertId
+                          orderby comment.CreatedAt descending
+                          select new CommentItem(
+                              comment.Id,
+                              comment.AdvertId,
+                              comment.AuthorId,
+                              user.FullName,
+                              comment.Text.Value,
+                              comment.CreatedAt,
+                              comment.UpdatedAt)).ToPagedAsync(page, pageSize);
     }
 }

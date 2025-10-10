@@ -1,6 +1,6 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadServices;
+using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
@@ -10,7 +10,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 namespace SolarLab.AdvertBoard.Application.Adverts.Get
 {
     public class GetAdvertByIdQueryHandler(
-       IAdvertReadService advertReadService,
+       IAdvertReadProvider advertReadService,
        IUserIdentifierProvider userIdentifierProvider,
        IUserRepository userRepository) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftDetailsResponse>
     {
