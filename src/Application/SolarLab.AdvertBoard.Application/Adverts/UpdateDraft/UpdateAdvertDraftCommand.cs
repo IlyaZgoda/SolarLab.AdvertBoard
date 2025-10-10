@@ -1,6 +1,6 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Update
+namespace SolarLab.AdvertBoard.Application.Adverts.UpdateDraft
 {
     public record UpdateAdvertDraftCommand(Guid DraftId, Guid? CategoryId, string? Title, string? Description, decimal? Price) : ICommand;
 }

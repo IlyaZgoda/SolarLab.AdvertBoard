@@ -5,7 +5,7 @@ using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Get
+namespace SolarLab.AdvertBoard.Application.Adverts.GetUserDrafts
 {
     public class GetUserAdvertDraftsQueryHandler(
         IAdvertReadProvider advertReadService, 

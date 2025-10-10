@@ -1,4 +1,5 @@
-﻿using SolarLab.AdvertBoard.SharedKernel.Maybe;
+﻿using SolarLab.AdvertBoard.Domain.Adverts;
+using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
 namespace SolarLab.AdvertBoard.Domain.Comments
 {
@@ -8,5 +9,6 @@ namespace SolarLab.AdvertBoard.Domain.Comments
         void Add(Comment comment);
         void Update(Comment comment);
         void Delete(Comment comment);
+        Task DeleteAllForAdvert(AdvertId advertId);
     }
 }

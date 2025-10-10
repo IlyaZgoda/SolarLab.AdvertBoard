@@ -4,10 +4,8 @@ using SolarLab.AdvertBoard.Domain.Comments;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Comments
+namespace SolarLab.AdvertBoard.Application.Comments.Delete
 {
-    public record DeleteCommentCommand(Guid Id) : ICommand;
-
     public class DeleteCommentCommandHandler(ICommentRepository commentRepository, IUnitOfWork unitOfWork) : ICommandHandler<DeleteCommentCommand>
     {
         public async Task<Result> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)

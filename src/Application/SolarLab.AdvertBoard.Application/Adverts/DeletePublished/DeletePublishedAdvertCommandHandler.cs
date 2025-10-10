@@ -6,15 +6,15 @@ using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Archive
+namespace SolarLab.AdvertBoard.Application.Adverts.DeletePublished
 {
-    public class ArchiveAdvertCommandHandler(
+    public class DeletePublishedAdvertCommandHandler(
         IAdvertRepository advertRepository,
         IUnitOfWork unitOfWork,
         IUserIdentifierProvider userIdentifierProvider,
-        IUserRepository userRepository) : ICommandHandler<ArchiveAdvertCommand>
+        IUserRepository userRepository) : ICommandHandler<DeletePublishedAdvertCommand>
     {
-        public async Task<Result> Handle(ArchiveAdvertCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DeletePublishedAdvertCommand request, CancellationToken cancellationToken)
         {
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.Id));
 
@@ -28,7 +28,9 @@ namespace SolarLab.AdvertBoard.Application.Adverts.Archive
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            advert.Value.Archive();
+            advert.Value.Delete();
+
+            advertRepository.Delete(advert.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

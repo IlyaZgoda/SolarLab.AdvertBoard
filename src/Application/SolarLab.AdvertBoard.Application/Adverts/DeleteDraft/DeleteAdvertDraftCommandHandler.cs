@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Delete
+namespace SolarLab.AdvertBoard.Application.Adverts.DeleteDraft
 {
     public class DeleteAdvertDraftCommandHandler(
         IAdvertRepository advertRepository, 

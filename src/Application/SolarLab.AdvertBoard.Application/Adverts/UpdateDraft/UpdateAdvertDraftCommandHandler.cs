@@ -8,7 +8,7 @@ using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Update
+namespace SolarLab.AdvertBoard.Application.Adverts.UpdateDraft
 {
     public class UpdateAdvertDraftCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 

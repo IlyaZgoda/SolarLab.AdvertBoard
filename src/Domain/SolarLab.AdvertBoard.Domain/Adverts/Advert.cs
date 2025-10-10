@@ -1,4 +1,5 @@
-﻿using SolarLab.AdvertBoard.Domain.Categories;
+﻿using SolarLab.AdvertBoard.Domain.Adverts.Events;
+using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Exceptions;
 using SolarLab.AdvertBoard.Domain.Users;
@@ -35,15 +36,9 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Archive()
+        public void Delete()
         {
-            if (Status != AdvertStatus.Published)
-            {
-                throw new DomainException(AdvertErrors.CantArchiveNonPublishedAdvert);
-            }
-
-            Status = AdvertStatus.Archived;
-            UpdatedAt = DateTime.UtcNow;
+            Raise(new PublishedAdvertDeletedDomainEvent(Id));
         }
 
         public static Advert CreateDraft(

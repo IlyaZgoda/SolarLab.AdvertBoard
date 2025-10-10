@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
-using SolarLab.AdvertBoard.Application.Adverts.Archive;
 using SolarLab.AdvertBoard.Application.Adverts.CreateDraft;
-using SolarLab.AdvertBoard.Application.Adverts.Delete;
-using SolarLab.AdvertBoard.Application.Adverts.Get;
+using SolarLab.AdvertBoard.Application.Adverts.DeleteDraft;
+using SolarLab.AdvertBoard.Application.Adverts.DeletePublished;
+using SolarLab.AdvertBoard.Application.Adverts.GetDraftById;
+using SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertDetailsById;
+using SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertsByFilter;
+using SolarLab.AdvertBoard.Application.Adverts.GetUserDrafts;
+using SolarLab.AdvertBoard.Application.Adverts.GetUserPublishedAdverts;
 using SolarLab.AdvertBoard.Application.Adverts.PublishDraft;
-using SolarLab.AdvertBoard.Application.Adverts.Update;
+using SolarLab.AdvertBoard.Application.Adverts.UpdateDraft;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel;
@@ -82,14 +86,14 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
-        [HttpPatch(ApiRoutes.Adverts.Archive)]
+        [HttpDelete(ApiRoutes.Adverts.DeletePublished)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> Archive(Guid id) =>
-            await Result.Create(new ArchiveAdvertCommand(id), Error.None)
-                .Map(request => new ArchiveAdvertCommand(request.Id))
+        public async Task<IActionResult> DeletePublished(Guid id) =>
+            await Result.Create(new DeletePublishedAdvertCommand(id), Error.None)
+                .Map(request => new DeletePublishedAdvertCommand(request.Id))
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 

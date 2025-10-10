@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Comments.Get
+namespace SolarLab.AdvertBoard.Application.Comments.GetByAdvertId
 {
     public class GetCommentByAdvertIdQueryHandler(ICommentReadProvider commentReadProvider) 
         : IQueryHandler<GetCommentsByAdvertIdQuery, PaginationCollection<CommentItem>>

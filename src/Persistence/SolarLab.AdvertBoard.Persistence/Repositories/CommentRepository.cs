@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Comments;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
@@ -9,6 +10,15 @@ namespace SolarLab.AdvertBoard.Persistence.Repositories
         public void Add(Comment comment) => context.Add(comment);
 
         public void Delete(Comment comment) => context.Remove(comment);
+
+        public async Task DeleteAllForAdvert(AdvertId advertId)
+        {
+            var comments = await context.Comments
+                .Where(c => c.AdvertId == advertId)
+                .ToListAsync();
+
+            context.Comments.RemoveRange(comments);
+        }
 
         public async Task<Maybe<Comment>> GetByIdAsync(CommentId id) =>
             await context.Comments.FirstOrDefaultAsync(u => u.Id == id);

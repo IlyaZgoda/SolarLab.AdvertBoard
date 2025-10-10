@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Get
+namespace SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertsByFilter
 {
     public class GetPublishedAdvertsByFilterQueryHandler(IAdvertReadProvider advertReadService) 
         : IQueryHandler<GetPublishedAdvertsByFilterQuery, PaginationCollection<PublishedAdvertItem>>

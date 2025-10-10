@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Domain.Comments;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Comments.Get
+namespace SolarLab.AdvertBoard.Application.Comments.GetById
 {
     public class GetCommentByIdQueryHandler(ICommentRepository commentRepository) 
         : IQueryHandler<GetCommentByIdQuery, CommentResponse>

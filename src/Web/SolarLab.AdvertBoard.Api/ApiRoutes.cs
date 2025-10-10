@@ -28,7 +28,7 @@
             public const string PublishDraft = "api/adverts/drafts/{id}/publish";
             public const string GetMyDrafts = "api/adverts/my/drafts";
 
-            public const string Archive = "api/adverts/{id}/archive";
+            public const string DeletePublished = "api/adverts/{id}";
         }
 
         public static class Comments

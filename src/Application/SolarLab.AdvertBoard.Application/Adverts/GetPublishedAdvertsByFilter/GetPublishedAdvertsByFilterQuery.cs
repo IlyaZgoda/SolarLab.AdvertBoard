@@ -2,7 +2,7 @@
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Get
+namespace SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertsByFilter
 {
     public record GetPublishedAdvertsByFilterQuery(AdvertFilterRequest Filter) : IQuery<PaginationCollection<PublishedAdvertItem>>;
 }

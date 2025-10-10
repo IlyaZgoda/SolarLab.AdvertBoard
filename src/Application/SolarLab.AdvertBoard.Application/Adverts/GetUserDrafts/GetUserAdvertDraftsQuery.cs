@@ -2,7 +2,7 @@
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Get
+namespace SolarLab.AdvertBoard.Application.Adverts.GetUserDrafts
 {
     public record GetUserAdvertDraftsQuery(int Page = 1, int PageSize = 20) : IQuery<PaginationCollection<AdvertDraftItem>>;
 }

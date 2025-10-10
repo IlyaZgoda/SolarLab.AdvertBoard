@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarLab.AdvertBoard.Api.Mappers;
-using SolarLab.AdvertBoard.Application.Adverts.Get;
-using SolarLab.AdvertBoard.Application.Comments;
 using SolarLab.AdvertBoard.Application.Comments.Create;
-using SolarLab.AdvertBoard.Application.Comments.Get;
+using SolarLab.AdvertBoard.Application.Comments.Delete;
+using SolarLab.AdvertBoard.Application.Comments.GetByAdvertId;
+using SolarLab.AdvertBoard.Application.Comments.GetById;
 using SolarLab.AdvertBoard.Application.Comments.Update;
-using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.SharedKernel;

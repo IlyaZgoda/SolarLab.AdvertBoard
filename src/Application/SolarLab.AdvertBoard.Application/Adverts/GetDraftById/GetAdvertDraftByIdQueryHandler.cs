@@ -7,7 +7,7 @@ using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
-namespace SolarLab.AdvertBoard.Application.Adverts.Get
+namespace SolarLab.AdvertBoard.Application.Adverts.GetDraftById
 {
     public class GetAdvertByIdQueryHandler(
        IAdvertReadProvider advertReadService,
