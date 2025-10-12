@@ -33,6 +33,14 @@ namespace SolarLab.AdvertBoard.Application.Extensions
                 .LessThan(Price.MaxValue).WithMessage(AdvertErrors.Price.TooHigh.Description);
         }
 
+        public static IRuleBuilderOptions<T, decimal> ApplyPriceValidation<T>(
+            this IRuleBuilder<T, decimal> ruleBuilder)
+        {
+            return ruleBuilder
+                .GreaterThan(Price.MinValue).WithMessage(AdvertErrors.Price.TooLow.Description)
+                .LessThan(Price.MaxValue).WithMessage(AdvertErrors.Price.TooHigh.Description);
+        }
+
         public static IRuleBuilderOptions<T, string?> ApplyCommentTextValidation<T>(
             this IRuleBuilder<T, string?> ruleBuilder)
         {
