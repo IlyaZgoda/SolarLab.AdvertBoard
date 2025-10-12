@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Users.Login
 {
-    public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) 
+    public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider)
         : ICommandHandler<LoginUserCommand, JwtResponse>
     {
         public async Task<Result<JwtResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ namespace SolarLab.AdvertBoard.Application.Users.Login
 
             if (!isConfirmed)
             {
-                return Result.Failure<JwtResponse>(new Error(ErrorTypes.ValidationError, "ContactEmail is not confirmed"));
+                return Result.Failure<JwtResponse>(new Error(ErrorTypes.ValidationError, "Email is not confirmed"));
             }
 
             var token = tokenProvider.Create(identityUserId.Value, request.Email);

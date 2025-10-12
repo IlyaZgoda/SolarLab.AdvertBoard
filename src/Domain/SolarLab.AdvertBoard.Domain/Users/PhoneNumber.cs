@@ -27,6 +27,6 @@ namespace SolarLab.AdvertBoard.Domain.Users
         public static explicit operator string(PhoneNumber phoneNumber) => phoneNumber?.Value ?? string.Empty;
 
         [GeneratedRegex(@"^\+\d{11,14}$")]
-        private static partial Regex PhoneNumberRegex();
+        public static partial Regex PhoneNumberRegex();
     }
 }

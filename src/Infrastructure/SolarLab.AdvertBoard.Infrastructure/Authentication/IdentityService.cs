@@ -9,6 +9,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
     public class IdentityService(UserManager<IdentityUser> userManager) : IIdentityService
     {
+        private static Error IncorrectLoginOrPassword = new(ErrorTypes.ValidationError, "Incorrect login or password");
         public async Task<Result<string>> CreateIdentityUserAsync(string email, string password)
         {
             var identityUser = new IdentityUser
@@ -48,14 +49,18 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 
         public async Task<Result<string>> ValidateIdentityUserAsync(string email, string password)
         {
-            var identityUser = await userManager.FindByEmailAsync(email)
-                ?? throw new ArgumentException("Identity user not found"); 
+            var identityUser = await userManager.FindByEmailAsync(email);
+
+            if (identityUser is null)
+            {
+                return Result.Failure<string>(IncorrectLoginOrPassword);
+            }
 
             var isValid = await userManager.CheckPasswordAsync(identityUser, password);
             
             return isValid 
                 ? identityUser.Id
-                : Result.Failure<string>(new Error(ErrorTypes.ValidationError, "Incorrect login or password"));
+                : Result.Failure<string>(IncorrectLoginOrPassword);
         }
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(string email)

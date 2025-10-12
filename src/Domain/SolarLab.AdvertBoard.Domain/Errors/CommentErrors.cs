@@ -1,4 +1,5 @@
-﻿using SolarLab.AdvertBoard.SharedKernel;
+﻿using SolarLab.AdvertBoard.Domain.Comments;
+using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Domain.Errors
 {
@@ -8,9 +9,8 @@ namespace SolarLab.AdvertBoard.Domain.Errors
 
         public static class Text
         {
-            public static readonly Error Empty = new(ErrorTypes.ValidationError, "Comment is empty");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, "Comment too long");
-            public static readonly Error TooShort = new(ErrorTypes.ValidationError, "Comment too short");
+            public static readonly Error Empty = new(ErrorTypes.ValidationError, "Comment text is required");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"Comment text must not exceed {CommentText.MaxLength} characters");
         }
         public static class Rating
         {

@@ -1,12 +1,10 @@
-using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic.FileIO;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SolarLab.AdvertBoard.Api.Extensions;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Api.Middleware;
 using SolarLab.AdvertBoard.Application;
 using SolarLab.AdvertBoard.Infrastructure;
 using SolarLab.AdvertBoard.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 namespace SolarLab.AdvertBoard.Api
 {
     public class Program

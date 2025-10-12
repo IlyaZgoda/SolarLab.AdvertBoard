@@ -19,6 +19,7 @@ using System.Text;
 
 namespace SolarLab.AdvertBoard.Api.Controllers
 {
+    [ApiController]
     public class UsersController(
         IMediator mediator, 
         IEmailNotificationSender emailNotificationSender, 
@@ -29,7 +30,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
         [ProducesResponseType(typeof(JwtResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> Login(LoginRequest loginRequest) =>   
+        public async Task<IActionResult> Login([FromBody]LoginUserRequest loginRequest) =>   
             await Result.Create(loginRequest, Error.None)
                 .Map(request => new LoginUserCommand(loginRequest.Email, loginRequest.Password))
                 .Bind(command => mediator.Send(command))
