@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
-using SolarLab.AdvertBoard.Application.Extensions;
 using SolarLab.AdvertBoard.Contracts.Adverts;
+using SolarLab.AdvertBoard.Domain.Adverts;
+using SolarLab.AdvertBoard.Domain.Errors;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.UpdateDraft
 {
@@ -9,15 +10,18 @@ namespace SolarLab.AdvertBoard.Application.Adverts.UpdateDraft
         public UpdateAdvertDraftRequestValidator()
         {
             RuleFor(x => x.Title)
-                .ApplyAdvertTitleValidation()
-                .When(x => !string.IsNullOrEmpty(x.Title));
+                .MaximumLength(AdvertTitle.MaxLength).WithMessage(AdvertErrors.Title.TooLong.Description)
+                .MinimumLength(AdvertTitle.MinLength).WithMessage(AdvertErrors.Title.TooShort.Description)
+                .When(x => !string.IsNullOrWhiteSpace(x.Title));
 
             RuleFor(x => x.Description)
-                .ApplyAdvertDescriptionValidation()
-                .When(x => !string.IsNullOrEmpty(x.Description));
+                .MaximumLength(AdvertDescription.MaxLength).WithMessage(AdvertErrors.Description.TooLong.Description)
+                .MinimumLength(AdvertDescription.MinLength).WithMessage(AdvertErrors.Description.TooShort.Description)
+                .When(x => !string.IsNullOrWhiteSpace(x.Description));
 
             RuleFor(x => x.Price)
-                .ApplyPriceValidation()
+                .GreaterThan(Price.MinValue).WithMessage(AdvertErrors.Price.TooLow.Description)
+                .LessThan(Price.MaxValue).WithMessage(AdvertErrors.Price.TooHigh.Description)
                 .When(x => x.Price.HasValue);
         }
     }

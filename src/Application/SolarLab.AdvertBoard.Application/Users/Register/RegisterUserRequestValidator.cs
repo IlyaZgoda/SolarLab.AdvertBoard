@@ -29,17 +29,17 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
             RuleFor(x => x.MiddleName)
                 .MaximumLength(MiddleName.MaxLength).WithMessage(UserErrors.MiddleName.Empty.Description)
                 .Matches(FirstName.NameRegex()).WithMessage(UserErrors.MiddleName.NotValid.Description)
-                .When(x => !string.IsNullOrEmpty(x.MiddleName));
+                .When(x => !string.IsNullOrWhiteSpace(x.MiddleName));
 
             RuleFor(x => x.ContactEmail)
                 .EmailAddress().WithMessage("Invalid email format")
                 .MaximumLength(320).WithMessage("Contact email must not exceed 320 characters")
-                .When(x => !string.IsNullOrEmpty(x.ContactEmail));
+                .When(x => !string.IsNullOrWhiteSpace(x.ContactEmail));
 
             RuleFor(x => x.PhoneNumber)
                 .MaximumLength(PhoneNumber.MaxLength).WithMessage(UserErrors.PhoneNumber.TooLong.Description)
                 .Matches(PhoneNumber.PhoneNumberRegex()).WithMessage(UserErrors.PhoneNumber.NotValid.Description)
-                .When(x => !string.IsNullOrEmpty(x.PhoneNumber));
+                .When(x => !string.IsNullOrWhiteSpace(x.PhoneNumber));
         }
     }
 }

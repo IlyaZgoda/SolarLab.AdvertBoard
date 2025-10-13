@@ -7,40 +7,6 @@ namespace SolarLab.AdvertBoard.Application.Extensions
 {
     public static class ValidationExtensions
     {
-        public static IRuleBuilderOptions<T, string?> ApplyAdvertTitleValidation<T>(
-            this IRuleBuilder<T, string?> ruleBuilder)
-        {
-            return ruleBuilder
-                .NotEmpty().WithMessage(AdvertErrors.Title.Empty.Description)
-                .MaximumLength(AdvertTitle.MaxLength).WithMessage(AdvertErrors.Title.TooLong.Description)
-                .MinimumLength(AdvertTitle.MinLength).WithMessage(AdvertErrors.Title.TooShort.Description);
-        }
-
-        public static IRuleBuilderOptions<T, string?> ApplyAdvertDescriptionValidation<T>(
-            this IRuleBuilder<T, string?> ruleBuilder)
-        {
-            return ruleBuilder
-                .NotEmpty().WithMessage(AdvertErrors.Description.Empty.Description)
-                .MaximumLength(AdvertDescription.MaxLength).WithMessage(AdvertErrors.Description.TooLong.Description)
-                .MinimumLength(AdvertDescription.MinLength).WithMessage(AdvertErrors.Description.TooShort.Description);
-        }
-
-        public static IRuleBuilderOptions<T, decimal?> ApplyPriceValidation<T>(
-            this IRuleBuilder<T, decimal?> ruleBuilder)
-        {
-            return ruleBuilder
-                .GreaterThan(Price.MinValue).WithMessage(AdvertErrors.Price.TooLow.Description)
-                .LessThan(Price.MaxValue).WithMessage(AdvertErrors.Price.TooHigh.Description);
-        }
-
-        public static IRuleBuilderOptions<T, decimal> ApplyPriceValidation<T>(
-            this IRuleBuilder<T, decimal> ruleBuilder)
-        {
-            return ruleBuilder
-                .GreaterThan(Price.MinValue).WithMessage(AdvertErrors.Price.TooLow.Description)
-                .LessThan(Price.MaxValue).WithMessage(AdvertErrors.Price.TooHigh.Description);
-        }
-
         public static IRuleBuilderOptions<T, string?> ApplyCommentTextValidation<T>(
             this IRuleBuilder<T, string?> ruleBuilder)
         {
