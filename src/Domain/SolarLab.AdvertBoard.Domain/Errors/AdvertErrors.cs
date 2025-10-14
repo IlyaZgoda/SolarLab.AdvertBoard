@@ -7,11 +7,12 @@ namespace SolarLab.AdvertBoard.Domain.Errors
     public static class AdvertErrors
     {
         public static readonly Error NotFound = new(ErrorTypes.NotFound, "Advert not found");
-        public static readonly Error CantUpdateNonDraftAdvert = new(ErrorTypes.ValidationError, "Yot can update only draft adverts");
-        public static readonly Error NoChanges = new(ErrorTypes.ValidationError, "Yot haven't made any changes");
-        public static readonly Error CantDeleteNonDraftAdvert = new(ErrorTypes.ValidationError, "Yot can't delete non draft advert");
-        public static readonly Error CantPublishNonDraftAdvert = new(ErrorTypes.ValidationError, "Yot can't publish non draft advert");
-        public static readonly Error CantArchiveNonPublishedAdvert = new(ErrorTypes.ValidationError, "Yot can't archive non published advert");
+        public static readonly Error CantUpdateNonDraftAdvert = new(ErrorTypes.ValidationError, "You can update only draft adverts");
+        public static readonly Error NoChanges = new(ErrorTypes.ValidationError, "You haven't made any changes");
+        public static readonly Error CanOnlyDeleteDrafts = new(ErrorTypes.ValidationError ,"Can only delete adverts in draft status");
+        public static readonly Error CanOnlyUnpublishPublishedAdverts = new(ErrorTypes.ValidationError ,"Can only unpublish adverts that are currently published");
+        public static readonly Error CantPublishNonDraftAdvert = new(ErrorTypes.ValidationError, "You can't publish non draft advert");
+        public static readonly Error CantArchiveNonPublishedAdvert = new(ErrorTypes.ValidationError, "You can't archive non published advert");
 
         public static class Title
         {

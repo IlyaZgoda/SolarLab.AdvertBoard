@@ -98,7 +98,7 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Users
         public void FullName_Should_Return_Correct_Format_With_Empty_MiddleName()
         {
             // Arrange
-            var middleName = MiddleName.Create("").Value; // This returns null
+            var middleName = MiddleName.Create("").Value; 
             var user = User.Create(_identityId, _firstName, _lastName, middleName, _contactEmail, null);
 
             // Act

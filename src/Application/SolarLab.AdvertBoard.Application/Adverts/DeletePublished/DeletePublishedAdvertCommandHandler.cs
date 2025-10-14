@@ -28,7 +28,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.DeletePublished
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            advert.Value.Delete();
+            advert.Value.Unpublish();
 
             advertRepository.Delete(advert.Value);
 

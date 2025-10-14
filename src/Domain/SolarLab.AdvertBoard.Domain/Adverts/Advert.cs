@@ -28,7 +28,7 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
         {
             if (Status != AdvertStatus.Draft)
             {
-                throw new DomainException(AdvertErrors.CantPublishNonDraftAdvert);
+                throw new DomainException(AdvertErrors.CantPublishNonDraftAdvert.Description);
             }
 
             Status = AdvertStatus.Published;
@@ -36,9 +36,22 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Delete()
+        public void Unpublish()
         {
+            if (Status != AdvertStatus.Published)
+            {
+                throw new DomainException(AdvertErrors.CanOnlyUnpublishPublishedAdverts.Description);
+            }
+
             Raise(new PublishedAdvertDeletedDomainEvent(Id));
+        }
+
+        public void DeleteDraft()
+        {
+            if (Status != AdvertStatus.Draft)
+            {
+                throw new DomainException(AdvertErrors.CanOnlyUnpublishPublishedAdverts.Description);
+            }
         }
 
         public static Advert CreateDraft(
@@ -67,7 +80,7 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
         {
             if (Status != AdvertStatus.Draft)
             {
-                throw new DomainException(AdvertErrors.CantUpdateNonDraftAdvert);
+                throw new DomainException(AdvertErrors.CantUpdateNonDraftAdvert.Description);
             }
 
             if (AllNull(categoryId, title, description, price) 

@@ -16,24 +16,21 @@ namespace SolarLab.AdvertBoard.Application.Adverts.DeleteDraft
     {
         public async Task<Result> Handle(DeleteAdvertDraftCommand request, CancellationToken cancellationToken)
         {
-            var draft = await advertRepository.GetByIdAsync(new AdvertId(request.Id));
+            var advert = await advertRepository.GetByIdAsync(new AdvertId(request.Id));
 
-            if (draft.HasNoValue)
+            if (advert.HasNoValue)
             {
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            if (!await userRepository.IsOwner(new UserId(draft.Value.AuthorId), userIdentifierProvider.IdentityUserId))
+            if (!await userRepository.IsOwner(new UserId(advert.Value.AuthorId), userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure(AdvertErrors.NotFound);
             }
 
-            if (draft.Value.Status != AdvertStatus.Draft)
-            {
-                return Result.Failure(AdvertErrors.CantDeleteNonDraftAdvert);
-            }
+            advert.Value.DeleteDraft();
 
-            advertRepository.Delete(draft.Value);
+            advertRepository.Delete(advert.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
