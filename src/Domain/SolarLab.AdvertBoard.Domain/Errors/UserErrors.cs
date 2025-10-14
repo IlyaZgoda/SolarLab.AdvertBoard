@@ -15,35 +15,35 @@ namespace SolarLab.AdvertBoard.Domain.Errors
         {
             public static readonly Error Empty = new(ErrorTypes.ValidationError, "First name is required");
             public static readonly Error NotValid = new(ErrorTypes.ValidationError, "First name can only contain letters, spaces and hyphens");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength}");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength} characters");
         }
 
         public static class LastName
         {
             public static readonly Error Empty = new(ErrorTypes.ValidationError, "Last name is required");
             public static readonly Error NotValid = new(ErrorTypes.ValidationError, "Last name can only contain letters, spaces and hyphens");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength}");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength} characters");
         }
 
         public static class MiddleName
         {
             public static readonly Error Empty = new(ErrorTypes.ValidationError, "Middle name is required");
             public static readonly Error NotValid = new(ErrorTypes.ValidationError, "Middle name can only contain letters, spaces and hyphens");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength}");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"First name must not exceed {UserFirstName.MaxLength} characters");
         }
 
         public static class Email
         {
             public static readonly Error Empty = new(ErrorTypes.ValidationError, "Contact email is required");
             public static readonly Error NotValid = new(ErrorTypes.ValidationError, "Contact email has invalid format");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"Contact email must not exceed {UserEmail.MaxLength}");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"Contact email must not exceed {UserEmail.MaxLength} characters");
         }
 
         public static class PhoneNumber
         {
             public static readonly Error Empty = new(ErrorTypes.ValidationError, "Phone number is required");
             public static readonly Error NotValid = new(ErrorTypes.ValidationError, "Phone number has invalid format");
-            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"Phone number must not exceed {UserPhoneNumber.MaxLength}");
+            public static readonly Error TooLong = new(ErrorTypes.ValidationError, $"Phone number must not exceed {UserPhoneNumber.MaxLength} digits");
         }
 
         public static class PasswordHash

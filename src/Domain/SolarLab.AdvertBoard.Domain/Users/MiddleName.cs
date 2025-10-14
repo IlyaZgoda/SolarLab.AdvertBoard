@@ -16,7 +16,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
             Value = value;
 
         public static Result<MiddleName?> Create(string? value) =>
-            string.IsNullOrEmpty(value) 
+            string.IsNullOrWhiteSpace(value) 
             ? Result.Success<MiddleName?>(null) 
             : Result.Create(value, UserErrors.MiddleName.Empty)
                 .Ensure(Validation.SmallerThan(MaxLength), UserErrors.MiddleName.TooLong)

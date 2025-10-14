@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using FluentAssertions;
 using FluentValidation.TestHelper;
 using SolarLab.AdvertBoard.Application.Adverts.CreateDraft;
 using SolarLab.AdvertBoard.Contracts.Adverts;
@@ -272,7 +273,7 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Validators
             result.ShouldHaveValidationErrorFor(x => x.Title);
             result.ShouldHaveValidationErrorFor(x => x.Description);
             result.ShouldHaveValidationErrorFor(x => x.Price);
-            Assert.Equal(3, result.Errors.Count);
+            result.Errors.Count.Should().Be(3);
         }
 
         [Fact]

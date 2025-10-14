@@ -16,7 +16,7 @@ namespace SolarLab.AdvertBoard.Domain.Users
         private PhoneNumber(string value) => Value = value;
 
         public static Result<PhoneNumber?> Create(string? value) =>
-            string.IsNullOrEmpty(value)
+            string.IsNullOrWhiteSpace(value)
             ? Result.Success<PhoneNumber?>(null)
             : Result.Create(value, UserErrors.PhoneNumber.Empty)
                 .Ensure(Validation.IsNotNullOrEmpty, UserErrors.PhoneNumber.Empty)
