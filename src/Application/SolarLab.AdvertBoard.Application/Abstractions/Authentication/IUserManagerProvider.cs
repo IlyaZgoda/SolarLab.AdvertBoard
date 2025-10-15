@@ -3,7 +3,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Abstractions.Authentication
 {
-    public interface IIdentityService
+    public interface IUserManagerProvider
     {
         Task<Result<string>> CreateIdentityUserAsync(string email, string password);
 

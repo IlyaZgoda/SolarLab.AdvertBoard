@@ -9,7 +9,7 @@ using SolarLab.AdvertBoard.Domain.Users.Events;
 namespace SolarLab.AdvertBoard.Application.Users.Register
 {
     public class SendConfirmationLinkOnUserRegisteredDomainEventHandler(
-        IIdentityService identityService, 
+        IUserManagerProvider identityService, 
         IEmailNotificationSender emailNotificationSender, 
         IUriGenerator uriGenerator) : INotificationHandler<UserRegisteredDomainEvent>
     {

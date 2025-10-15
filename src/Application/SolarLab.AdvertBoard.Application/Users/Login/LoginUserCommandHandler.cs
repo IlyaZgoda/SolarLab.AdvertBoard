@@ -6,19 +6,19 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Users.Login
 {
-    public class LoginUserCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider)
+    public class LoginUserCommandHandler(IUserManagerProvider userManagerProvider, ITokenProvider tokenProvider)
         : ICommandHandler<LoginUserCommand, JwtResponse>
     {
         public async Task<Result<JwtResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var identityUserId = await identityService.ValidateIdentityUserAsync(request.Email, request.Password);
+            var identityUserId = await userManagerProvider.ValidateIdentityUserAsync(request.Email, request.Password);
 
             if (identityUserId.IsFailure)
             {
                 return Result.Failure<JwtResponse>(identityUserId.Error);
             }
 
-            var isConfirmed = await identityService.IsEmailConfirmed(identityUserId.Value);
+            var isConfirmed = await userManagerProvider.IsEmailConfirmed(identityUserId.Value);
 
             if (!isConfirmed)
             {

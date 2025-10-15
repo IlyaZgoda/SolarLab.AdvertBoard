@@ -11,10 +11,18 @@ namespace SolarLab.AdvertBoard.Application.Users.Register
         public RegisterUserRequestValidator()
         {
             RuleFor(x => x.Email)
-                .ApplyEmailValidation();
+                .NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("Invalid email format")
+                .MaximumLength(320).WithMessage("Email must not exceed 320 characters");
 
             RuleFor(x => x.Password)
-                .ApplyPasswordValidation();
+                .NotEmpty().WithMessage("Password is required")
+                .MinimumLength(6).WithMessage("Password must be at least 6 characters")
+                .MaximumLength(100).WithMessage("Password must not exceed 100 characters")
+                .Matches(@"[A-Z]").WithMessage("Password must contain at least one uppercase letter")
+                .Matches(@"[a-z]").WithMessage("Password must contain at least one lowercase letter")
+                .Matches(@"\d").WithMessage("Password must contain at least one digit")
+                .Matches(@"[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]").WithMessage("Password must contain at least one special character");
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage(UserErrors.FirstName.Empty.Description)

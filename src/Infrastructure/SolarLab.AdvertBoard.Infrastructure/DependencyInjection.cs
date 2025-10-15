@@ -54,7 +54,7 @@ namespace SolarLab.AdvertBoard.Infrastructure
               });
 
             services.AddSingleton<ITokenProvider, TokenProvider>();
-            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IUserManagerProvider, UserManagerProvider>();
             services.AddScoped<IEmailSender, SmtpEmailSender>();  
             services.AddScoped<IEmailNotificationSender, EmailNotificationSender>();  
             services.AddScoped<IUriGenerator, UriGenerator>();  

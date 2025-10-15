@@ -2,12 +2,11 @@
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Infrastructure.Exceptions;
 using SolarLab.AdvertBoard.SharedKernel;
-using SolarLab.AdvertBoard.SharedKernel.Maybe;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
-    public class IdentityService(UserManager<IdentityUser> userManager) : IIdentityService
+    public class UserManagerProvider(UserManager<IdentityUser> userManager) : IUserManagerProvider
     {
         private static Error IncorrectLoginOrPassword = new(ErrorTypes.ValidationError, "Incorrect login or password");
         public async Task<Result<string>> CreateIdentityUserAsync(string email, string password)

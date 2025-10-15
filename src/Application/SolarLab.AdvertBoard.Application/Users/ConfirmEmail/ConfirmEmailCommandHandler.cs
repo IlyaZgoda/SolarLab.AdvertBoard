@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Users.ConfirmEmail
 {
-    public class ConfirmEmailCommandHandler(IIdentityService identityService, ITokenProvider tokenProvider) 
+    public class ConfirmEmailCommandHandler(IUserManagerProvider identityService, ITokenProvider tokenProvider) 
         : ICommandHandler<ConfirmEmailCommand, JwtResponse>
     {
         public async Task<Result<JwtResponse>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)

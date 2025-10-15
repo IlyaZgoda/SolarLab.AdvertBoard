@@ -1,19 +1,17 @@
 ﻿using FluentValidation;
-using SolarLab.AdvertBoard.Application.Extensions;
 using SolarLab.AdvertBoard.Contracts.Authentication;
 
 namespace SolarLab.AdvertBoard.Application.Users.Login
 {
-    public sealed class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
+    public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
     {
         public LoginUserRequestValidator()
         {
             RuleFor(x => x.Email)
-                .ApplyEmailValidation();
+                .NotEmpty().WithMessage("Email is required");
 
             RuleFor(x => x.Password)
-                .ApplyPasswordValidation();
-
+                .NotEmpty().WithMessage("Password is required");
         }
     }
 }
