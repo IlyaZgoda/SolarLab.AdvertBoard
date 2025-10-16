@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 8081
 
 
 # Этот этап используется для сборки проекта службы
@@ -12,12 +13,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Web/SolarLab.AdvertBoard.Api/SolarLab.AdvertBoard.Api.csproj", "src/Web/SolarLab.AdvertBoard.Api/"]
-COPY ["src/Application/SolarLab.AdvertBoard.Application/SolarLab.AdvertBoard.Application.csproj", "src/Application/SolarLab.AdvertBoard.Application/"]
-COPY ["src/Contracts/SolarLab.AdvertBoard.Contracts/SolarLab.AdvertBoard.Contracts.csproj", "src/Contracts/SolarLab.AdvertBoard.Contracts/"]
-COPY ["src/Domain/SolarLab.AdvertBoard.Domain/SolarLab.AdvertBoard.Domain.csproj", "src/Domain/SolarLab.AdvertBoard.Domain/"]
-COPY ["src/SharedKernel/SolarLab.AdvertBoard.SharedKernel/SolarLab.AdvertBoard.SharedKernel.csproj", "src/SharedKernel/SolarLab.AdvertBoard.SharedKernel/"]
-COPY ["src/Infrastructure/SolarLab.AdvertBoard.Infrastructure/SolarLab.AdvertBoard.Infrastructure.csproj", "src/Infrastructure/SolarLab.AdvertBoard.Infrastructure/"]
-COPY ["src/Persistence/SolarLab.AdvertBoard.Persistence/SolarLab.AdvertBoard.Persistence.csproj", "src/Persistence/SolarLab.AdvertBoard.Persistence/"]
 RUN dotnet restore "./src/Web/SolarLab.AdvertBoard.Api/SolarLab.AdvertBoard.Api.csproj"
 COPY . .
 WORKDIR "/src/src/Web/SolarLab.AdvertBoard.Api"

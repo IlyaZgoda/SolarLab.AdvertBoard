@@ -1,0 +1,57 @@
+name: solarlab-advertboard
+
+services:
+  api:
+    image: solarlab-advertboard:latest
+    build:
+      context: .
+      dockerfile: src/Web/SolarLab.AdvertBoard.Api/Dockerfile
+      args: 
+        - BUILD_CONFIGURATION=Release
+    environment:
+        - ConnectionStrings__ApplicationDbContext=Host=db;Port=5432;Database=advert_board_db;Username=postgres;Password=dota_man2001
+        - ASPNETCORE_URLS=http://+:8080
+    ports:
+        - "8083:8080" 
+      
+    restart: always 
+    networks:
+       - advertboard-network
+    depends_on:
+       db: 
+        condition: service_healthy
+    healthcheck:
+       test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+       interval: 30s
+       timeout: 10s
+       retries: 3
+    security_opt:
+       - no-new-privileges:true
+    read_only: false
+    tmpfs:
+       - /tmp
+
+  db:
+    ports:
+      - "5434:5432"
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: dota_man2001
+      POSTGRES_DB: advert_board_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d advert_board_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - advertboard-network
+
+networks:
+  advertboard-network:
+    external: true
+
+volumes: 
+  postgres_data:

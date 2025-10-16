@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SolarLab.AdvertBoard.Api.Extensions;
 using SolarLab.AdvertBoard.Api.Mappers;
@@ -56,6 +57,8 @@ namespace SolarLab.AdvertBoard.Api
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapGet("/api/health", () => Results.Ok("Healthy!!!!"));
 
             app.MapStaticAssets();
             app.MapRazorPages()
