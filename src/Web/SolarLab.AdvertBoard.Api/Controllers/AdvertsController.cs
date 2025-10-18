@@ -53,7 +53,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
-        [HttpGet(ApiRoutes.Adverts.GetDraftById)]
+        [HttpGet(ApiRoutes.Adverts.GetDraft)]
         [ProducesResponseType(typeof(AdvertDraftDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
@@ -98,7 +98,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
         [AllowAnonymous] //ДЛЯ ТЕСТА
-        [HttpGet(ApiRoutes.Adverts.GetPublishedById)]
+        [HttpGet(ApiRoutes.Adverts.GetPublished)]
         [ProducesResponseType(typeof(PublishedAdvertDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]

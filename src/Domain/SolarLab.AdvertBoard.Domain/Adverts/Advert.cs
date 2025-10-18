@@ -1,9 +1,11 @@
-﻿using SolarLab.AdvertBoard.Domain.Adverts.Events;
+﻿using SolarLab.AdvertBoard.Domain.AdvertImages;
+using SolarLab.AdvertBoard.Domain.Adverts.Events;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Exceptions;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel;
+using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Domain.Adverts
 {
@@ -22,7 +24,54 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
         public DateTime? PublishedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
 
+        private readonly List<AdvertImage> _images = [];
+        public IReadOnlyCollection<AdvertImage> Images => _images.AsReadOnly();
+        public const int MaxImagesCount = 5;
+
         private Advert() { }
+
+        public Result<AdvertImageId> AddImage(ImageFileName fileName, ImageContentType contentType, ImageContent imageContent)
+        {
+            if (Status != AdvertStatus.Draft)
+            {
+                return Result.Failure<AdvertImageId>(AdvertImageErrors.CantAddImageToNonDraftAdvert);
+            }
+
+            if (_images.Count >= MaxImagesCount)
+            {
+                return Result.Failure<AdvertImageId>(AdvertImageErrors.TooManyImages);
+            }
+
+            var image = AdvertImage.Create(Id, fileName, contentType, imageContent);
+
+            _images.Add(image);
+
+            UpdatedAt = DateTime.UtcNow;
+
+            return Result.Success(image.Id);
+        }
+
+        public Result DeleteImage(AdvertImageId advertImageId)
+        {
+
+            if (Status != AdvertStatus.Draft)
+            {
+                return Result.Failure<AdvertImageId>(AdvertImageErrors.CantDeleteImageFromNonDraftAdvert);
+            }
+
+            var image = _images.Find(i => i.Id == advertImageId);
+
+            if (image is null)
+            {
+                return Result.Failure<AdvertImageId>(AdvertImageErrors.NotFound);
+            }
+
+            _images.Remove(image);
+
+            UpdatedAt = DateTime.UtcNow;
+
+            return Result.Success();
+        }
 
         public void Publish()
         {

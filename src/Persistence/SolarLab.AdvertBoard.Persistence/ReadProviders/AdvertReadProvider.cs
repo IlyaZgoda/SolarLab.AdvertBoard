@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
-using SolarLab.AdvertBoard.Contracts.Comments;
+using SolarLab.AdvertBoard.Contracts.Images;
 using SolarLab.AdvertBoard.Contracts.Users;
+using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Persistence.Extensions;
+using SolarLab.AdvertBoard.Persistence.Migrations;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
+using System.Security.Cryptography.X509Certificates;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SolarLab.AdvertBoard.Persistence.ReadProviders
 {
@@ -146,25 +150,34 @@ namespace SolarLab.AdvertBoard.Persistence.ReadProviders
                                  user.FullName,
                                  advert.PublishedAt.Value)).ToPagedAsync(page, pageSize);
         }
-    }
 
-    public class CommentReadProvider(ApplicationDbContext context) : ICommentReadProvider
-    {
-        public async Task<PaginationCollection<CommentItem>> GetCommentsByIdAsync(Guid advertId, int page, int pageSize) =>
-            await (from comment in context.Comments.AsNoTracking()
-                          join advert in context.Adverts.AsNoTracking()
-                          on comment.AdvertId equals advert.Id
-                          join user in context.AppUsers.AsNoTracking()
-                          on comment.AuthorId equals user.Id
-                          where advert.Id == advertId
-                          orderby comment.CreatedAt descending
-                          select new CommentItem(
-                              comment.Id,
-                              comment.AdvertId,
-                              comment.AuthorId,
-                              user.FullName,
-                              comment.Text.Value,
-                              comment.CreatedAt,
-                              comment.UpdatedAt)).ToPagedAsync(page, pageSize);
+        public async Task<Maybe<ImageResponse>> GetImageById(Guid id, string identityId)
+        {
+            var query = from image in context.Images.AsNoTracking()
+                        join advert in context.Adverts.AsNoTracking()
+                            on image.AdvertId equals advert.Id
+                        join user in context.AppUsers.AsNoTracking()
+                            on advert.AuthorId equals user.Id
+                        where image.Id == id
+                        select new
+                        {
+                            Image = image,
+                            AdvertStatus = advert.Status,
+                            IsOwner = user.IdentityId == identityId
+                        };
+
+            var result = await query.FirstOrDefaultAsync();
+
+            if (result?.AdvertStatus == AdvertStatus.Published || result?.IsOwner == true)
+            {
+                return new ImageResponse(
+                    result.Image.Content.Value,
+                    result.Image.ContentType.Value,
+                    result.Image.FileName.Value
+                );
+            }
+
+            return Maybe<ImageResponse>.None;
+        }
     }
 }

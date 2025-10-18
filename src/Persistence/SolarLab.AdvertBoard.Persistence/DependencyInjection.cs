@@ -44,6 +44,7 @@ namespace SolarLab.AdvertBoard.Persistence
 
             services.AddScoped<IAdvertReadProvider, AdvertReadProvider>();
             services.AddScoped<ICommentReadProvider, CommentReadProvider>();
+            services.AddScoped<IImageReadProvider, ImageReadProvider>();
             
             return services;
         }

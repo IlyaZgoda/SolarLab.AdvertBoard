@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Users;
@@ -77,6 +78,14 @@ namespace SolarLab.AdvertBoard.Persistence.Configurations
                 .HasForeignKey(a => a.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
+
+            builder.HasMany(a => a.Images)
+               .WithOne()
+               .HasForeignKey(i => i.AdvertId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Navigation(a => a.Images)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasIndex(a => a.AuthorId);
             builder.HasIndex(a => a.CategoryId);
