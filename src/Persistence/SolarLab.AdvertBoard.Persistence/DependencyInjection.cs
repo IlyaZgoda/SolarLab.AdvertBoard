@@ -8,7 +8,8 @@ using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Comments;
 using SolarLab.AdvertBoard.Domain.Users;
-using SolarLab.AdvertBoard.Persistence.ReadProviders;
+using SolarLab.AdvertBoard.Persistence.Read;
+using SolarLab.AdvertBoard.Persistence.Read.Providers;
 using SolarLab.AdvertBoard.Persistence.Repositories;
 using SolarLab.AdvertBoard.Persistence.Seeders;
 
@@ -19,6 +20,8 @@ namespace SolarLab.AdvertBoard.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationDbContext))));
+            services.AddDbContext<ReadDbContext>(options =>
                     options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationDbContext))));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

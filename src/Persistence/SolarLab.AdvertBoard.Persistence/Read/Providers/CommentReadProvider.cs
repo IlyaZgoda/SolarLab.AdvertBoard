@@ -4,7 +4,7 @@ using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.Persistence.Extensions;
 
-namespace SolarLab.AdvertBoard.Persistence.ReadProviders
+namespace SolarLab.AdvertBoard.Persistence.Read.Providers
 {
     public class CommentReadProvider(ApplicationDbContext context) : ICommentReadProvider
     {
