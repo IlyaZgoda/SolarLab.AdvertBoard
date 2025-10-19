@@ -4,7 +4,6 @@ using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Adverts.DeletePublished;
 using SolarLab.AdvertBoard.Domain.Adverts;
-using SolarLab.AdvertBoard.Domain.Adverts.Events;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Users;
@@ -62,9 +61,6 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Adverts.DeletePublish
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-
-            publishedAdvert.DomainEvents.Should().ContainSingle()
-                .Which.Should().BeOfType<PublishedAdvertDeletedDomainEvent>();
 
             _advertRepositoryMock.Verify(
                 x => x.Delete(It.Is<Advert>(a => a == publishedAdvert)),

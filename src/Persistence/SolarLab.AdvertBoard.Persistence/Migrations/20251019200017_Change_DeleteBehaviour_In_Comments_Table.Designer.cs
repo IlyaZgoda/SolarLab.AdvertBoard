@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SolarLab.AdvertBoard.Persistence;
@@ -11,9 +12,11 @@ using SolarLab.AdvertBoard.Persistence;
 namespace SolarLab.AdvertBoard.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251019200017_Change_DeleteBehaviour_In_Comments_Table")]
+    partial class Change_DeleteBehaviour_In_Comments_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -494,7 +497,7 @@ namespace SolarLab.AdvertBoard.Persistence.Migrations
                     b.HasOne("SolarLab.AdvertBoard.Domain.Adverts.Advert", null)
                         .WithMany()
                         .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SolarLab.AdvertBoard.Domain.Users.User", null)

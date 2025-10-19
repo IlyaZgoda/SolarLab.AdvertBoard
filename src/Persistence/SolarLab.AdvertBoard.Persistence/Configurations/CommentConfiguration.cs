@@ -53,7 +53,7 @@ namespace SolarLab.AdvertBoard.Persistence.Configurations
             builder.HasOne<Advert>()
                 .WithMany()
                 .HasForeignKey(c => c.AdvertId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
         }
     }

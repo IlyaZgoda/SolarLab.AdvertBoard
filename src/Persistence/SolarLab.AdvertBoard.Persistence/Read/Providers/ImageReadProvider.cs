@@ -3,7 +3,6 @@ using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
 using SolarLab.AdvertBoard.Contracts.Images;
 using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
-using SolarLab.AdvertBoard.Persistence.Read;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Providers
@@ -26,9 +25,6 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
             }
 
             return Maybe<ImageResponse>.None;
-
-
         }
-
     }
 }

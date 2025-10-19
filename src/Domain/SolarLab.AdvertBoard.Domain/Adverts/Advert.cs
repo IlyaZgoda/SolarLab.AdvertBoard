@@ -1,5 +1,4 @@
 ﻿using SolarLab.AdvertBoard.Domain.AdvertImages;
-using SolarLab.AdvertBoard.Domain.Adverts.Events;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Exceptions;
@@ -91,8 +90,6 @@ namespace SolarLab.AdvertBoard.Domain.Adverts
             {
                 throw new DomainException(AdvertErrors.CanOnlyUnpublishPublishedAdverts.Description);
             }
-
-            Raise(new PublishedAdvertDeletedDomainEvent(Id));
         }
 
         public void DeleteDraft()

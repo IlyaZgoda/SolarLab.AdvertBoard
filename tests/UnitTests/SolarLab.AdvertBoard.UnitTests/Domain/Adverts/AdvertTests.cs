@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SolarLab.AdvertBoard.Domain.Adverts;
-using SolarLab.AdvertBoard.Domain.Adverts.Events;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Exceptions;
@@ -86,23 +85,6 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
                 .WithMessage(AdvertErrors.CantPublishNonDraftAdvert.Description);
         }
 
-        [Fact]
-        public void Unpublish_Should_Raise_DomainEvent_For_Published_Advert()
-        {
-            // Arrange
-            var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
-            advert.Publish();
-
-            // Act
-            advert.Unpublish();
-
-            // Assert
-            var domainEvents = advert.DomainEvents.ToList();
-            domainEvents.Should().HaveCount(1);
-
-            var domainEvent = domainEvents.First().Should().BeOfType<PublishedAdvertDeletedDomainEvent>().Subject;
-            domainEvent.Id.Should().Be(advert.Id);
-        }
 
         [Fact]
         public void Unpublish_Should_Throw_When_Advert_Is_Not_Published()
