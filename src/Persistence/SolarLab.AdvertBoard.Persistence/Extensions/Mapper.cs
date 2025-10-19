@@ -1,10 +1,12 @@
 ﻿using SolarLab.AdvertBoard.Contracts.Adverts;
+using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.Contracts.Users;
+using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.Persistence.Read.Models;
 
 namespace SolarLab.AdvertBoard.Persistence.Extensions
 {
-    public static class MapperHelper
+    public static class Mapper
     {
         public static IQueryable<PublishedAdvertItem> ToPublishedAdvertItem(this IQueryable<AdvertReadModel> query)
         {
@@ -65,6 +67,18 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                            advert.Author.FullName,
                            advert.Author.ContactEmail,
                            advert.Author.PhoneNumber)));
+        }
+
+        public static IQueryable<CommentItem> ToCommentItem(this IQueryable<CommentReadModel> query)
+        {
+            return query.Select(comment => new CommentItem(
+                       comment.Id,
+                       comment.AdvertId,
+                       comment.AuthorId,
+                       comment.Author.FullName,
+                       comment.Text,
+                       comment.CreatedAt,
+                       comment.UpdatedAt));
         }
     }
 }

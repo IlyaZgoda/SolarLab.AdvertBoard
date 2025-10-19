@@ -45,9 +45,9 @@ namespace SolarLab.AdvertBoard.Persistence.Builders
         public AdvertQueryBuilder FilterByPriceRange(decimal? min, decimal? max)
         {
             if (min.HasValue)
-                _query = _query.Where(x => (decimal)x.Price >= min.Value);
+                _query = _query.Where(x => x.Price >= min.Value);
             if (max.HasValue)
-                _query = _query.Where(x => (decimal)x.Price <= max.Value);
+                _query = _query.Where(x => x.Price <= max.Value);
             return this;
         }
 

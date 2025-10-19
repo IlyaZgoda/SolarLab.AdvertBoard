@@ -6,7 +6,7 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Comments.GetByAdvertId
 {
-    public class GetCommentByAdvertIdQueryHandler(ICommentReadProvider commentReadProvider) 
+    public class GetCommentsByAdvertIdQueryHandler(ICommentReadProvider commentReadProvider) 
         : IQueryHandler<GetCommentsByAdvertIdQuery, PaginationCollection<CommentItem>>
     {
         public async Task<Result<PaginationCollection<CommentItem>>> Handle(

@@ -12,14 +12,13 @@ using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Providers
 {
-    public class AdvertReadProvider(ApplicationDbContext context, ReadDbContext context1) : IAdvertReadProvider
+    public class AdvertReadProvider(ReadDbContext context) : IAdvertReadProvider
     {
         public async Task<Maybe<AdvertDraftDetailsResponse>> GetAdvertDraftDetailsByIdAsync(Specification<IAdvertReadModel> spec)
         {
             var efSpec = spec.ToEf<AdvertReadModel, IAdvertReadModel>();
 
-            return await context1.Adverts
-                .AsNoTracking()
+            return await context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
                 .Where(efSpec)
@@ -31,8 +30,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
         {
             var efSpec = spec.ToEf<AdvertReadModel, IAdvertReadModel>();
 
-            return await context1.Adverts
-                .AsNoTracking()
+            return await context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
                 .Where(efSpec)
@@ -42,7 +40,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
 
         public async Task<PaginationCollection<PublishedAdvertItem>> GetPublishedAdvertsByFilterAsync(AdvertFilterRequest filter)
         {
-            var queryBuilder = new AdvertQueryBuilder(context1);
+            var queryBuilder = new AdvertQueryBuilder(context);
 
             return await queryBuilder
                 .WithCategory()
@@ -65,8 +63,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
         {
             var efSpec = spec.ToEf<AdvertReadModel, IAdvertReadModel>();
 
-            var query = context1.Adverts
-                .AsNoTracking()
+            var query = context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
                 .Where(efSpec)
@@ -84,8 +81,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
         {
             var efSpec = spec.ToEf<AdvertReadModel, IAdvertReadModel>();
 
-            var query = context1.Adverts
-                .AsNoTracking()
+            var query = context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
                 .Where(efSpec)

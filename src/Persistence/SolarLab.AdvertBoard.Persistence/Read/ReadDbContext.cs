@@ -82,6 +82,14 @@ namespace SolarLab.AdvertBoard.Persistence.Read
                 entity.Property(c => c.Text).HasColumnName("Text");
                 entity.Property(c => c.CreatedAt).HasColumnName("CreatedAt");
                 entity.Property(c => c.UpdatedAt).HasColumnName("UpdatedAt");
+
+                entity.HasOne(c => c.Advert)
+                     .WithMany(a => a.Comments)       
+                     .HasForeignKey(c => c.AdvertId);
+
+                entity.HasOne(c => c.Author)
+                     .WithMany(u => u.Comments)      
+                     .HasForeignKey(c => c.AuthorId);
             });
         }
     }
