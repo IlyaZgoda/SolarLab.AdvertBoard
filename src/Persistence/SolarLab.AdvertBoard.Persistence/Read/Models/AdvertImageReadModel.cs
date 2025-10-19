@@ -1,15 +1,19 @@
-﻿namespace SolarLab.AdvertBoard.Persistence.Read.Models
-{
-    public class AdvertImageReadModel
-    {
-        public Guid Id { get; set; }
-        public Guid AdvertId { get; set; }
-        public AdvertReadModel Advert { get; set; } = null!;
+﻿using SolarLab.AdvertBoard.Application.Abstractions.Read.Models;
 
-        public string FileName { get; set; } = null!;
-        public string ContentType { get; set; } = null!;
-        public byte[] Content { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
+namespace SolarLab.AdvertBoard.Persistence.Read.Models
+{
+    public class AdvertImageReadModel : IAdvertImageReadModel
+    {
+        public Guid Id { get; }
+        public Guid AdvertId { get; }
+        public AdvertReadModel Advert { get; } = null!;
+
+        IAdvertReadModel IAdvertImageReadModel.Advert => Advert; 
+
+        public string FileName { get; } = null!;
+        public string ContentType { get; } = null!;
+        public byte[] Content { get; } = null!;
+        public DateTime CreatedAt { get; }
     }
 
 }

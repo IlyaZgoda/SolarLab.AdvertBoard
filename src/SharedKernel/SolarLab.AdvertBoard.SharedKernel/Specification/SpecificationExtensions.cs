@@ -68,5 +68,19 @@ namespace SolarLab.AdvertBoard.SharedKernel.Specification
             
             return new NotSpecification<T>(specification);
         }
+
+        public static Specification<TTarget> ToEf<TTarget, TSource>(
+          this Specification<TSource> sourceSpec)
+          where TTarget : TSource
+        {
+            var sourceExpr = sourceSpec.PredicateExpression;
+            var newParameter = Expression.Parameter(typeof(TTarget), sourceExpr.Parameters[0].Name);
+
+            var visitor = new ExpressionRebinder<TSource, TTarget>(newParameter);
+            var newBody = visitor.Visit(sourceExpr.Body)!;
+
+            var lambda = Expression.Lambda<Func<TTarget, bool>>(newBody, newParameter);
+            return Specification<TTarget>.FromPredicate(lambda);
+        }
     }
 }

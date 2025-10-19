@@ -1,17 +1,23 @@
-﻿namespace SolarLab.AdvertBoard.Persistence.Read.Models
+﻿using SolarLab.AdvertBoard.Application.Abstractions.Read.Models;
+
+namespace SolarLab.AdvertBoard.Persistence.Read.Models
 {
-    public class CommentReadModel
+    public class CommentReadModel : ICommentReadModel
     {
-        public Guid Id { get; set; }
-        public Guid AdvertId { get; set; }
-        public AdvertReadModel Advert { get; set; } = null!;
+        public Guid Id { get; }
+        public Guid AdvertId { get; }
+        public AdvertReadModel Advert { get; } = null!;
 
-        public Guid AuthorId { get; set; }
-        public UserReadModel Author { get; set; } = null!;
+        public Guid AuthorId { get; }
+        public UserReadModel Author { get; } = null!;
 
-        public string Text { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public string Text { get; } = null!;
+        public DateTime CreatedAt { get; }
+        public DateTime? UpdatedAt { get; }
+
+        IAdvertReadModel ICommentReadModel.Advert => Advert;
+
+        IUserReadModel ICommentReadModel.Author => Author;
     }
 
 }

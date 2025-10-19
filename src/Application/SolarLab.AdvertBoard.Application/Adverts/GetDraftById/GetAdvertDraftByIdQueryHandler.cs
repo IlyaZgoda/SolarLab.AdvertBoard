@@ -1,11 +1,12 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
+using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
+using SolarLab.AdvertBoard.Application.Adverts.Specifications;
 using SolarLab.AdvertBoard.Contracts.Adverts;
-using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
+using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.GetDraftById
 {
@@ -16,7 +17,11 @@ namespace SolarLab.AdvertBoard.Application.Adverts.GetDraftById
     {
         public async Task<Result<AdvertDraftDetailsResponse>> Handle(GetAdvertDraftByIdQuery request, CancellationToken cancellationToken)
         {
-            var response = await advertReadService.GetAdvertDraftDetailsByIdAsync(new AdvertId(request.Id));
+            var byId = new AdvertWithIdSpec(request.Id);
+            var draft = new AdvertDraftSpec();
+            var spec = byId.And(draft);
+
+            var response = await advertReadService.GetAdvertDraftDetailsByIdAsync(spec);
 
             if (response.HasNoValue)
             {

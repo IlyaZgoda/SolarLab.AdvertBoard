@@ -1,5 +1,5 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
+using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.SharedKernel.Result;

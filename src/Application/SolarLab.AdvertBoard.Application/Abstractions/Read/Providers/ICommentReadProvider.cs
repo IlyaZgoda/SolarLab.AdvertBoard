@@ -1,7 +1,7 @@
 ﻿using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Contracts.Comments;
 
-namespace SolarLab.AdvertBoard.Application.Abstractions.ReadProviders
+namespace SolarLab.AdvertBoard.Application.Abstractions.Read.Providers
 {
     public interface ICommentReadProvider
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
+using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
 using SolarLab.AdvertBoard.Contracts.Base;
 using SolarLab.AdvertBoard.Contracts.Comments;
 using SolarLab.AdvertBoard.Persistence.Extensions;

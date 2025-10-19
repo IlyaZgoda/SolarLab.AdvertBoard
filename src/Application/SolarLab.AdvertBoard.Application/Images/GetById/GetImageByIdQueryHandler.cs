@@ -1,6 +1,6 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
+using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
 using SolarLab.AdvertBoard.Contracts.Images;
 using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Errors;

@@ -1,26 +1,35 @@
-﻿using SolarLab.AdvertBoard.Domain.Adverts;
+﻿using SolarLab.AdvertBoard.Application.Abstractions.Read.Models;
+using SolarLab.AdvertBoard.Domain.Adverts;
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Models
 {
-    public class AdvertReadModel
+    public class AdvertReadModel : IAdvertReadModel
     {
-        public Guid Id { get; set; }
-        public Guid AuthorId { get; set; }
-        public UserReadModel Author { get; set; } = null!;
+        public Guid Id { get; }
+        public Guid AuthorId { get; }
+        public UserReadModel Author { get; } = null!;
 
-        public Guid CategoryId { get; set; }
-        public CategoryReadModel Category { get; set; } = null!;
+        public Guid CategoryId { get; }
+        public CategoryReadModel Category { get; } = null!;
 
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public decimal Price { get; set; }
-        public AdvertStatus Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? PublishedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public string Title { get; } = null!;
+        public string Description { get; } = null!;
+        public decimal Price { get; }
+        public AdvertStatus Status { get; }
+        public DateTime CreatedAt { get; }
+        public DateTime? PublishedAt { get; }
+        public DateTime? UpdatedAt { get; }
 
-        public List<AdvertImageReadModel> Images { get; set; } = new();
-        public List<CommentReadModel> Comments { get; set; } = new();
+        public List<AdvertImageReadModel> Images { get; } = [];
+        public List<CommentReadModel> Comments { get; } = [];
+
+        IUserReadModel IAdvertReadModel.Author => Author;
+
+        ICategoryReadModel IAdvertReadModel.Category => Category;
+
+        IReadOnlyList<IAdvertImageReadModel> IAdvertReadModel.Images => Images;
+
+        IReadOnlyList<ICommentReadModel> IAdvertReadModel.Comments => Comments;
     }
 
 }

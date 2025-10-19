@@ -2,7 +2,7 @@
 using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
-namespace SolarLab.AdvertBoard.Application.Abstractions.ReadProviders
+namespace SolarLab.AdvertBoard.Application.Abstractions.Read.Providers
 {
     public interface IImageReadProvider
     {

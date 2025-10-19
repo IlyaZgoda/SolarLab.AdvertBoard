@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SolarLab.AdvertBoard.Application.Abstractions;
-using SolarLab.AdvertBoard.Application.Abstractions.ReadProviders;
+using SolarLab.AdvertBoard.Application.Abstractions.Read.Providers;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Comments;

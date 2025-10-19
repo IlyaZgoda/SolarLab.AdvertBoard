@@ -1,19 +1,25 @@
-﻿namespace SolarLab.AdvertBoard.Persistence.Read.Models
+﻿using SolarLab.AdvertBoard.Application.Abstractions.Read.Models;
+
+namespace SolarLab.AdvertBoard.Persistence.Read.Models
 {
-    public class UserReadModel
+    public class UserReadModel : IUserReadModel
     {
-        public Guid Id { get; set; }
-        public string IdentityId { get; set; } = null!;
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string? MiddleName { get; set; }
-        public string ContactEmail { get; set; } = null!;
-        public string? PhoneNumber { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public Guid Id { get; }
+        public string IdentityId { get; } = null!;
+        public string FirstName { get; } = null!;
+        public string LastName { get; } = null!;
+        public string? MiddleName { get; }
+        public string ContactEmail { get; } = null!;
+        public string? PhoneNumber { get; }
+        public DateTime CreatedAt { get; }
 
         public string FullName => $"{LastName} {FirstName} {MiddleName}";
 
-        public List<AdvertReadModel> Adverts { get; set; } = new();
-        public List<CommentReadModel> Comments { get; set; } = new();
+        public List<AdvertReadModel> Adverts { get; } = [];
+        public List<CommentReadModel> Comments { get; } = [];
+
+        IReadOnlyList<IAdvertReadModel> IUserReadModel.Adverts => Adverts;
+
+        IReadOnlyList<ICommentReadModel> IUserReadModel.Comments => Comments;
     }
 }
