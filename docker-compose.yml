@@ -48,6 +48,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - advertboard-network
+ 
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - advertboard-network
 
 networks:
   advertboard-network:

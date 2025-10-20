@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
+using SolarLab.AdvertBoard.Application.Abstractions.Caching;
 using SolarLab.AdvertBoard.Application.Abstractions.Emails;
 using SolarLab.AdvertBoard.Application.Abstractions.Links;
 using SolarLab.AdvertBoard.Application.Abstractions.Notifications;
 using SolarLab.AdvertBoard.Infrastructure.Authentication;
+using SolarLab.AdvertBoard.Infrastructure.Caching;
 using SolarLab.AdvertBoard.Infrastructure.Emails;
 using SolarLab.AdvertBoard.Infrastructure.Links;
 using SolarLab.AdvertBoard.Infrastructure.Notifications;
@@ -59,6 +61,13 @@ namespace SolarLab.AdvertBoard.Infrastructure
             services.AddScoped<IEmailNotificationSender, EmailNotificationSender>();  
             services.AddScoped<IUriGenerator, UriGenerator>();  
             services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+            });
+
+            services.AddScoped<ICacheProvider, RedisCacheProvider>();
 
             return services;
         }
