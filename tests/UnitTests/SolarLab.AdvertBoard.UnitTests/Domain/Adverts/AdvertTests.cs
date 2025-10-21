@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
@@ -60,6 +61,10 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
         {
             // Arrange
             var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
+            var imageResult = advert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
 
             // Act
             advert.Publish();
@@ -75,6 +80,10 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
         {
             // Arrange
             var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
+            var imageResult = advert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
             advert.Publish(); // Now it's published
 
             // Act
@@ -119,6 +128,12 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
         {
             // Arrange
             var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
+
+            var imageResult = advert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+
             advert.Publish(); // Now it's published
 
             // Act
@@ -187,6 +202,11 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
         {
             // Arrange
             var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
+            var imageResult = advert.AddImage(
+              ImageFileName.Create("test.jpg").Value,
+              ImageContentType.Create("image/jpeg").Value,
+              ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+
             advert.Publish(); 
 
             var newTitle = AdvertTitle.Create("New Title").Value;
@@ -289,6 +309,10 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
             var originalAuthorId = advert.AuthorId;
             var originalCreatedAt = advert.CreatedAt;
 
+            var imageResult = advert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
             // Act
             advert.Publish();
 
@@ -304,6 +328,10 @@ namespace SolarLab.AdvertBoard.UnitTests.Domain.Adverts
         {
             // Arrange
             var advert = Advert.CreateDraft(_authorId, _categoryId, _title, _description, _price);
+            var imageResult = advert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
 
             // Act & Assert
             advert.Status.Should().Be(AdvertStatus.Draft);

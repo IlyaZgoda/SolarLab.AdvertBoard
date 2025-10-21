@@ -3,6 +3,7 @@ using Moq;
 using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Adverts.PublishDraft;
+using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
@@ -39,6 +40,12 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Adverts.PublishDraft
             var command = new PublishAdvertDraftCommand(Guid.NewGuid());
             var draftAdvert = CreateTestDraftAdvert();
             var currentUserId = "auth0|current-user";
+
+
+            var imageResult = draftAdvert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
 
             _advertRepositoryMock
                 .Setup(x => x.GetByIdAsync(It.Is<AdvertId>(id => id.Id == command.Id)))
@@ -134,6 +141,11 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Adverts.PublishDraft
             var draftAdvert = CreateTestDraftAdvert();
             var currentUserId = "auth0|current-user";
 
+            var imageResult = draftAdvert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+
             _advertRepositoryMock
                 .Setup(x => x.GetByIdAsync(It.Is<AdvertId>(id => id.Id == expectedAdvertId)))
                 .ReturnsAsync(draftAdvert);
@@ -168,6 +180,11 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Adverts.PublishDraft
             var command = new PublishAdvertDraftCommand(Guid.NewGuid());
             var draftAdvert = CreateTestDraftAdvert();
             var expectedCurrentUserId = "auth0|specific-user";
+
+            var imageResult = draftAdvert.AddImage(
+             ImageFileName.Create("test.jpg").Value,
+             ImageContentType.Create("image/jpeg").Value,
+             ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
 
             _advertRepositoryMock
                 .Setup(x => x.GetByIdAsync(It.IsAny<AdvertId>()))
