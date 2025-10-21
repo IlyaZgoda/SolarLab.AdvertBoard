@@ -8,9 +8,15 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Images.UploadImage
 {
+    /// <summary>
+    /// Обработчик команды <see cref="UploadAdvertImageCommand"/>.
+    /// </summary>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
     public class UploadAdvertImageCommandHandler(IAdvertRepository advertRepository, IUnitOfWork unitOfWork) 
         : ICommandHandler<UploadAdvertImageCommand, ImageIdResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<ImageIdResponse>> Handle(UploadAdvertImageCommand request, CancellationToken cancellationToken)
         {
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.AdvertId));
@@ -32,6 +38,11 @@ namespace SolarLab.AdvertBoard.Application.Images.UploadImage
             }
 
             var imageId = advert.Value.AddImage(fileName.Value, contentType.Value, content.Value);
+
+            if (imageId.IsFailure)
+            {
+                return Result.Failure<ImageIdResponse>(imageId.Error);
+            }
 
             advertRepository.Update(advert.Value);
 

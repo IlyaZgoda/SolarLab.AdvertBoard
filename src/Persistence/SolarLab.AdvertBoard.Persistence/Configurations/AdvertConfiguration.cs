@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Users;
 
 namespace SolarLab.AdvertBoard.Persistence.Configurations
 {
+    /// <summary>
+    /// Конфигурация Entity Framework для сущности Advert.
+    /// </summary>
     internal class AdvertConfiguration : IEntityTypeConfiguration<Advert>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<Advert> builder)
         {
             builder.ToTable("Adverts");

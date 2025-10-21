@@ -11,6 +11,14 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.CreateDraft
 {
+    /// <summary>
+    /// Обработчик команды <see cref="CreateAdvertDraftCommand"/>.
+    /// </summary>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями</param>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями</param>
+    /// <param name="categoryRepository">Репозиторий для работы с категориями</param>
+    /// <param name="unitOfWork">Unit of work</param>
     public class CreateAdvertDraftCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 
         IUserRepository userRepository, 
@@ -18,6 +26,7 @@ namespace SolarLab.AdvertBoard.Application.Adverts.CreateDraft
         ICategoryRepository categoryRepository,
         IUnitOfWork unitOfWork) : ICommandHandler<CreateAdvertDraftCommand, AdvertIdResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<AdvertIdResponse>> Handle(CreateAdvertDraftCommand request, CancellationToken cancellationToken)
         {
             var identityId = userIdentifierProvider.IdentityUserId;

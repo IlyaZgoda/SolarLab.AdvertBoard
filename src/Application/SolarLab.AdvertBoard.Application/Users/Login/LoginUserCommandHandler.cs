@@ -6,9 +6,15 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Users.Login
 {
+    /// <summary>
+    /// Обработчик комманды <see cref="LoginUserCommand"/>
+    /// </summary>
+    /// <param name="userManagerProvider">Провайдер для управления пользователя в системе аутентификации.</param>
+    /// <param name="tokenProvider">Провайдер для создания JWT.</param>
     public class LoginUserCommandHandler(IUserManagerProvider userManagerProvider, ITokenProvider tokenProvider)
         : ICommandHandler<LoginUserCommand, JwtResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<JwtResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var identityUserId = await userManagerProvider.ValidateIdentityUserAsync(request.Email, request.Password);

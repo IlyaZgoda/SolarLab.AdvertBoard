@@ -1,5 +1,8 @@
 ﻿namespace SolarLab.AdvertBoard.SharedKernel
 {
+    /// <summary>
+    /// Статический класс с константами типов ошибок.
+    /// </summary>
     public static class ErrorTypes
     {
         public const string InvalidCredentials = "AUTH_INVALID_CREDENTIALS";

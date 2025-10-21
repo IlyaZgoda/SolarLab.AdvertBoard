@@ -6,10 +6,15 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertsByFilter
 {
-    public class GetPublishedAdvertsByFilterQueryHandler(IAdvertReadProvider advertReadService) 
+    /// <summary>
+    /// Обработчик запроса <see cref="GetPublishedAdvertsByFilterQuery"/>.
+    /// </summary>
+    /// <param name="advertReadProvider">Провайдер для чтения данных объявлений.</param>
+    public class GetPublishedAdvertsByFilterQueryHandler(IAdvertReadProvider advertReadProvider) 
         : IQueryHandler<GetPublishedAdvertsByFilterQuery, PaginationCollection<PublishedAdvertItem>>
     {
+        /// <inheritdoc/>
         public async Task<Result<PaginationCollection<PublishedAdvertItem>>> Handle(GetPublishedAdvertsByFilterQuery request, CancellationToken cancellationToken) =>
-            await advertReadService.GetPublishedAdvertsByFilterAsync(request.Filter);
+            await advertReadProvider.GetPublishedAdvertsByFilterAsync(request.Filter);
     }
 }

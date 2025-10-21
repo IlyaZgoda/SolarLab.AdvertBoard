@@ -8,10 +8,16 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Images.GetById
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetImageByIdQuery"/>.
+    /// </summary>
+    /// <param name="imageReadProvider">Провайдер для чтения данных изображений.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
     public class GetImageByIdQueryHandler(
         IImageReadProvider imageReadProvider, 
         IUserIdentifierProvider userIdentifierProvider) : IQueryHandler<GetImageByIdQuery, ImageResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<ImageResponse>> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
         {
             var image = await imageReadProvider.GetImageById(new AdvertImageId(request.Id), userIdentifierProvider.IdentityUserId);

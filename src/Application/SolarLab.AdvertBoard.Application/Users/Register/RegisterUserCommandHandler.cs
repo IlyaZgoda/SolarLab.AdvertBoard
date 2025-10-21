@@ -7,11 +7,18 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Users.Register
 {
+    /// <summary>
+    /// Обработчик команды <see cref="RegisterUserCommand"/>
+    /// </summary>
+    /// <param name="userManagerProvider">Провайдер для управления пользователями в системе аутентификации.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
     public class RegisterUserCommandHandler(
         IUserManagerProvider userManagerProvider, 
         IUserRepository userRepository, 
         IUnitOfWork unitOfWork) : ICommandHandler<RegisterUserCommand, UserIdResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<UserIdResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {  
             var firstNameResult = FirstName.Create(request.FirstName);

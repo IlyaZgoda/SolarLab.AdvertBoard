@@ -8,12 +8,20 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.PublishDraft
 {
+    /// <summary>
+    /// Обработчик команды <see cref="PublishAdvertDraftCommand"/>.
+    /// </summary>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
     public class PublishAdvertDraftCommandHandler(
         IAdvertRepository advertRepository,
         IUnitOfWork unitOfWork,
         IUserIdentifierProvider userIdentifierProvider,
         IUserRepository userRepository) : ICommandHandler<PublishAdvertDraftCommand>
     {
+        /// <inheritdoc/>
         public async Task<Result> Handle(PublishAdvertDraftCommand request, CancellationToken cancellationToken)
         {
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.Id));

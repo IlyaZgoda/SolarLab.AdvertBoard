@@ -7,8 +7,13 @@ using SolarLab.AdvertBoard.Persistence.Extensions;
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Providers
 {
+    /// <summary>
+    /// Провайдер для чтения данных комментариев.
+    /// </summary>
+    /// <param name="context">Контекст (для чтения) базы данных.</param>
     public class CommentReadProvider(ReadDbContext context) : ICommentReadProvider
     {
+        /// <inheritdoc/>
         public async Task<PaginationCollection<CommentItem>> GetCommentsByIdAsync(Guid advertId, int page, int pageSize)
         {
             var queryBuilder = new CommentQueryBuilder(context);

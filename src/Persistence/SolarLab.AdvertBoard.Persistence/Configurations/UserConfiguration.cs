@@ -5,8 +5,12 @@ using SolarLab.AdvertBoard.Domain.Users;
 
 namespace SolarLab.AdvertBoard.Persistence.Configurations
 {
+    /// <summary>
+    /// Конфигурация Entity Framework для сущности User.
+    /// </summary>
     internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");

@@ -20,13 +20,30 @@ using SolarLab.AdvertBoard.SharedKernel.Result.Methods.Extensions;
 
 namespace SolarLab.AdvertBoard.Api.Controllers
 {
+    /// <summary>
+    /// Контроллер для управления объявлениями.
+    /// </summary>
+    /// <param name="mediator">Медиатор для отправки команд и запросов.</param>
+    /// <param name="resultErrorHandler">Обработчик ошибок для преобразования в HTTP ответы.</param>
     [Authorize]
     public class AdvertsController(
         IMediator mediator,
         ResultErrorHandler resultErrorHandler) : ControllerBase
     {
+        /// <summary>
+        /// Создает новый черновик объявления.
+        /// </summary>
+        /// <param name="createDraftRequest">Данные для создания черновика объявления.</param>
+        /// <returns>
+        /// 201 Created с идентификатором созданного черновика при успешном создании.
+        /// 400 Bad Request при неверных данных или ошибках валидации.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если категория не найдена.
+        /// 422 Unprocessable Entity при нарушении бизнес-правил (нелистовая категория).
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpPost(ApiRoutes.Adverts.CreateDraft)]
-        [ProducesResponseType(typeof(AdvertIdResponse), 200)]
+        [ProducesResponseType(typeof(AdvertIdResponse), 201)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 422)]
@@ -37,8 +54,24 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new CreateAdvertDraftCommand(
                     request.CategoryId, request.Title, request.Description, request.Price))
                 .Bind(command => mediator.Send(command))
-                .Match(id => Ok(id), error => resultErrorHandler.Handle(error));
+                .Match(
+                    id => Created(nameof(GetDraftAdvertById), new {id}), 
+                    error => resultErrorHandler.Handle(error)
+                );
 
+        /// <summary>
+        /// Обновляет черновик объявления.
+        /// </summary>
+        /// <param name="id">Идентификатор черновика объявления.</param>
+        /// <param name="updateDraftRequest">Данные для обновления черновика.</param>
+        /// <returns>
+        /// 204 No Content при успешном обновлении.
+        /// 400 Bad Request при неверных данных или ошибках валидации.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если черновик не найден.
+        /// 422 Unprocessable Entity при нарушении бизнес-правил.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpPatch(ApiRoutes.Adverts.UpdateDraft)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -53,17 +86,35 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Получает черновик объявления по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор черновика объявления.</param>
+        /// <returns>
+        /// 200 OK с данными черновика при успешном получении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если черновик не найден.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpGet(ApiRoutes.Adverts.GetDraft)]
         [ProducesResponseType(typeof(AdvertDraftDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> GetDraftAdvertById(Guid id) =>
-            await Result.Create(new GetAdvertDraftByIdQuery(id), Error.None)
-                .Map(request => new GetAdvertDraftByIdQuery(request.Id))
-                .Bind(command => mediator.Send(command))
+            await mediator.Send(new GetAdvertDraftByIdQuery(id))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Удаляет черновик объявления.
+        /// </summary>
+        /// <param name="id">Идентификатор черновика объявления.</param>
+        /// <returns>
+        /// 204 No Content при успешном удалении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если черновик не найден.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpDelete(ApiRoutes.Adverts.DeleteDraft)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
@@ -75,41 +126,75 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Публикует черновик объявления.
+        /// </summary>
+        /// <param name="id">Идентификатор черновика объявления.</param>
+        /// <returns>
+        /// 204 No Content при успешной публикации.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если черновик не найден.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpPatch(ApiRoutes.Adverts.PublishDraft)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> PublishDraft(Guid id) =>
-            await Result.Create(new PublishAdvertDraftCommand(id), Error.None)
-                .Map(request => new PublishAdvertDraftCommand(request.Id))
-                .Bind(command => mediator.Send(command))
+            await mediator.Send(new PublishAdvertDraftCommand(id))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Удаляет опубликованное объявление.
+        /// </summary>
+        /// <param name="id">Идентификатор опубликованного объявления.</param>
+        /// <returns>
+        /// 204 No Content при успешном удалении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если объявление не найдено.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpDelete(ApiRoutes.Adverts.DeletePublished)]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> DeletePublished(Guid id) =>
-            await Result.Create(new DeletePublishedAdvertCommand(id), Error.None)
-                .Map(request => new DeletePublishedAdvertCommand(request.Id))
-                .Bind(command => mediator.Send(command))
+            await mediator.Send(new DeletePublishedAdvertCommand(id))
                 .Match(NoContent, error => resultErrorHandler.Handle(error));
 
-        [AllowAnonymous] //ДЛЯ ТЕСТА
+        /// <summary>
+        /// Получает опубликованное объявление по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор опубликованного объявления.</param>
+        /// <returns>
+        /// 200 OK с данными опубликованного объявления при успешном получении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если объявление не найдено.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
+        [AllowAnonymous] 
         [HttpGet(ApiRoutes.Adverts.GetPublished)]
         [ProducesResponseType(typeof(PublishedAdvertDetailsResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> GetPublishedAdvertById(Guid id) =>
-            await Result.Create(new GetPublishedAdvertDetailsByIdQuery(id), Error.None)
-                .Map(request => new GetPublishedAdvertDetailsByIdQuery(request.Id))
-                .Bind(command => mediator.Send(command))
+            await mediator.Send(new GetPublishedAdvertDetailsByIdQuery(id))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
-        [AllowAnonymous] //ДЛЯ ТЕСТА
+        /// <summary>
+        /// Получает опубликованные объявления по фильтру.
+        /// </summary>
+        /// <param name="filter">Параметры фильтрации и пагинации.</param>
+        /// <returns>
+        /// 200 OK с пагинированной коллекцией объявлений при успешном получении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если объявления не найдены.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
+        [AllowAnonymous] 
         [HttpGet(ApiRoutes.Adverts.GetPublishedByFilter)]
         [ProducesResponseType(typeof(PaginationCollection<PublishedAdvertItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
@@ -121,6 +206,16 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Получает черновики объявлений текущего пользователя.
+        /// </summary>
+        /// <param name="getUserAdvertDraftsRequest">Параметры пагинации.</param>
+        /// <returns>
+        /// 200 OK с пагинированной коллекцией черновиков при успешном получении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если черновики не найдены.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpGet(ApiRoutes.Adverts.GetMyDrafts)]
         [ProducesResponseType(typeof(PaginationCollection<AdvertDraftItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
@@ -132,6 +227,16 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(response => Ok(response), error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Получает опубликованные объявления текущего пользователя.
+        /// </summary>
+        /// <param name="getUserPublishedAdvertsRequest">Параметры пагинации.</param>
+        /// <returns>
+        /// 200 OK с пагинированной коллекцией опубликованных объявлений при успешном получении.
+        /// 401 Unauthorized при отсутствии аутентификации.
+        /// 404 Not Found если объявления не найдены.
+        /// 500 Internal Server Error при внутренней ошибке сервера.
+        /// </returns>
         [HttpGet(ApiRoutes.Adverts.GetMyPublished)]
         [ProducesResponseType(typeof(PaginationCollection<PublishedAdvertItem>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]

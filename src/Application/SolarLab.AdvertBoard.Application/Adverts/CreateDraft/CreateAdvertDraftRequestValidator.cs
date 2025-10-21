@@ -1,13 +1,18 @@
 ﻿using FluentValidation;
-using SolarLab.AdvertBoard.Application.Extensions;
 using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.CreateDraft
 {
+    /// <summary>
+    /// Валидатор запроса на создание черновика объявления.
+    /// </summary>
     public class CreateAdvertDraftRequestValidator : AbstractValidator<CreateAdvertDraftRequest>
     {
+        /// <summary>
+        /// Инициализирует правила валидации.
+        /// </summary>
         public CreateAdvertDraftRequestValidator()
         {
             RuleFor(x => x.Title)

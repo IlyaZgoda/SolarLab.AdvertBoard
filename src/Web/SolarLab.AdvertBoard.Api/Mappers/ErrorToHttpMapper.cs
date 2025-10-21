@@ -2,8 +2,17 @@
 
 namespace SolarLab.AdvertBoard.Api.Mappers
 {
+    /// <summary>
+    /// Маппер для преобразования доменных ошибок в соответствующие HTTP статус-коды.
+    /// </summary>
+
     public class ErrorToHttpMapper
     {
+        /// <summary>
+        /// Преобразует доменную ошибку в соответствующий HTTP статус-код.
+        /// </summary>
+        /// <param name="error">Доменная ошибка.</param>
+        /// <returns>HTTP статус-код, соответствующий типу ошибки.</returns>
         public int Map(Error error) =>
          error.Code switch
          {

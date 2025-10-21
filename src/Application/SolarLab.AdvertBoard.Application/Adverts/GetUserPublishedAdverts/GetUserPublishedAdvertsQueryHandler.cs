@@ -9,17 +9,23 @@ using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.GetUserPublishedAdverts
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetUserPublishedAdvertsQuery"/>.
+    /// </summary>
+    /// <param name="advertReadProvider">Провайдер для чтения данных объявлений</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
     public class GetUserPublishedAdvertsQueryHandler(
-        IAdvertReadProvider advertReadService, 
+        IAdvertReadProvider advertReadProvider, 
         IUserIdentifierProvider userIdentifierProvider) : IQueryHandler<GetUserPublishedAdvertsQuery, PaginationCollection<PublishedAdvertItem>>
     {
+        /// <inheritdoc/>
         public async Task<Result<PaginationCollection<PublishedAdvertItem>>> Handle(GetUserPublishedAdvertsQuery request, CancellationToken cancellationToken)
         {
             var byUserIdentity = new AdvertByUserIdentitySpec(userIdentifierProvider.IdentityUserId);
             var published = new PublishedAdvertSpec();
             var spec = byUserIdentity.And(published);
 
-            return await advertReadService.GetUserPublishedAdverts(request.Page, request.PageSize, spec);
+            return await advertReadProvider.GetUserPublishedAdverts(request.Page, request.PageSize, spec);
         }
             
     }

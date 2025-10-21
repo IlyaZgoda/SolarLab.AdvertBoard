@@ -8,10 +8,15 @@ using SolarLab.AdvertBoard.Contracts.Mails;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Emails
 {
+    /// <summary>
+    /// Сервис для отправки электронных писем.
+    /// </summary>
+    /// <param name="options">Опции SMTP сервера.</param>
     public class SmtpEmailSender(IOptions<SmtpOptions> options) : IEmailSender
     {
         private readonly SmtpOptions _options = options.Value;
 
+        /// <inheritdoc/>
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
             var email = new MimeMessage

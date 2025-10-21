@@ -10,18 +10,25 @@ using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.GetDraftById
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetAdvertDraftByIdQuery"/>.
+    /// </summary>
+    /// <param name="advertReadProvider">Провайдер для чтения данных объявлений.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
     public class GetAdvertByIdQueryHandler(
-       IAdvertReadProvider advertReadService,
+       IAdvertReadProvider advertReadProvider,
        IUserIdentifierProvider userIdentifierProvider,
        IUserRepository userRepository) : IQueryHandler<GetAdvertDraftByIdQuery, AdvertDraftDetailsResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<AdvertDraftDetailsResponse>> Handle(GetAdvertDraftByIdQuery request, CancellationToken cancellationToken)
         {
             var byId = new AdvertWithIdSpec(request.Id);
             var draft = new AdvertDraftSpec();
             var spec = byId.And(draft);
 
-            var response = await advertReadService.GetAdvertDraftDetailsByIdAsync(spec);
+            var response = await advertReadProvider.GetAdvertDraftDetailsByIdAsync(spec);
 
             if (response.HasNoValue)
             {

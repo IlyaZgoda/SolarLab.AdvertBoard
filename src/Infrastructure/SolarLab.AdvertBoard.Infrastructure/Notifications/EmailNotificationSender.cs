@@ -4,8 +4,13 @@ using SolarLab.AdvertBoard.Contracts.Mails;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Notifications
 {
+    /// <summary>
+    /// Сервис для отправки уведомлений по электронной почте.
+    /// </summary>
+    /// <param name="emailSender">Сервис для отправки электронных писем.</param>
     public class EmailNotificationSender(IEmailSender emailSender) : IEmailNotificationSender
     {
+        /// <inheritdoc/>
         public async Task SendConfirmationEmail(ConfirmationEmail confirmationEmail)
         {
             var htmlBody = $@"

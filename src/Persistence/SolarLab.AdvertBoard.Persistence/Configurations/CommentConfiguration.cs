@@ -6,8 +6,12 @@ using SolarLab.AdvertBoard.Domain.Users;
 
 namespace SolarLab.AdvertBoard.Persistence.Configurations
 {
+    /// <summary>
+    /// Конфигурация Entity Framework для сущности Comment.
+    /// </summary>
     internal class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.ToTable("Comments");

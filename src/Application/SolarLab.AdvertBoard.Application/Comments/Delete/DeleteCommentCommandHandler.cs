@@ -8,12 +8,20 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Comments.Delete
 {
+    /// <summary>
+    /// Обработчик команды <see cref="DeleteCommentCommand"/>.
+    /// </summary>
+    /// <param name="commentRepository">Репозиторий для работы с комментариями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
     public class DeleteCommentCommandHandler(
         ICommentRepository commentRepository, 
         IUnitOfWork unitOfWork, 
         IUserIdentifierProvider userIdentifierProvider, 
         IUserRepository userRepository) : ICommandHandler<DeleteCommentCommand>
     {
+        /// <inheritdoc/>
         public async Task<Result> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
             var comment = await commentRepository.GetByIdAsync(new CommentId(request.Id));

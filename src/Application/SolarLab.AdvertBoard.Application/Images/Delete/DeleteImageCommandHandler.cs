@@ -9,12 +9,20 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Images.Delete
 {
+    /// <summary>
+    /// Обработчик команды <see cref="DeleteImageCommand"/>.
+    /// </summary>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получений идентификатора текущего аутентифицированного пользователя.</param>
     public class DeleteImageCommandHandler(
         IAdvertRepository advertRepository, 
         IUnitOfWork unitOfWork, 
         IUserRepository userRepository,
         IUserIdentifierProvider userIdentifierProvider) : ICommandHandler<DeleteImageCommand>
     {
+        /// <inheritdoc/>
         public async Task<Result> Handle(DeleteImageCommand request, CancellationToken cancellationToken)
         {
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.AdvertId));

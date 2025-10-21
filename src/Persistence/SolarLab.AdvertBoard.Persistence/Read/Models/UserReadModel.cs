@@ -2,6 +2,9 @@
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Models
 {
+    /// <summary>
+    /// Read модель для пользователя.
+    /// </summary>
     public class UserReadModel : IUserReadModel
     {
         public Guid Id { get; }

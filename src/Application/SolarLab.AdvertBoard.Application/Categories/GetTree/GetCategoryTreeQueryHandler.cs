@@ -5,10 +5,15 @@ using SolarLab.AdvertBoard.Contracts.Categories;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Errors;
 using SolarLab.AdvertBoard.SharedKernel.Result;
-using System.Text.Json;
 
 namespace SolarLab.AdvertBoard.Application.Categories.GetTree
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetCategoryTreeQuery"/>.
+    /// </summary>
+    /// <param name="categoryRepository">Репозиторий для работы с категориями.</param>
+    /// <param name="cache">Провайдер для работы с распределенным кешем.</param>
+    /// <param name="logger">Логгер.</param>
     public class GetCategoryTreeQueryHandler(
         ICategoryRepository categoryRepository, 
         ICacheProvider cache, 
@@ -17,6 +22,7 @@ namespace SolarLab.AdvertBoard.Application.Categories.GetTree
     {
         private const string CacheKey = "category_tree";
 
+        /// <inheritdoc/>
         public async Task<Result<CategoryTreeResponse>> Handle(GetCategoryTreeQuery request, CancellationToken cancellationToken)
         {
             var cached = await cache.GetAsync<CategoryTreeResponse>(CacheKey, cancellationToken);

@@ -5,6 +5,14 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
 {
     public static class IQueryableExtensions
     {
+        /// <summary>
+        /// Выполняет пагинацию запроса и возвращает пагинированную коллекцию.
+        /// </summary>
+        /// <typeparam name="T">Тип элементов в коллекции.</typeparam>
+        /// <param name="query">Запрос для пагинации.</param>
+        /// <param name="page">Номер страницы (начинается с 1).</param>
+        /// <param name="pageSize">Размер страницы.</param>
+        /// <returns>Пагинированная коллекция элементов.</returns>
         public static async Task<PaginationCollection<T>> ToPagedAsync<T>(this IQueryable<T> query, int page, int pageSize)
         {
             var totalCount = await query.CountAsync();

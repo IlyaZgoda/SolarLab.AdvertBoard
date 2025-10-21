@@ -8,16 +8,21 @@ using SolarLab.AdvertBoard.SharedKernel.Specification;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.GetPublishedAdvertDetailsById
 {
-    public class GetPublishedAdvertDetailsByIdQueryHandler(IAdvertReadProvider advertReadService) 
+    /// <summary>
+    /// Обработчик запроса <see cref="GetPublishedAdvertDetailsByIdQuery"/>.
+    /// </summary>
+    /// <param name="advertReadProvider">Провайдер для чтения данных объявлений</param>
+    public class GetPublishedAdvertDetailsByIdQueryHandler(IAdvertReadProvider advertReadProvider) 
         : IQueryHandler<GetPublishedAdvertDetailsByIdQuery, PublishedAdvertDetailsResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<PublishedAdvertDetailsResponse>> Handle(GetPublishedAdvertDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             var byId = new AdvertWithIdSpec(request.Id);
             var published = new PublishedAdvertSpec();
             var spec = byId.And(published);
 
-            var response = await advertReadService.GetPublishedAdvertDetailsByIdAsync(spec);
+            var response = await advertReadProvider.GetPublishedAdvertDetailsByIdAsync(spec);
 
             if (response.HasNoValue)
             {

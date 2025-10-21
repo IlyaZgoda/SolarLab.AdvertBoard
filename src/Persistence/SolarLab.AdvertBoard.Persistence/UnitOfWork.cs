@@ -1,12 +1,17 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using SolarLab.AdvertBoard.Application.Abstractions;
 using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Persistence
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр класс <see cref="UnitOfWork"/>
+    /// </summary>
+    /// <param name="context">Контекст (для записи) базы данных.</param>
+    /// <param name="mediator">Mediator.</param>
     public class UnitOfWork(ApplicationDbContext context, IMediator mediator) : IUnitOfWork
     {
+        /// <inheritdoc/>
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
 
@@ -17,6 +22,10 @@ namespace SolarLab.AdvertBoard.Persistence
             return result;
         }
 
+        /// <summary>
+        /// Публикует доменные события.
+        /// </summary>
+        /// <returns></returns>
         private async Task PublishDomainEventsAsync()
         {
             var aggregateRoots = context.ChangeTracker

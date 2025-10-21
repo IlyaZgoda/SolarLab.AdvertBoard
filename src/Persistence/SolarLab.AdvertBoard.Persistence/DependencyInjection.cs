@@ -17,6 +17,12 @@ namespace SolarLab.AdvertBoard.Persistence
 {
     public static class DependencyInjection
     {
+        /// <summary>
+        /// Регистрирует в IOC контейнер сервисы слоя Persistence.
+        /// </summary>
+        /// <param name="services">Коллекция дескрипторов сервисов.</param>
+        /// <param name="configuration">Конфигурация приложения.</param>
+        /// <returns>Коллекция дескрипторов сервисов.</returns>
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>

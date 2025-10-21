@@ -4,16 +4,22 @@ using System.Text.Json;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Caching
 {
+    /// <summary>
+    /// Провайдер для работы с распределенным кешем.
+    /// </summary>
+    /// <param name="cache">Распределенный кеш.</param>
     public class RedisCacheProvider(IDistributedCache cache) : ICacheProvider
     {
         private readonly JsonSerializerOptions _options = new(JsonSerializerDefaults.Web);
 
+        /// <inheritdoc/>
         public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         {
             var data = await cache.GetStringAsync(key, cancellationToken);
             return data is null ? default : JsonSerializer.Deserialize<T>(data, _options);
         }
 
+        /// <inheritdoc/>
         public async Task SetAsync<T>(string key, T value, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
         {
             var json = JsonSerializer.Serialize(value, _options);
@@ -24,6 +30,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Caching
             await cache.SetStringAsync(key, json, options, cancellationToken);
         }
 
+        /// <inheritdoc/>
         public async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
         {
             await cache.RemoveAsync(key, cancellationToken);

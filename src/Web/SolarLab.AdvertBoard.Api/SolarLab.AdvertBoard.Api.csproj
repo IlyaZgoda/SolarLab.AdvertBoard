@@ -8,6 +8,9 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +32,7 @@
     <ProjectReference Include="..\..\Infrastructure\SolarLab.AdvertBoard.Infrastructure\SolarLab.AdvertBoard.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Persistence\SolarLab.AdvertBoard.Persistence\SolarLab.AdvertBoard.Persistence.csproj" />
     <ProjectReference Include="..\..\SharedKernel\SolarLab.AdvertBoard.SharedKernel\SolarLab.AdvertBoard.SharedKernel.csproj" />
+    <InternalsVisibleTo Include="SolarLab.AdvertBoard.ApiTests" />
   </ItemGroup>
 
 </Project>

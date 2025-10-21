@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SolarLab.AdvertBoard.Api.Extensions;
 using SolarLab.AdvertBoard.Api.Mappers;
 using SolarLab.AdvertBoard.Api.Middleware;

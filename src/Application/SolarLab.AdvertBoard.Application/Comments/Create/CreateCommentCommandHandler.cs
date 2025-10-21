@@ -12,6 +12,14 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Comments.Create
 {
+    /// <summary>
+    /// Обработчик команды <see cref="CreateCommentCommand"/>.
+    /// </summary>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного пользователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями.</param>
+    /// <param name="commentRepository">Репозиторий для работы с комментариями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
     public class CreateCommentCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 
         IUserRepository userRepository,
@@ -19,6 +27,7 @@ namespace SolarLab.AdvertBoard.Application.Comments.Create
         ICommentRepository commentRepository,
         IUnitOfWork unitOfWork) : ICommandHandler<CreateCommentCommand, CommentIdResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<CommentIdResponse>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
             var identityId = userIdentifierProvider.IdentityUserId;

@@ -18,6 +18,12 @@ namespace SolarLab.AdvertBoard.Infrastructure
 {
     public static class DependencyInjection
     {
+        /// <summary>
+        /// Добавляет в IOC контейнер сервисы слоя Infrastructure.
+        /// </summary>
+        /// <param name="services">Коллекция дискрипторов сервисов.</param>
+        /// <param name="configuration">Конфигурация приложения.</param>
+        /// <returns>Коллекцию дескрипторов сервисов.</returns>
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services, 
             IConfiguration configuration)

@@ -8,6 +8,11 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
 {
     public static class Mapper
     {
+        /// <summary>
+        /// Преобразует запрос read-моделей объявлений в DTO опубликованных объявлений.
+        /// </summary>
+        /// <param name="query">Запрос read-моделей объявлений.</param>
+        /// <returns>Запрос DTO опубликованных объявлений.</returns>
         public static IQueryable<PublishedAdvertItem> ToPublishedAdvertItem(this IQueryable<AdvertReadModel> query)
         {
             return query.Select(advert => new PublishedAdvertItem(
@@ -22,6 +27,11 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                     advert.PublishedAt.Value));
         }
 
+        /// <summary>
+        /// Преобразует запрос read-моделей объявлений в DTO черновиков объявлений.
+        /// </summary>
+        /// <param name="query">Запрос read-моделей объявлений.</param>
+        /// <returns>Запрос DTO черновиков объявлений.</returns>
         public static IQueryable<AdvertDraftItem> ToAdvertDraftItem(this IQueryable<AdvertReadModel> query)
         {
             return query.Select(advert => new AdvertDraftItem(
@@ -36,6 +46,11 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                     advert.AuthorId));
         }
 
+        /// <summary>
+        /// Преобразует запрос read-моделей объявлений в DTO деталей черновика.
+        /// </summary>
+        /// <param name="query">Запрос read-моделей объявлений.</param>
+        /// <returns>Запрос DTO деталей черновика.</returns>
         public static IQueryable<AdvertDraftDetailsResponse> ToAdvertDraftDetails(this IQueryable<AdvertReadModel> query)
         {
             return query.Select(advert => new AdvertDraftDetailsResponse(
@@ -52,6 +67,11 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                           ));
         }
 
+        /// <summary>
+        /// Преобразует запрос read-моделей объявлений в DTO деталей опубликованного объявления.
+        /// </summary>
+        /// <param name="query">Запрос read-моделей объявлений.</param>
+        /// <returns>Запрос DTO деталей опубликованного объявления.</returns>
         public static IQueryable<PublishedAdvertDetailsResponse> ToPublishedAdvertDetails(this IQueryable<AdvertReadModel> query)
         {
             return query.Select(advert => new PublishedAdvertDetailsResponse(
@@ -69,6 +89,11 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                            advert.Author.PhoneNumber)));
         }
 
+        /// <summary>
+        /// Преобразует запрос read-моделей комментариев в DTO комментариев.
+        /// </summary>
+        /// <param name="query">Запрос read-моделей комментариев.</param>
+        /// <returns>Запрос DTO комментариев.</returns>
         public static IQueryable<CommentItem> ToCommentItem(this IQueryable<CommentReadModel> query)
         {
             return query.Select(comment => new CommentItem(

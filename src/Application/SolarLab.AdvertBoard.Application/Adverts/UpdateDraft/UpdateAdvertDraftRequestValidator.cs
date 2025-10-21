@@ -5,8 +5,14 @@ using SolarLab.AdvertBoard.Domain.Errors;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.UpdateDraft
 {
+    /// <summary>
+    /// Валидатор запроса на обновление черновика объявления.
+    /// </summary>
     public class UpdateAdvertDraftRequestValidator : AbstractValidator<UpdateAdvertDraftRequest>
     {
+        /// <summary>
+        /// Инициализирует правила валидации.
+        /// </summary>
         public UpdateAdvertDraftRequestValidator()
         {
             RuleFor(x => x.Title)

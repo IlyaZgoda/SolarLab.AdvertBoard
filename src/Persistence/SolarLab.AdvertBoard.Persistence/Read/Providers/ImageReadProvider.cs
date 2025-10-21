@@ -7,8 +7,13 @@ using SolarLab.AdvertBoard.SharedKernel.Maybe;
 
 namespace SolarLab.AdvertBoard.Persistence.Read.Providers
 {
+    /// <summary>
+    /// Провайдер для чтения данных изображений.
+    /// </summary>
+    /// <param name="context">Контекст (для чтения) базы данных.</param>
     public class ImageReadProvider(ReadDbContext context) : IImageReadProvider
     {
+        /// <inheritdoc/>
         public async Task<Maybe<ImageResponse>> GetImageById(AdvertImageId id, string identityId)
         {
             var image = await context.Images

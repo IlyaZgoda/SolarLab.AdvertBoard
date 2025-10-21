@@ -8,9 +8,14 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Categories.GetById
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetCategoryByIdQuery"/>.
+    /// </summary>
+    /// <param name="categoryRepository">Репозиторий для работы с категориями.</param>
     public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository) 
         : IQueryHandler<GetCategoryByIdQuery, CategoryResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<CategoryResponse>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             Maybe<Category> category = await categoryRepository.GetByIdAsync(new CategoryId(request.Id));

@@ -6,9 +6,15 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
+    /// <summary>
+    /// Провайдер для управления пользователями из системы аутентификации.
+    /// </summary>
+    /// <param name="userManager">Менеджер для управления пользователями из сестемы аутентификации (Identity).</param>
     public class UserManagerProvider(UserManager<IdentityUser> userManager) : IUserManagerProvider
     {
         private static Error IncorrectLoginOrPassword = new(ErrorTypes.ValidationError, "Incorrect login or password");
+
+        /// <inheritdoc/>
         public async Task<Result<string>> CreateIdentityUserAsync(string email, string password)
         {
             var identityUser = new IdentityUser
@@ -27,6 +33,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             return identityUser.Id;
         }
 
+        /// <inheritdoc/>
         public async Task<bool> DeleteIdentityUserAsync(string identityUserId)
         {
             var identityUser = await userManager.FindByIdAsync(identityUserId);
@@ -46,6 +53,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             return true;
         }
 
+        /// <inheritdoc/>
         public async Task<Result<string>> ValidateIdentityUserAsync(string email, string password)
         {
             var identityUser = await userManager.FindByEmailAsync(email);
@@ -62,6 +70,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
                 : Result.Failure<string>(IncorrectLoginOrPassword);
         }
 
+        /// <inheritdoc/>
         public async Task<string> GenerateEmailConfirmationTokenAsync(string email)
         {
             var identityUser = await userManager.FindByEmailAsync(email)
@@ -80,6 +89,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             return identityUser.Email!;
         }
 
+        /// <inheritdoc/>
         public async Task<Result> ConfirmEmail(string identityUserId, string token)
         {
             var identityUser = await userManager.FindByIdAsync(identityUserId)
@@ -95,6 +105,7 @@ namespace SolarLab.AdvertBoard.Infrastructure.Authentication
             return Result.Success();
         }
 
+        /// <inheritdoc/>
         public async Task<bool> IsEmailConfirmed(string identityUserId)
         {
             var identityUser = await userManager.FindByIdAsync(identityUserId)

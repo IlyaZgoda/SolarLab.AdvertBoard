@@ -6,9 +6,14 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Comments.GetById
 {
+    /// <summary>
+    /// Обработчик запроса <see cref="GetCommentByIdQuery"/>.
+    /// </summary>
+    /// <param name="commentRepository">Репозиторий для работы с комментариями.</param>
     public class GetCommentByIdQueryHandler(ICommentRepository commentRepository) 
         : IQueryHandler<GetCommentByIdQuery, CommentResponse>
     {
+        /// <inheritdoc/>
         public async Task<Result<CommentResponse>> Handle(GetCommentByIdQuery request, CancellationToken cancellationToken)
         {
             var comment = await commentRepository.GetByIdAsync(new CommentId(request.Id));

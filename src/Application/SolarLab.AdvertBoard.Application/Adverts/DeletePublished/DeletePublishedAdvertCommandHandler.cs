@@ -8,12 +8,20 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Adverts.DeletePublished
 {
+    /// <summary>
+    /// Обработчик команды <see cref="DeletePublishedAdvertCommand"/>.
+    /// </summary>
+    /// <param name="advertRepository">Репозиторий для работы с объявлениями</param>
+    /// <param name="unitOfWork">Unit of work.</param>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатора текущего аутентифицированного ползователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
     public class DeletePublishedAdvertCommandHandler(
         IAdvertRepository advertRepository,
         IUnitOfWork unitOfWork,
         IUserIdentifierProvider userIdentifierProvider,
         IUserRepository userRepository) : ICommandHandler<DeletePublishedAdvertCommand>
     {
+        /// <inheritdoc/>
         public async Task<Result> Handle(DeletePublishedAdvertCommand request, CancellationToken cancellationToken)
         {
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.Id));

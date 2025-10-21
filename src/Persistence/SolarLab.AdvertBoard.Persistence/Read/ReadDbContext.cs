@@ -3,20 +3,51 @@ using SolarLab.AdvertBoard.Persistence.Read.Models;
 
 namespace SolarLab.AdvertBoard.Persistence.Read
 {
+    /// <summary>
+    /// Контекст базы данных для операций чтения (CQRS Read side).
+    /// </summary>
+    /// <remarks>
+    /// Настроен с отключенным отслеживанием изменений (NoTracking) для оптимизации производительности.
+    /// Используется исключительно для запросов, не требующих отслеживания сущностей.
+    /// </remarks>
     public class ReadDbContext : DbContext
     {
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="ReadDbContext"/>.
+        /// </summary>
+        /// <param name="options">Параметры конфигурации контекста.</param>
         public ReadDbContext(DbContextOptions<ReadDbContext> options)
             : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
+        /// <summary>
+        /// Набор данных пользователей.
+        /// </summary>
         public DbSet<UserReadModel> Users { get; set; } = null!;
+
+        /// <summary>
+        /// Набор данных категорий.
+        /// </summary>
         public DbSet<CategoryReadModel> Categories { get; set; } = null!;
+
+        /// <summary>
+        /// Набор данных объявлений.
+        /// </summary>
         public DbSet<AdvertReadModel> Adverts { get; set; } = null!;
+
+        /// <summary>
+        /// Набор данных изображений.
+        /// </summary>
         public DbSet<AdvertImageReadModel> Images { get; set; } = null!;
+
+        /// <summary>
+        /// Набор данных комментариев.
+        /// </summary>
         public DbSet<CommentReadModel> Comments { get; set; } = null!;
 
+        /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

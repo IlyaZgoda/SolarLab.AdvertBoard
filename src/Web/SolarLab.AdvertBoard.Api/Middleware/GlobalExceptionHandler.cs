@@ -7,6 +7,13 @@ using SolarLab.AdvertBoard.SharedKernel;
 
 namespace SolarLab.AdvertBoard.Api.Middleware
 {
+    /// <summary>
+    /// Middlware для обработки исключений.
+    /// </summary>
+    /// <param name="problemDetailsService">Сервис для создания problem details.</param>
+    /// <param name="logger">Логгер.</param>
+    /// <param name="mapper">Маппер ошибок.</param>
+    /// <param name="problemDetailsFactory">Фвбрика для создания problem details</param>
     public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService,
        ILogger<GlobalExceptionHandler> logger,
        ErrorToHttpMapper mapper,

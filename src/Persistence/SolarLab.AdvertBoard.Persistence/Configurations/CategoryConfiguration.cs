@@ -4,8 +4,12 @@ using SolarLab.AdvertBoard.Domain.Categories;
 
 namespace SolarLab.AdvertBoard.Persistence.Configurations
 {
+    /// <summary>
+    /// Конфигурация Entity Framework для сущности Category.
+    /// </summary>
     internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
+        /// <inheritdoc/>
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.ToTable("Categories");

@@ -7,10 +7,15 @@ using System.Text;
 
 namespace SolarLab.AdvertBoard.Infrastructure.Authentication
 {
+    /// <summary>
+    /// Провайдер для создания JWT.
+    /// </summary>
+    /// <param name="options">Опции JWT.</param>
     public class TokenProvider(IOptions<JwtOptions> options) : ITokenProvider
     {
         private readonly JwtOptions _jwtOptions = options.Value;
 
+        /// <inheritdoc/>
         public string Create(string id, string email)
         {
             string secretKey = _jwtOptions.Secret;

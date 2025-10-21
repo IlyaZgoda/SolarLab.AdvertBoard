@@ -6,8 +6,14 @@ using SolarLab.AdvertBoard.Domain.Users;
 
 namespace SolarLab.AdvertBoard.Application.Users.Register
 {
+    /// <summary>
+    /// Валидатор запроса на регистрацию пользователя.
+    /// </summary>
     public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {
+        /// <summary>
+        /// Инициализирует правила валидации.
+        /// </summary>
         public RegisterUserRequestValidator()
         {
             RuleFor(x => x.Email)

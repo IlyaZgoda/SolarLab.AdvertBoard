@@ -3,8 +3,16 @@ using SolarLab.AdvertBoard.Domain.Categories;
 
 namespace SolarLab.AdvertBoard.Persistence.Seeders
 {
+    /// <summary>
+    /// Сидер для заполнения начальными данными категорий.
+    /// </summary>
+    /// <param name="context">Контекст (для записи) базы данных.</param>
     public class CategorySeeder(ApplicationDbContext context)
     {
+        /// <summary>
+        /// Заполняет базу тестовыми категориями, если они отсутствуют.
+        /// </summary>
+        /// <returns></returns>
         public async Task SeedAsync()
         {
             if (await context.Categories.AnyAsync())

@@ -1,7 +1,13 @@
 ﻿namespace SolarLab.AdvertBoard.Api
 {
+    /// <summary>
+    /// Статический класс с маршрутами.
+    /// </summary>
     public static class ApiRoutes
     {
+        /// <summary>
+        /// Статический класс с маршрутами, связаннами с операциями над пользователями.
+        /// </summary>
         public static class Users
         {
             public const string Login = "api/users/login";
@@ -9,12 +15,18 @@
             public const string ConfirmEmail = "api/users/confirm-email";
         }
 
+        /// <summary>
+        /// Статический класс с маршрутами, связаннами с операциями над категориями.
+        /// </summary>
         public static class Categories
         {
             public const string GetById = "api/categories/{id}";
             public const string GetTree = "api/categories/tree";
         }
 
+        /// <summary>
+        /// Статический класс с маршрутами, связаннами с операциями над объявлениями.
+        /// </summary>
         public static class Adverts
         {
             public const string GetPublished = "api/adverts/{id}";
@@ -31,6 +43,9 @@
             public const string DeletePublished = "api/adverts/{id}";
         }
 
+        /// <summary>
+        /// Статический класс с маршрутами, связаннами с операциями над изображениями.
+        /// </summary>
         public static class Files
         {
             public const string Upload = "api/adverts/drafts/{advertId}/images";
@@ -39,6 +54,9 @@
             public const string DeleteImage = "api/adverts/drafts/{advertId}/images/{id}";
         }
 
+        /// <summary>
+        /// Статический класс с маршрутами, связаннами с операциями над комментариями.
+        /// </summary>
         public static class Comments
         {
             public const string Create = "api/adverts/{advertId}/comments";

@@ -1,14 +1,28 @@
-﻿using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace SolarLab.AdvertBoard.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Настраивает генерацию Swagger документации с поддержкой JWT аутентификации.
+        /// </summary>
+        /// <param name="services">Коллекция дескрипторов сервисов.</param>
+        /// <returns>Коллекция дескрипторов сервисов с настроенным Swagger.</returns>
         public static IServiceCollection AddSwaggerGenWithAuth(this IServiceCollection services)
         {
             services.AddSwaggerGen(o =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                if (File.Exists(xmlPath))
+                {
+                    o.IncludeXmlComments(xmlPath);
+                }
+
                 o.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
 
                 var securityScheme = new OpenApiSecurityScheme

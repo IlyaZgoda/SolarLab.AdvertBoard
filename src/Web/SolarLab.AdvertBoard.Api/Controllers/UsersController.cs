@@ -1,16 +1,11 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using SolarLab.AdvertBoard.Api.Mappers;
-using SolarLab.AdvertBoard.Application.Abstractions.Links;
-using SolarLab.AdvertBoard.Application.Abstractions.Notifications;
 using SolarLab.AdvertBoard.Application.Users.ConfirmEmail;
 using SolarLab.AdvertBoard.Application.Users.Login;
 using SolarLab.AdvertBoard.Application.Users.Register;
 using SolarLab.AdvertBoard.Contracts.Authentication;
-using SolarLab.AdvertBoard.Contracts.Links;
-using SolarLab.AdvertBoard.Contracts.Mails;
 using SolarLab.AdvertBoard.Contracts.Users;
 using SolarLab.AdvertBoard.SharedKernel;
 using SolarLab.AdvertBoard.SharedKernel.Result;
@@ -19,13 +14,25 @@ using System.Text;
 
 namespace SolarLab.AdvertBoard.Api.Controllers
 {
+    /// <summary>
+    /// Контроллер для управления операциями с пользователями.
+    /// </summary>
+    /// <param name="mediator">Медиатор для отправки команд и запросов.</param>
+    /// <param name="resultErrorHandler">Обработчик ошибок для преобразования в HTTP ответы.</param>
     [ApiController]
     public class UsersController(
         IMediator mediator, 
-        IEmailNotificationSender emailNotificationSender, 
-        IUriGenerator uriGenerator, 
         ResultErrorHandler resultErrorHandler) : ControllerBase
     {
+        /// <summary>
+        /// Выполняет аутентификацию пользователя.
+        /// </summary>
+        /// <param name="loginRequest">Данные для входа (email и пароль).</param>
+        /// <returns>
+        /// JWT токен при успешной аутентификации.
+        /// Ошибку 400 при неверных учетных данных или ошибке валидации.
+        /// Ошибку 500 при внутренней ошибке сервера.
+        /// </returns>
         [HttpPost(ApiRoutes.Users.Login)]
         [ProducesResponseType(typeof(JwtResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -36,6 +43,15 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Bind(command => mediator.Send(command))
                 .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
 
+        /// <summary>
+        /// Регистрирует нового пользователя в системе.
+        /// </summary>
+        /// <param name="registerRequest">Данные для регистрации пользователя.</param>
+        /// <returns>
+        /// Идентификатор созданного пользователя при успешной регистрации.
+        /// Ошибку 400 при неверных данных или нарушении бизнес-правил.
+        /// Ошибку 500 при внутренней ошибке сервера.
+        /// </returns>
         [HttpPost(ApiRoutes.Users.Register)]
         [ProducesResponseType(typeof(UserIdResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -52,7 +68,16 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                     registerRequest.PhoneNumber))
                 .Bind(command => mediator.Send(command))
                 .Match(user => Ok(user.UserId), error => resultErrorHandler.Handle(error));
- 
+
+        /// <summary>
+        /// Подтверждает email пользователя с использованием токена.
+        /// </summary>
+        /// <param name="confirmEmailRequest">Запрос с идентификатором пользователя и токеном подтверждения.</param>
+        /// <returns>
+        /// JWT токен при успешном подтверждении email.
+        /// Ошибку 400 при неверном или просроченном токене.
+        /// Ошибку 500 при внутренней ошибке сервера.
+        /// </returns>
         [HttpGet(ApiRoutes.Users.ConfirmEmail)]
         [ProducesResponseType(typeof(JwtResponse), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -65,22 +90,6 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new ConfirmEmailCommand(confirmEmailRequest.UserId, encodedToken))
                 .Bind(command => mediator.Send(command))
                 .Match(token => Ok(token), error => resultErrorHandler.Handle(error));
-        }
-
-        [HttpGet("api/users/send-email")]
-        public async Task<IActionResult> SendEmail()
-        {
-            var uri = uriGenerator.GenerateEmailConfirmationUri(new ConfirmationUriRequest("zxcv-asdf-qwer-sdfg-1234-asdf-zxcv-asdf","asdkuh34kjubanskld;oq2enlkajsnd"));
-            await emailNotificationSender.SendConfirmationEmail(new ConfirmationEmail("zgoda-games@mail.ru", uri));
-
-            return Ok();
-        }
-
-        [HttpPatch("api/users/update")]
-        public async Task<IActionResult> Update()
-        {
-            return Ok();
-
         }
     }
 }

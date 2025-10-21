@@ -8,12 +8,20 @@ using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Comments.Update
 {
+    /// <summary>
+    /// Обработчик команды <see cref="UpdateCommentCommand"/>.
+    /// </summary>
+    /// <param name="userIdentifierProvider">Провайдер для получения идентификатра текущего аутентифицированного пользователя.</param>
+    /// <param name="userRepository">Репозиторий для работы с пользователями.</param>
+    /// <param name="commentRepository">Репозиторий для работы с комментариями.</param>
+    /// <param name="unitOfWork">Unit of work.</param>
     public class UpdateCommentCommandHandler(
         IUserIdentifierProvider userIdentifierProvider, 
         IUserRepository userRepository, 
         ICommentRepository commentRepository,
         IUnitOfWork unitOfWork) : ICommandHandler<UpdateCommentCommand>
     {
+        /// <inheritdoc/>
         public async Task<Result> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
             var identityId = userIdentifierProvider.IdentityUserId;
