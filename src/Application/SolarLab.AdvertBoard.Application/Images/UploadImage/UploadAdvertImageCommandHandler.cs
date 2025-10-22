@@ -1,9 +1,11 @@
 ﻿using SolarLab.AdvertBoard.Application.Abstractions;
+using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Abstractions.Messaging;
 using SolarLab.AdvertBoard.Contracts.Images;
 using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Errors;
+using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.SharedKernel.Result;
 
 namespace SolarLab.AdvertBoard.Application.Images.UploadImage
@@ -13,7 +15,11 @@ namespace SolarLab.AdvertBoard.Application.Images.UploadImage
     /// </summary>
     /// <param name="advertRepository">Репозиторий для работы с объявлениями.</param>
     /// <param name="unitOfWork">Unit of work.</param>
-    public class UploadAdvertImageCommandHandler(IAdvertRepository advertRepository, IUnitOfWork unitOfWork) 
+    public class UploadAdvertImageCommandHandler(
+        IAdvertRepository advertRepository, 
+        IUnitOfWork unitOfWork,
+        IUserRepository userRepository,
+        IUserIdentifierProvider userIdentifierProvider) 
         : ICommandHandler<UploadAdvertImageCommand, ImageIdResponse>
     {
         /// <inheritdoc/>
@@ -22,6 +28,11 @@ namespace SolarLab.AdvertBoard.Application.Images.UploadImage
             var advert = await advertRepository.GetByIdAsync(new AdvertId(request.AdvertId));
 
             if (advert.HasNoValue)
+            {
+                return Result.Failure<ImageIdResponse>(AdvertErrors.NotFound);
+            }
+
+            if (!await userRepository.IsOwner(advert.Value.AuthorId, userIdentifierProvider.IdentityUserId))
             {
                 return Result.Failure<ImageIdResponse>(AdvertErrors.NotFound);
             }

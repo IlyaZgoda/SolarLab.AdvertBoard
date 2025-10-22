@@ -23,5 +23,7 @@ namespace SolarLab.AdvertBoard.Contracts.Adverts
         string CategoryTitle, 
         DateTime PublishedAt, 
         Guid AuthorId, 
-        UserContactInfoResponse AuthorContacts);
+        UserContactInfoResponse AuthorContacts,
+        List<Guid> ImageIds,
+        int CommentsCount);
 }

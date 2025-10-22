@@ -1,5 +1,6 @@
 ﻿using SolarLab.AdvertBoard.Contracts.Adverts;
 using SolarLab.AdvertBoard.Contracts.Comments;
+using SolarLab.AdvertBoard.Contracts.Images;
 using SolarLab.AdvertBoard.Contracts.Users;
 using SolarLab.AdvertBoard.Domain.Users;
 using SolarLab.AdvertBoard.Persistence.Read.Models;
@@ -24,7 +25,8 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                     advert.Category.Title,
                     advert.AuthorId,
                     advert.Author.FullName,
-                    advert.PublishedAt.Value));
+                    advert.PublishedAt.Value,
+                    advert.Comments.Count));
         }
 
         /// <summary>
@@ -63,7 +65,8 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                               advert.Status.ToString(),
                               advert.CreatedAt,
                               advert.UpdatedAt,
-                              advert.AuthorId
+                              advert.AuthorId,
+                              advert.Images.Select(img => img.Id).ToList()
                           ));
         }
 
@@ -86,7 +89,9 @@ namespace SolarLab.AdvertBoard.Persistence.Extensions
                        new UserContactInfoResponse(
                            advert.Author.FullName,
                            advert.Author.ContactEmail,
-                           advert.Author.PhoneNumber)));
+                           advert.Author.PhoneNumber),
+                       advert.Images.Select(img => img.Id).ToList(),
+                       advert.Comments.Count));
         }
 
         /// <summary>

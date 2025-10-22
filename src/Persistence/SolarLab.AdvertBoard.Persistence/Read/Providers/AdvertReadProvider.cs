@@ -25,6 +25,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
             return await context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
+                .Include(a => a.Images)
                 .Where(efSpec)
                 .ToAdvertDraftDetails()
                 .SingleOrDefaultAsync();
@@ -38,6 +39,7 @@ namespace SolarLab.AdvertBoard.Persistence.Read.Providers
             return await context.Adverts
                 .Include(a => a.Category)
                 .Include(a => a.Author)
+                .Include(a => a.Images)
                 .Where(efSpec)
                 .ToPublishedAdvertDetails()
                 .SingleOrDefaultAsync();

@@ -1,4 +1,6 @@
-﻿namespace SolarLab.AdvertBoard.Contracts.Adverts
+﻿using SolarLab.AdvertBoard.Contracts.Images;
+
+namespace SolarLab.AdvertBoard.Contracts.Adverts
 {
     /// <summary>
     /// DTO для элемента списка опубликованных объявлений.
@@ -21,5 +23,6 @@
         string CategoryName,
         Guid AuthorId,
         string AuthorName,
-        DateTime? PublishedAt);
+        DateTime? PublishedAt,
+        int CommentsCount);
 }

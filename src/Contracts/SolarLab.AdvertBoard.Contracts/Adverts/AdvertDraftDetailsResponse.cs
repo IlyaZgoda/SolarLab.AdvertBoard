@@ -23,5 +23,6 @@
         string Status, 
         DateTime CreatedAt, 
         DateTime? UpdatedAt, 
-        Guid AuthorId);
+        Guid AuthorId,
+        List<Guid> ImageIds);
 }
