@@ -41,6 +41,11 @@ namespace SolarLab.AdvertBoard.Application.Comments.Create
                 return Result.Failure<CommentIdResponse>(AdvertErrors.NotFound);
             }
 
+            if (advert.Value.Status != AdvertStatus.Published)
+            {
+                return Result.Failure<CommentIdResponse>(AdvertErrors.NotFound);
+            }
+
             var textResult = CommentText.Create(request.Text);
 
             if (textResult.IsFailure)

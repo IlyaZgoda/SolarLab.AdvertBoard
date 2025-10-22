@@ -47,7 +47,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
                 .Map(request => new UploadAdvertImageCommand(advertId, file.FileName, file.ContentType, request.Result))
                 .Bind(command => mediator.Send(command))
                 .Match(
-                    image => CreatedAtAction(nameof(DownloadImageById), new {image.Id}), 
+                    image => CreatedAtAction(nameof(DownloadImageById), new {image.Id}, image), 
                     error => resultErrorHandler.Handle(error)
                 );
 
@@ -93,7 +93,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
         public async Task<IActionResult> DownloadImageById(Guid id) =>
             await mediator.Send(new GetImageByIdQuery(id))
                 .Match(
-                    response => File(response.Content, response.ContentType),
+                    response => File(response.Content, response.ContentType, response.FileName),
                     error => resultErrorHandler.Handle(error));
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace SolarLab.AdvertBoard.Api.Controllers
         public async Task<IActionResult> GetImageById(Guid id) =>
             await mediator.Send(new GetImageByIdQuery(id))
                 .Match(
-                    response => File(response.Content, response.ContentType, response.FileName),
+                    response => File(response.Content, response.ContentType),
                     error => resultErrorHandler.Handle(error));
 
         private static async Task<byte[]> GetBytesAsync(IFormFile file)

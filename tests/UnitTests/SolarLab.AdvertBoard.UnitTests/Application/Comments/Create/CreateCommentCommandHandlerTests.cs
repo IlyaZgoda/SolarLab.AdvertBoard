@@ -6,6 +6,7 @@ using SolarLab.AdvertBoard.Application.Abstractions.Authentication;
 using SolarLab.AdvertBoard.Application.Comments.Create;
 using SolarLab.AdvertBoard.Application.Users.Specifications;
 using SolarLab.AdvertBoard.Contracts.Comments;
+using SolarLab.AdvertBoard.Domain.AdvertImages;
 using SolarLab.AdvertBoard.Domain.Adverts;
 using SolarLab.AdvertBoard.Domain.Categories;
 using SolarLab.AdvertBoard.Domain.Comments;
@@ -51,6 +52,12 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Comments.Create
             var identityId = "auth0|123456789";
             var user = CreateTestUser(identityId);
             var advert = CreateTestAdvert(user.Id);
+
+            var imageResult = advert.AddImage(
+            ImageFileName.Create("test.jpg").Value,
+            ImageContentType.Create("image/jpeg").Value,
+            ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+            advert.Publish();
 
             _userIdentifierProviderMock
                 .Setup(x => x.IdentityUserId)
@@ -140,6 +147,12 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Comments.Create
             var user = CreateTestUser(identityId);
             var advert = CreateTestAdvert(user.Id);
 
+            var imageResult = advert.AddImage(
+            ImageFileName.Create("test.jpg").Value,
+            ImageContentType.Create("image/jpeg").Value,
+            ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+            advert.Publish();
+
             _userIdentifierProviderMock
                 .Setup(x => x.IdentityUserId)
                 .Returns(identityId);
@@ -179,6 +192,12 @@ namespace SolarLab.AdvertBoard.UnitTests.Application.Comments.Create
             var identityId = "auth0|123456789";
             var user = CreateTestUser(identityId);
             var advert = CreateTestAdvert(user.Id);
+
+            var imageResult = advert.AddImage(
+            ImageFileName.Create("test.jpg").Value,
+            ImageContentType.Create("image/jpeg").Value,
+            ImageContent.Create(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00 }).Value);
+            advert.Publish();
 
             _userIdentifierProviderMock
                 .Setup(x => x.IdentityUserId)
